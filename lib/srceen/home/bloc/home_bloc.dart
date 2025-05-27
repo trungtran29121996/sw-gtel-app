@@ -11,6 +11,7 @@ class HomeBloc extends BaseBloc<HomeEvent, HomeState> {
   }
   Future _onGetAllRoute(GetAllRoute event, Emitter emit) async {
     try {
+      List<DataCnpRouteReponse> lstFilter = [];
       if (event.page == 1) {
         emit.call(state.copyWith(
             loading:
@@ -26,8 +27,6 @@ class HomeBloc extends BaseBloc<HomeEvent, HomeState> {
       CPNRouteRepository routeRepository = CPNRouteRepository();
       List<DataCnpRouteReponse> listAllRoute = await routeRepository
           .getAllRoute(event.page, event.size, event.driver_id);
-      List<DataCnpRouteReponse> updateListAllRoute =
-          List<DataCnpRouteReponse>.from(state.listRoute)..addAll(listAllRoute);
 
       if (listAllRoute.isNotEmpty) {
         for (var element in listAllRoute) {
@@ -38,15 +37,20 @@ class HomeBloc extends BaseBloc<HomeEvent, HomeState> {
           } else if (element.status == 320) {
             statusDelivery++;
           }
+
+          if (element.status == 100 ||
+              element.status == 310 ||
+              element.status == 320) {
+            lstFilter.add(element);
+          }
         }
       }
-
       totalStatus = statusNew + statusPickup + statusDelivery;
 
       emit.call(state.copyWith(
           loading:
               state.loading.copyWith(isLoading: false, isLoadSuccess: true),
-          listRoute: event.page == 1 ? listAllRoute : updateListAllRoute,
+          listRoute: lstFilter,
           totalStatus: totalStatus));
     } catch (e) {
       print("LOI$e");

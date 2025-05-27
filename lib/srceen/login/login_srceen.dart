@@ -8,6 +8,7 @@ import 'package:sw_app_gtel/common/style/color.dart';
 import 'package:sw_app_gtel/common/style/textstyles.dart';
 import 'package:sw_app_gtel/common/widget/default_button.dart';
 import 'package:sw_app_gtel/common/widget/input_textfield.dart';
+import 'package:sw_app_gtel/common/widget/keyboard_dismiss.dart';
 import 'package:sw_app_gtel/navigation/route.dart';
 import 'package:sw_app_gtel/srceen/login/bloc/login_bloc.dart';
 import 'package:sw_app_gtel/srceen/login/bloc/login_event.dart';
@@ -29,83 +30,82 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      child: BlocProvider(
+    return BlocProvider(
         create: (context) => LoginBloc(),
         child: Scaffold(
-          body: Stack(
-            children: [
-              Container(
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                image: AssetImage(
-                  "assets/images/bg_sanxe.webp",
-                ),
-                fit: BoxFit.cover,
-              ))),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: buildImageBottom(),
-              ),
-              CustomScrollView(reverse: true, slivers: [
-                SliverFillRemaining(
-                  hasScrollBody: false,
-                  child: Container(
-                    padding: EdgeInsets.only(
-                        left: AppDimensions.paddingXXLarge,
-                        top: getDeviceHeight(context) * .2,
-                        right: AppDimensions.paddingXXLarge),
-                    child: Form(
-                      key: formKey,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          //const WidgetLogoEmover(),
-                          buildTextAppName(),
-                          const SizedBox(height: AppDimensions.paddingXXLarge),
-                          buildPhoneField(),
-                          const SizedBox(height: AppDimensions.paddingXXLarge),
-                          buildPasswordField(),
-                          const SizedBox(height: AppDimensions.paddingXXLarge),
-                          BlocConsumer<LoginBloc, LoginState>(
-                            listener: (context, state) {
-                              if (state.loading.isLoading) {
-                                showLoading(context);
-                              } else if (state.loading.isLoadSuccess) {
-                                hideLoading(context);
-                                Navigator.pushNamedAndRemoveUntil(context,
-                                    AppRoutes.NAVIGATION_BAR, (route) => false);
-                              } else if (state.loading.loadError) {
-                                hideLoading(context);
-                                showAppDialog(
-                                    context: context,
-                                    suffixIcon: Icon(
-                                      Icons.warning_amber_outlined,
-                                      size: 40,
-                                      color: Colors.red,
-                                    ),
-                                    title: "Thông báo",
-                                    message:
-                                        "${"Tài khoản của bạn không đúng"}\n${"Vui lòng thử lại"}");
-                              }
-                            },
-                            builder: (context, state) {
-                              return buildButtonLogin(context);
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
+          body: KeyboardDismiss(
+            child: SingleChildScrollView(
+              child: Container(
+                  padding: EdgeInsets.only(
+                    left: AppDimensions.paddingXXLarge,
+                    top: getDeviceHeight(context) * 0.12,
+                    right: AppDimensions.paddingXXLarge,
                   ),
-                )
-              ]),
-            ],
+                  child: Column(
+                    children: [
+                      Text(
+                        textAlign: TextAlign.center,
+                        "Welcome!",
+                        style: TextStylesUtils.styleLight30Black,
+                      ),
+                      SizedBox(
+                        height: 30,
+                      ),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: buildImageBottom(),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 70,
+                        ),
+                        child: Form(
+                            key: formKey,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                buildPhoneField(),
+                                const SizedBox(
+                                    height: AppDimensions.paddingXXLarge),
+                                buildPasswordField(),
+                                SizedBox(height: AppDimensions.paddingXXLarge),
+                                BlocConsumer<LoginBloc, LoginState>(
+                                  listener: (context, state) {
+                                    if (state.loading.isLoading) {
+                                      showLoading(context);
+                                    } else if (state.loading.isLoadSuccess) {
+                                      hideLoading(context);
+                                      Navigator.pushNamedAndRemoveUntil(
+                                          context,
+                                          AppRoutes.NAVIGATION_BAR,
+                                          (route) => false);
+                                    } else if (state.loading.loadError) {
+                                      hideLoading(context);
+                                      showAppDialog(
+                                          context: context,
+                                          suffixIcon: Icon(
+                                            Icons.warning_amber_outlined,
+                                            size: 40,
+                                            color: Colors.red,
+                                          ),
+                                          title: "Thông báo",
+                                          message:
+                                              "${"Tài khoản của bạn không đúng"}\n${"Vui lòng thử lại"}");
+                                    }
+                                  },
+                                  builder: (context, state) {
+                                    return buildButtonLogin(context);
+                                  },
+                                ),
+                              ],
+                            )),
+                      )
+                    ],
+                  )),
+            ),
           ),
-        ),
-      ),
-    );
+        ));
   }
 
   Widget buildPhoneField() {
@@ -116,15 +116,6 @@ class _LoginScreenState extends State<LoginScreen> {
       controller: usernameController,
       filled: true,
       style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
-      prefixIcon: Container(
-          height: 10,
-          margin: EdgeInsets.symmetric(
-            horizontal: 5,
-          ),
-          child: Icon(
-            Icons.phone_android,
-            color: ColorsUtils.bgWareHouse,
-          )),
     );
   }
 
@@ -135,12 +126,7 @@ class _LoginScreenState extends State<LoginScreen> {
       obscureText: obscureText,
       controller: passwordController,
       filled: true,
-      prefixIcon: Container(
-        child: Icon(
-          Icons.lock,
-          color: ColorsUtils.bgWareHouse,
-        ),
-      ),
+
       suffixIcon: InkWell(
         child: obscureText
             ? const Icon(Icons.remove_red_eye)
@@ -162,6 +148,10 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget buildButtonLogin(BuildContext context) {
     return Container(
       child: DefaultButton(
+        margin: EdgeInsets.only(top: 10, left: 15, right: 15, bottom: 10),
+        borderRadius: BorderRadius.circular(15.0),
+        borderColor: ColorsUtils.bgWareHouse,
+        backgroundColor: ColorsUtils.bgWareHouse,
         text: "Đăng nhập",
         press: () {
           context.read<LoginBloc>().add(LoginEvent(
@@ -175,16 +165,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget buildImageBottom() => SizedBox(
         width: double.infinity,
         height: 0.25.sh,
-        child:
-            Image.asset("assets/images/bottom_register.webp", fit: BoxFit.fill),
-      );
-
-  Widget buildTextAppName() => Container(
-        padding: EdgeInsets.symmetric(vertical: 5.h),
-        alignment: Alignment.topCenter,
-        child: Text("GtelPost Bưu tá",
-            textAlign: TextAlign.center,
-            style: TextStylesUtils.styleLight30Black),
+        child: Image.asset("assets/images/bg_login.png", fit: BoxFit.fill),
       );
 
   String convertPhoneNumber(String phoneNumber) {

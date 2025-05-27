@@ -12,7 +12,6 @@ class RouteDetailBloc extends BaseBloc<DetailsRouteEvent, DetailsRouteState> {
     on<GetRouteByIDEvent>(_onGetRouteById);
     on<GetRoutingStartEvent>(_onRoutingStart);
     on<InitalEvent>(_onInitialState);
-    on<UpdateStatusEvent>(_onUpdatetStatus);
   }
   Future _onGetRouteById(GetRouteByIDEvent event, Emitter emit) async {
     try {
@@ -53,11 +52,11 @@ class RouteDetailBloc extends BaseBloc<DetailsRouteEvent, DetailsRouteState> {
     }
   }
 
-  //Cập nhật thông tin seq cho tài xế
+  //Bắt đầu chuyến
   Future _onRoutingStart(GetRoutingStartEvent event, Emitter emit) async {
     try {
       CPNRouteRepository cpnRouteRepository = CPNRouteRepository();
-      RoutingCpnStartReponse? routingCpnStartReponse =
+      UpdatRouteCPNReponse? routingCpnStartReponse =
           await cpnRouteRepository.getRoutingCPNStart(event.routeId);
       if (routingCpnStartReponse != null) {
         emit.call(state.copyWith(isRouteStart: StatusType.COMPLETED));
@@ -70,32 +69,87 @@ class RouteDetailBloc extends BaseBloc<DetailsRouteEvent, DetailsRouteState> {
     }
   }
 
+  //Kết thúc chuyến
+  // Future _onRoutingComplete(GetRoutingCompleteEvent event, Emitter emit) async {
+  //   try {
+  //     CPNRouteRepository cpnRouteRepository = CPNRouteRepository();
+  //     emit.call(state.copyWith(
+  //         loading:
+  //             state.loading.copyWith(isLoading: true, isLoadSuccess: false)));
+
+  //     UpdatRouteCPNReponse? routingCpnStartReponse =
+  //         await cpnRouteRepository.getRoutingCPNcomplete(event.routeId);
+  //     if (routingCpnStartReponse != null) {
+  //       emit.call(state.copyWith(isRouteStart: StatusType.COMPLETED));
+  //     } else {
+  //       emit.call(state.copyWith(isRouteStart: StatusType.FAILED));
+  //     }
+  //     add(InitalEvent());
+  //   } catch (e) {
+  //     emit.call(state.copyWith(
+  //         loading: state.loading.copyWith(
+  //             isLoading: false, isLoadSuccess: false, loadError: true)));
+  //   }
+  // }
+
+  Future<UpdatRouteCPNReponse?> onRoutingComplete(int route) async {
+    CPNRouteRepository cpnRouteRepository = CPNRouteRepository();
+    UpdatRouteCPNReponse? routingCpnStartReponse =
+        await cpnRouteRepository.getRoutingCPNcomplete(route);
+    return routingCpnStartReponse;
+  }
+
   //Thay đổi trạng thái lấy hhàng
-  Future _onUpdatetStatus(UpdateStatusEvent event, Emitter emit) async {
-    try {
-      CPNRouteRepository cpnRouteRepository = CPNRouteRepository();
-      emit.call(state.copyWith(
-          loading:
-              state.loading.copyWith(isLoading: true, isLoadSuccess: false)));
-      bool result = await cpnRouteRepository.updateStatusSeq(
-          event.seqID, event.status, event.driverID);
-      if (result) {
-        emit.call(state.copyWith(
-            loading:
-                state.loading.copyWith(isLoading: false, isLoadSuccess: true)));
-      } else {
-        emit.call(state.copyWith(
-            loading: state.loading.copyWith(
-                isLoading: false, isLoadSuccess: false, loadError: true)));
-      }
-    } catch (e) {
-      emit.call(state.copyWith(
-          loading: state.loading.copyWith(
-              isLoading: false, isLoadSuccess: false, loadError: true)));
-    }
+  // Future _onUpdatetStatus(UpdateStatusEvent event, Emitter emit) async {
+  //   try {
+  //     CPNRouteRepository cpnRouteRepository = CPNRouteRepository();
+  //     emit.call(state.copyWith(
+  //         loading:
+  //             state.loading.copyWith(isLoading: true, isLoadSuccess: false)));
+  //     bool result = await cpnRouteRepository.updateStatusSeq(
+  //         event.seqID, event.status, event.driverID, event.note);
+  //     if (result) {
+  //       emit.call(state.copyWith(
+  //           loading:
+  //               state.loading.copyWith(isLoading: false, isLoadSuccess: true)));
+  //     } else {
+  //       emit.call(state.copyWith(
+  //           loading: state.loading.copyWith(
+  //               isLoading: false, isLoadSuccess: false, loadError: true)));
+  //     }
+  //   } catch (e) {
+  //     emit.call(state.copyWith(
+  //         loading: state.loading.copyWith(
+  //             isLoading: false, isLoadSuccess: false, loadError: true)));
+  //   }
+  // }
+
+  Future<bool> onUpdatetStatus(
+      int seqID, int status, int driverID, String note) async {
+    CPNRouteRepository cpnRouteRepository = CPNRouteRepository();
+    bool result =
+        await cpnRouteRepository.updateStatusSeq(seqID, status, driverID, note);
+    return result;
   }
 
   Future _onInitialState(InitalEvent event, Emitter emit) async {
     emit.call(state.copyWith(isRouteStart: StatusType.DEFAULT));
+  }
+
+  Future<int> getSeqStpoppoint(List<SequenceList>? sequenceList) async {
+    int seqID = 0;
+    for (var element in sequenceList!) {
+      if (element.stoppointType == 2 && element.status == 100) {
+        seqID = element.seqId!;
+        break;
+      } else if (element.stoppointType == 3 && element.status == 100) {
+        seqID = element.seqId!;
+        break;
+      } else if (element.stoppointType == 3 && element.status == 101) {
+        seqID = element.seqId!;
+        break;
+      }
+    }
+    return seqID;
   }
 }

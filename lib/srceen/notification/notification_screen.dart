@@ -75,19 +75,19 @@ class _NoficationScreenState extends State<NoficationScreen> {
                               ),
                               child: Text('CPN'),
                             ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Container(
-                              padding: EdgeInsets.all(5),
-                              decoration: BoxDecoration(
-                                color: ColorsUtils.statusContact,
-                                borderRadius: BorderRadius.circular(8),
-                                border: Border.all(
-                                    color: ColorsUtils.statusContact),
-                              ),
-                              child: Text('Hẹn lại lần 1'),
-                            ),
+                            // SizedBox(
+                            //   width: 10,
+                            // ),
+                            // Container(
+                            //   padding: EdgeInsets.all(5),
+                            //   decoration: BoxDecoration(
+                            //     color: ColorsUtils.statusContact,
+                            //     borderRadius: BorderRadius.circular(8),
+                            //     border: Border.all(
+                            //         color: ColorsUtils.statusContact),
+                            //   ),
+                            //   child: Text('Hẹn lại lần 1'),
+                            // ),
                           ],
                         ),
                         Divider(

@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sw_app_gtel/common/config/app_dimensions.dart';
 import 'package:sw_app_gtel/common/pref/sp_util.dart';
 import 'package:sw_app_gtel/common/style/color.dart';
 import 'package:sw_app_gtel/srceen/home/bloc/home_bloc.dart';
 import 'package:sw_app_gtel/srceen/home/bloc/home_event.dart';
 import 'package:sw_app_gtel/srceen/home/bloc/home_state.dart';
 import 'package:sw_app_gtel/srceen/home/widget/main_menu_button.dart';
-import 'package:sw_app_gtel/srceen/list_allroute/list_allroute_screen.dart';
+import 'package:sw_app_gtel/srceen/list_allroute/allroute_screen.dart';
 
 class HomeSrceen extends StatefulWidget {
   const HomeSrceen({super.key});
@@ -20,19 +19,11 @@ class _HomeSrceenState extends State<HomeSrceen> {
   HomeBloc homeBloc = HomeBloc();
 
   @override
-  void initState() {
-    super.initState();
-    homeBloc
-      ..add(
-          GetAllRoute(page: 1, size: 10, driver_id: SpUtil.getInt("driverId")));
-  }
-
-  @override
   Widget build(BuildContext context) {
     return BlocProvider(
         create: (context) => homeBloc
           ..add(GetAllRoute(
-              page: 1, size: 10, driver_id: SpUtil.getInt("driverId"))),
+              page: 1, size: 20, driver_id: SpUtil.getInt("driverId"))),
         child: BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
           return Scaffold(
               backgroundColor: ColorsUtils.bgHome,
@@ -54,8 +45,7 @@ class _HomeSrceenState extends State<HomeSrceen> {
                         child: Padding(
                           padding: EdgeInsets.all(8),
                           child: Container(
-                            margin: EdgeInsets.only(top: 120),
-                            height: getDeviceHeight(context) * 0.70,
+                            margin: EdgeInsets.only(top: 130),
                             decoration: BoxDecoration(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(10)),
@@ -81,9 +71,7 @@ class _HomeSrceenState extends State<HomeSrceen> {
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                              ListAllrouteScreen(
-                                            lstDataCnpRoute: state.listRoute,
-                                          ),
+                                              ListAllrouteScreen(),
                                         ));
                                   },
                                 ),

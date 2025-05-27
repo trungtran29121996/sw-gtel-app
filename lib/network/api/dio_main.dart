@@ -106,8 +106,11 @@ class DioMain {
       if (code == 204) {
         return {};
       }
-      // final responseJson = jsonDecode(response.data);
 
+      return response.data;
+    }
+
+    if (code == 406) {
       return response.data;
     }
 
@@ -124,6 +127,7 @@ class DioMain {
         );
         throw UnauthorizedException(response.data.toString());
       case 500:
+      case 406:
       default:
         print(response.data);
         print(

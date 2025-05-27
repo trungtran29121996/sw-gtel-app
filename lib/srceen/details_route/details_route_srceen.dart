@@ -51,45 +51,67 @@ class _DetailsRouteSrceenState extends State<DetailsRouteSrceen> {
           ],
           child: BlocBuilder<RouteDetailBloc, DetailsRouteState>(
               builder: (BuildContext context, state) {
-            return Scaffold(
-              backgroundColor: Color(0xFFe6f4ff),
-              appBar: AppBar(
-                backgroundColor: Color(0xFFb3e0ff),
-                leading: InkWell(
-                    onTap: () {
-                      Navigator.pop(context, true);
-                    },
-                    child: Icon(Icons.arrow_back, color: Colors.black)),
-                title: Text('Chi tiết chuyến',
-                    style: TextStyle(color: Colors.black)),
-                centerTitle: true,
-              ),
-              body: Container(
-                  padding: EdgeInsets.all(8),
-                  color: Colors.white,
-                  child: Container(
-                    child: ListView.builder(
-                        controller: controller,
-                        itemCount: state.routeRequestList.length,
-                        itemBuilder: (context, index) {
-                          RouteRequestList item = state.routeRequestList[index];
-                          //requestType 1 là giao - 2 là nhận
-                          requestType = state.routeByID.requestType!;
-                          status = state.routeByID.status!;
+            return SafeArea(
+              child: Scaffold(
+                  backgroundColor: Color(0xFFe6f4ff),
+                  appBar: AppBar(
+                    backgroundColor: Color(0xFFb3e0ff),
+                    leading: InkWell(
+                        onTap: () {
+                          Navigator.pop(context, true);
+                        },
+                        child: Icon(Icons.arrow_back, color: Colors.black)),
+                    title: Text('Chi tiết chuyến',
+                        style: TextStyle(color: Colors.black)),
+                    centerTitle: true,
+                  ),
+                  body: Container(
+                      padding: EdgeInsets.all(8),
+                      color: Colors.white,
+                      child: Container(
+                        child: ListView.builder(
+                            controller: controller,
+                            itemCount: state.routeRequestList.length,
+                            itemBuilder: (context, index) {
+                              RouteRequestList item =
+                                  state.routeRequestList[index];
+                              //requestType 1 là giao - 2 là nhận
+                              requestType = state.routeByID.requestType!;
+                              status = state.routeByID.status!;
 
-                          return InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          ListOrderDetialsScreen(
-                                        routeItem: item,
-                                        requestType: requestType,
-                                      ),
-                                    ));
-                              },
-                              child: deliveryCard(item, requestType));
+                              return InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              ListOrderDetialsScreen(
+                                            routeItem: item,
+                                            requestType: requestType,
+                                          ),
+                                        ));
+                                  },
+                                  child: deliveryCard(item, requestType));
+                            }),
+                      )),
+                  bottomNavigationBar: Container(
+                    padding: EdgeInsets.all(10),
+                    child: DefaultButton(
+                        padding: EdgeInsets.only(right: 25, left: 25),
+                        borderRadius: BorderRadius.circular(15.0),
+                        borderColor: ColorsUtils.textColorGrey,
+                        backgroundColor: Colors.white,
+                        textColor: Colors.white,
+                        text: 'Kết thúc chuyến',
+                        textStyle: TextStylesUtils.style14FnormalGrey,
+                        press: () async {
+                          await routeDetailBloc
+                              .onRoutingComplete(widget.routeId)
+                              .then(
+                            (value) {
+                              Navigator.pop(context, true);
+                            },
+                          );
                         }),
                   )),
             );
@@ -111,12 +133,7 @@ class _DetailsRouteSrceenState extends State<DetailsRouteSrceen> {
 
   Widget _buildButton(RouteRequestList item) {
     return BlocListener<RouteDetailBloc, DetailsRouteState>(
-      listener: (context, state) {
-        if (state.loading.isLoading) {
-        } else if (state.loading.isLoadSuccess) {
-          Navigator.pop(context, true);
-        }
-      },
+      listener: (context, state) {},
       child: Container(
           child: ListView.builder(
         shrinkWrap: true,
@@ -134,10 +151,16 @@ class _DetailsRouteSrceenState extends State<DetailsRouteSrceen> {
                   text: 'Lấy hàng',
                   textStyle: TextStylesUtils.style16FnormalBlue,
                   press: () {
-                    routeDetailBloc.add(UpdateStatusEvent(
-                        driverID: SpUtil.getInt("driverId"),
-                        seqID: seq.seqId!,
-                        status: 200));
+                    showLoading(context);
+                    routeDetailBloc
+                        .onUpdatetStatus(seq.seqId!, 200,
+                            SpUtil.getInt("driverId"), "Lấy hàng")
+                        .then(
+                      (value) {
+                        hideLoading(context);
+                        Navigator.pop(context, true);
+                      },
+                    );
                   })
               : seq.stoppointType == 3 &&
                       seq.status == 100 &&
@@ -151,9 +174,37 @@ class _DetailsRouteSrceenState extends State<DetailsRouteSrceen> {
                       text: 'Giao hàng',
                       textStyle: TextStylesUtils.style16Orange,
                       press: () {
-                        print("Trung giao ${seq.seqId}");
+                        showLoading(context);
+                        routeDetailBloc
+                            .onUpdatetStatus(seq.seqId!, 200,
+                                SpUtil.getInt("driverId"), "Giao hàng")
+                            .then(
+                          (value) {
+                            hideLoading(context);
+                            Navigator.pop(context, true);
+                          },
+                        );
                       })
-                  : SizedBox();
+                  : seq.stoppointType == 3 && seq.status == 101
+                      ? Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(16),
+                            border: Border.all(color: Colors.red),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.red.withOpacity(0.1),
+                                blurRadius: 8,
+                                offset: const Offset(0, 2),
+                              ),
+                            ],
+                          ),
+                          padding: EdgeInsets.all(7),
+                          child: Text(
+                              textAlign: TextAlign.center,
+                              "Giao không thành công",
+                              style: TextStylesUtils.style16FnormalRed))
+                      : SizedBox();
         },
       )),
     );

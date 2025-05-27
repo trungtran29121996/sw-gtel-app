@@ -76,6 +76,12 @@ class TextStylesUtils {
     fontStyle: FontStyle.normal,
   );
 
+  static const style16FnormalRed = TextStyle(
+    color: Colors.red,
+    fontSize: 16,
+    fontStyle: FontStyle.normal,
+  );
+
 //black
   static const style16Fnormalblack = TextStyle(
     color: Colors.black,
@@ -97,7 +103,6 @@ class TextStylesUtils {
 
 //30
   static final styleLight30Black = TextStyle(
-    fontFamily: "RobotoLight",
     color: ColorsUtils.normalText,
     fontSize: 30,
     fontStyle: FontStyle.normal,

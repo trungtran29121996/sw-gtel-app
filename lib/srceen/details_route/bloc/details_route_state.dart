@@ -27,7 +27,7 @@ class DetailsRouteState extends BaseState {
       DataCnpRouteByIdReponse? routeByID,
       List<RouteRequestList>? routeRequestList,
       StatusType? isRouteStart,
-      RoutingCpnStartReponse? routingCpnStartReponse}) {
+      UpdatRouteCPNReponse? routingCpnStartReponse}) {
     return DetailsRouteState(
         loading: loading ?? this.loading,
         routeByID: routeByID ?? this.routeByID,

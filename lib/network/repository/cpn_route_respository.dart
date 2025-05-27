@@ -39,12 +39,13 @@ class CPNRouteRepository {
     }
   }
 
-  Future<RoutingCpnStartReponse?> getRoutingCPNStart(int routeId) async {
+  Future<UpdatRouteCPNReponse?> getRoutingCPNStart(int routeId) async {
     try {
       final response = await dioMain
           .patch("api/v1/tms-service/routing/cpn/route/${routeId}/start");
+
       if (response["success"] == true) {
-        return RoutingCpnStartReponse.fromJson(response["data"]);
+        return UpdatRouteCPNReponse.fromJson(response["data"]);
       } else {
         return null;
       }
@@ -53,11 +54,26 @@ class CPNRouteRepository {
     }
   }
 
-  Future<bool> updateStatusSeq(int seqID, int status, int driverId) async {
+  Future<UpdatRouteCPNReponse?> getRoutingCPNcomplete(int routeId) async {
+    try {
+      final response = await dioMain
+          .patch("api/v1/tms-service/routing/cpn/route/${routeId}/complete");
+      if (response["success"] == true) {
+        return UpdatRouteCPNReponse.fromJson(response["data"]);
+      } else {
+        return null;
+      }
+    } catch (e) {
+      throw Exception('Error fetching data: $e');
+    }
+  }
+
+  Future<bool> updateStatusSeq(
+      int seqID, int status, int driverId, String note) async {
     try {
       final response = await dioMain.patch(
           "api/v1/tms-service/routing/cpn/route/driver/${driverId}/sequence/${seqID}",
-          data: {"status": status, "evidence_images": [], "note": ""});
+          data: {"status": status, "evidence_images": [], "note": note});
       if (response["success"] == true) {
         return true;
       } else {

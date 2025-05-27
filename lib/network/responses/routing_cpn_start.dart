@@ -1,4 +1,4 @@
-class RoutingCpnStartReponse {
+class UpdatRouteCPNReponse {
   int? createdAt;
   int? modifiedAt;
   int? memberCreated;
@@ -49,7 +49,7 @@ class RoutingCpnStartReponse {
   dynamic fromFleetAddressInfo;
   ToFleetAddressInfo? toFleetAddressInfo;
 
-  RoutingCpnStartReponse({
+  UpdatRouteCPNReponse({
     this.createdAt,
     this.modifiedAt,
     this.memberCreated,
@@ -101,8 +101,8 @@ class RoutingCpnStartReponse {
     this.toFleetAddressInfo,
   });
 
-  factory RoutingCpnStartReponse.fromJson(Map<String, dynamic> json) =>
-      RoutingCpnStartReponse(
+  factory UpdatRouteCPNReponse.fromJson(Map<String, dynamic> json) =>
+      UpdatRouteCPNReponse(
         createdAt: json["created_at"],
         modifiedAt: json["modified_at"],
         memberCreated: json["member_created"],

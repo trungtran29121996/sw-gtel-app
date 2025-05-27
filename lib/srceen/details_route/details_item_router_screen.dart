@@ -1,11 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sw_app_gtel/common/config/format.dart';
+import 'package:sw_app_gtel/common/config/show_loading.dart';
+import 'package:sw_app_gtel/common/pref/sp_util.dart';
 import 'package:sw_app_gtel/common/style/color.dart';
 import 'package:sw_app_gtel/common/style/textstyles.dart';
 import 'package:sw_app_gtel/common/widget/default_button.dart';
 import 'package:sw_app_gtel/common/widget/input_textfield.dart';
 import 'package:sw_app_gtel/network/responses/data_cpn_route_byid.dart';
+import 'package:sw_app_gtel/srceen/details_route/bloc/details_route_bloc.dart';
 import 'package:sw_app_gtel/srceen/details_route/widget/contact_info_header.dart';
 import 'package:sw_app_gtel/srceen/details_route/widget/section_title.dart';
 
@@ -20,6 +23,7 @@ class ListOrderDetialsScreen extends StatefulWidget {
 }
 
 class _ListOrderDetialsScreenState extends State<ListOrderDetialsScreen> {
+  RouteDetailBloc routeDetailBloc = RouteDetailBloc();
   TextEditingController reasonController = TextEditingController();
   bool _isVisible = false;
 
@@ -270,19 +274,19 @@ class _ListOrderDetialsScreenState extends State<ListOrderDetialsScreen> {
                         showBottomSheet();
                       }),
                 ),
-                Expanded(
-                  flex: 1,
-                  child: DefaultButton(
-                    padding: EdgeInsets.all(5),
-                    borderRadius: BorderRadius.circular(15.0),
-                    borderColor: ColorsUtils.bgHome,
-                    backgroundColor: Colors.white,
-                    //width: getDeviceWidth(context) * 0.8,
-                    text: 'Hoàn thành',
-                    textStyle: TextStylesUtils.style16FnormalBlue,
-                    press: () {},
-                  ),
-                )
+                // Expanded(
+                //   flex: 1,
+                //   child: DefaultButton(
+                //     padding: EdgeInsets.all(5),
+                //     borderRadius: BorderRadius.circular(15.0),
+                //     borderColor: ColorsUtils.bgHome,
+                //     backgroundColor: Colors.white,
+                //     //width: getDeviceWidth(context) * 0.8,
+                //     text: 'Hoàn thành',
+                //     textStyle: TextStylesUtils.style16FnormalBlue,
+                //     press: () {},
+                //   ),
+                // )
               ],
             )
           ],
@@ -350,6 +354,40 @@ class _ListOrderDetialsScreenState extends State<ListOrderDetialsScreen> {
                   ),
                   SizedBox(
                     height: 20,
+                  ),
+                  DefaultButton(
+                      padding: EdgeInsets.only(
+                          left: 20, right: 20, top: 5, bottom: 5),
+                      borderRadius: BorderRadius.circular(15.0),
+                      borderColor: Colors.red,
+                      backgroundColor: Colors.white,
+                      //width: getDeviceWidth(context) * 0.8,
+                      text: 'Đồng ý',
+                      textStyle: TextStylesUtils.style14FnormalRed,
+                      press: () {
+                        routeDetailBloc
+                            .getSeqStpoppoint(
+                                widget.routeItem.requestInfo!.sequenceList)
+                            .then(
+                          (value) {
+                            showLoading(context);
+                            routeDetailBloc
+                                .onUpdatetStatus(
+                                    value,
+                                    101,
+                                    SpUtil.getInt("driverId"),
+                                    "Giao/lấy không thành công")
+                                .then(
+                              (value) {
+                                hideLoading(context);
+                                Navigator.pop(context, true);
+                              },
+                            );
+                          },
+                        );
+                      }),
+                  SizedBox(
+                    height: 10,
                   ),
                 ],
               ),
