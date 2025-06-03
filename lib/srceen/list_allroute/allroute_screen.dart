@@ -145,46 +145,110 @@ class _ListAllrouteScreenState extends State<ListAllrouteScreen> {
                         children: [
                           Row(
                             children: [
-                              Container(
-                                  alignment: Alignment.centerLeft,
-                                  child:
-                                      Text("Mã chuyến: ${routeItem.routeId}")),
+                              Icon(
+                                Icons.qr_code_scanner_sharp,
+                                color: _color(routeItem),
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text("${routeItem.routeId}",
+                                  style: TextStyle(
+                                    color: _color(routeItem),
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Spacer(),
+                              SizedBox(
+                                width: 20,
+                              ),
+                              Text("${routeItem.countofpackage}",
+                                  style: TextStyle(
+                                    color: _color(routeItem),
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                              SizedBox(
+                                width: 2,
+                              ),
+                              Text("đơn",
+                                  style: TextStyle(
+                                    color: ColorsUtils.brownGrey,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                  )),
                               Spacer(),
                               WidgetStatus(status: routeItem.status!),
                             ],
                           ),
                           SizedBox(
-                            height: 5,
+                            height: 7,
                           ),
-                          Row(
-                            children: [
-                              Text(
-                                "${routeItem.orderCodeOfClient}",
-                                style: TextStylesUtils.style16ItemCodeOrder,
+                          Row(children: [
+                            Icon(Icons.calendar_today,
+                                size: 14, color: _color(routeItem)),
+                            SizedBox(width: 4),
+                            Text(formatDay(DateTime.fromMillisecondsSinceEpoch(
+                                routeItem.startTime!))),
+                            SizedBox(width: 4),
+                            Spacer(),
+                            Expanded(
+                              child: ListView.builder(
+                                  shrinkWrap: true,
+                                  controller: controller,
+                                  itemCount:
+                                      routeItem.countEachHandlingUnit!.length,
+                                  itemBuilder: (context, index) {
+                                    CountEachHandlingUnit
+                                        countEachHandlingUnit =
+                                        routeItem.countEachHandlingUnit![index];
+                                    return Container(
+                                        margin: EdgeInsets.only(right: 40),
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 8, vertical: 4),
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey.shade200,
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                        child: _countPackage(
+                                            countEachHandlingUnit));
+                                  }),
+                            ),
+                            Container(
+                              child: Text(
+                                '⚖ ${routeItem.weight} kg',
+                                style: TextStyle(fontSize: 12),
                               ),
-                              Spacer(),
-                              Text(formatDay(
-                                  DateTime.fromMillisecondsSinceEpoch(
-                                      routeItem.createdAt!))),
-                            ],
-                          ),
+                            ),
+                          ]),
                           SizedBox(
                             height: 5,
                           ),
-                          Row(
-                            children: [
-                              Text(
-                                  "Loại chuyến: ${classifyType(routeItem.requestType!)}"),
-                              Spacer(),
-                              Text("Số lượng đơn: ${routeItem.countofroute!}"),
-                            ],
+                          Divider(
+                            color: ColorsUtils.boderGray,
                           ),
-                          SizedBox(
-                            height: 5,
+                          Container(
+                            child: ListView.builder(
+                                shrinkWrap: true,
+                                controller: controller,
+                                itemCount: routeItem.routeAddressList!.length,
+                                itemBuilder: (context, index) {
+                                  String routeAddressList =
+                                      routeItem.routeAddressList![index];
+                                  return Row(children: [
+                                    Icon(Icons.location_on,
+                                        size: 14, color: _color(routeItem)),
+                                    SizedBox(width: 4),
+                                    Expanded(child: Text(routeAddressList))
+                                  ]);
+                                }),
                           ),
-                          Text(routeItem.toAddress!),
-                          SizedBox(
-                            height: 5,
+                          Divider(
+                            color: ColorsUtils.boderGray,
                           ),
                           MultiBlocListener(
                             listeners: [
@@ -261,6 +325,30 @@ class _ListAllrouteScreenState extends State<ListAllrouteScreen> {
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: DefaultButton(
+                                          padding: EdgeInsets.only(
+                                              top: 13, right: 10, left: 10),
+                                          borderRadius:
+                                              BorderRadius.circular(15.0),
+                                          borderColor: ColorsUtils.disableButon,
+                                          backgroundColor: Colors.white,
+                                          textColor: Colors.white,
+                                          text: 'Xem chi tiết',
+                                          textStyle: TextStylesUtils
+                                              .style16FnormalGrey,
+                                          press: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      DetailsRouteSrceen(
+                                                    routeId: routeItem.routeId!,
+                                                  ),
+                                                ));
+                                          }),
+                                    ),
                                     routeItem.status == 100
                                         ? Expanded(
                                             flex: 1,
@@ -304,6 +392,25 @@ class _ListAllrouteScreenState extends State<ListAllrouteScreen> {
         ),
       ),
     );
+  }
+
+  Widget _countPackage(CountEachHandlingUnit item) {
+    return Container(
+        child: item.handlingUnitId == 800
+            ? Text(
+                '${item.count} 📦',
+                style: TextStyle(fontSize: 12),
+              )
+            : Text(
+                '${item.count} 📮',
+                style: TextStyle(fontSize: 12),
+              ));
+  }
+
+  Color _color(DataCnpRouteReponse routeItem) {
+    Color color =
+        routeItem.requestType == 1 ? ColorsUtils.infoItemContact : Colors.blue;
+    return color;
   }
 
   String classifyType(int type) {

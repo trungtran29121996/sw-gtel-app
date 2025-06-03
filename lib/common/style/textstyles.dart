@@ -76,6 +76,12 @@ class TextStylesUtils {
     fontStyle: FontStyle.normal,
   );
 
+  static const style16FnormalGrey = TextStyle(
+    color: ColorsUtils.textColorGrey,
+    fontSize: 16,
+    fontStyle: FontStyle.normal,
+  );
+
   static const style16FnormalRed = TextStyle(
     color: Colors.red,
     fontSize: 16,

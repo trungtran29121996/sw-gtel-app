@@ -181,8 +181,10 @@ class _ListOrderDetialsScreenState extends State<ListOrderDetialsScreen> {
                 Row(children: [
                   Image.asset("assets/images/letter.png"),
                   SizedBox(width: 4),
-                  Text(widget
-                      .routeItem.requestInfo!.requestPackageItems![0].name!)
+                  widget.routeItem.requestInfo!.requestPackageItems!.isNotEmpty
+                      ? Text(widget
+                          .routeItem.requestInfo!.requestPackageItems![0].name!)
+                      : SizedBox()
                 ]),
               ],
             ),

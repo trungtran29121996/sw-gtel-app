@@ -48,7 +48,7 @@ class WidgetStatus extends StatelessWidget {
       case 320:
         return {
           "textColor": Color(0xFFCC6600),
-          "text": "Đã giao hàng",
+          "text": "Đang giao hàng",
           "color": Color(0xFFDCF5FC)
         };
       case 500:

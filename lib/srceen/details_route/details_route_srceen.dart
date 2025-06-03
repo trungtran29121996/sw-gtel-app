@@ -316,11 +316,14 @@ class _DetailsRouteSrceenState extends State<DetailsRouteSrceen> {
             ),
             Row(
               children: [
-                Row(children: [
-                  Image.asset("assets/images/letter.png"),
-                  SizedBox(width: 4),
-                  Text("${item.requestInfo!.requestPackageItems![0].name}")
-                ]),
+                item.requestInfo!.requestPackageItems!.isNotEmpty
+                    ? Row(children: [
+                        Image.asset("assets/images/letter.png"),
+                        SizedBox(width: 4),
+                        Text(
+                            "${item.requestInfo!.requestPackageItems![0].name}")
+                      ])
+                    : SizedBox(),
                 Spacer(),
                 Container(
                   margin: EdgeInsets.only(right: 40),

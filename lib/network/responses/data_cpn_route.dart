@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class DataCnpRouteReponse {
   int? createdAt;
   int? modifiedAt;
@@ -51,6 +49,8 @@ class DataCnpRouteReponse {
   DriverInfo? driverInfo;
   dynamic vehicleInfo;
   dynamic statusInfo;
+  List<CountEachHandlingUnit>? countEachHandlingUnit;
+  List<String>? routeAddressList;
 
   DataCnpRouteReponse({
     this.createdAt,
@@ -103,12 +103,9 @@ class DataCnpRouteReponse {
     this.driverInfo,
     this.vehicleInfo,
     this.statusInfo,
+    this.countEachHandlingUnit,
+    this.routeAddressList,
   });
-
-  factory DataCnpRouteReponse.fromRawJson(String str) =>
-      DataCnpRouteReponse.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
 
   factory DataCnpRouteReponse.fromJson(Map<String, dynamic> json) =>
       DataCnpRouteReponse(
@@ -167,6 +164,13 @@ class DataCnpRouteReponse {
             : DriverInfo.fromJson(json["driver_info"]),
         vehicleInfo: json["vehicle_info"],
         statusInfo: json["status_info"],
+        countEachHandlingUnit: json["count_each_handling_unit"] == null
+            ? []
+            : List<CountEachHandlingUnit>.from(json["count_each_handling_unit"]!
+                .map((x) => CountEachHandlingUnit.fromJson(x))),
+        routeAddressList: json["route_address_list"] == null
+            ? []
+            : List<String>.from(json["route_address_list"]!.map((x) => x)),
       );
 
   Map<String, dynamic> toJson() => {
@@ -222,6 +226,33 @@ class DataCnpRouteReponse {
         "driver_info": driverInfo?.toJson(),
         "vehicle_info": vehicleInfo,
         "status_info": statusInfo,
+        "count_each_handling_unit": countEachHandlingUnit == null
+            ? []
+            : List<dynamic>.from(countEachHandlingUnit!.map((x) => x.toJson())),
+        "route_address_list": routeAddressList == null
+            ? []
+            : List<dynamic>.from(routeAddressList!.map((x) => x)),
+      };
+}
+
+class CountEachHandlingUnit {
+  int? handlingUnitId;
+  int? count;
+
+  CountEachHandlingUnit({
+    this.handlingUnitId,
+    this.count,
+  });
+
+  factory CountEachHandlingUnit.fromJson(Map<String, dynamic> json) =>
+      CountEachHandlingUnit(
+        handlingUnitId: json["handling_unit_id"],
+        count: json["count"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "handling_unit_id": handlingUnitId,
+        "count": count,
       };
 }
 
@@ -261,11 +292,6 @@ class DriverInfo {
     this.listDid,
     this.memberInfo,
   });
-
-  factory DriverInfo.fromRawJson(String str) =>
-      DriverInfo.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
 
   factory DriverInfo.fromJson(Map<String, dynamic> json) => DriverInfo(
         createdAt: json["created_at"],
@@ -329,10 +355,10 @@ class MemberInfo {
   String? portalCode;
   int? clientId;
   String? phone;
-  String? email;
-  String? name;
+  Email? email;
+  Name? name;
   String? title;
-  String? contactName;
+  ContactName? contactName;
   String? companyName;
   int? businessStatus;
   String? businessLicense;
@@ -341,7 +367,7 @@ class MemberInfo {
   int? wardId;
   String? countryPrefix;
   String? taxId;
-  String? bankAccount;
+  BankAccount? bankAccount;
   int? status;
   String? groupId;
   int? serviceProviderId;
@@ -405,11 +431,6 @@ class MemberInfo {
     this.uid,
   });
 
-  factory MemberInfo.fromRawJson(String str) =>
-      MemberInfo.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
-
   factory MemberInfo.fromJson(Map<String, dynamic> json) => MemberInfo(
         createdAt: json["created_at"],
         modifiedAt: json["modified_at"],
@@ -421,10 +442,10 @@ class MemberInfo {
         portalCode: json["portal_code"],
         clientId: json["client_id"],
         phone: json["phone"],
-        email: json["email"],
-        name: json["name"],
+        email: emailValues.map[json["email"]]!,
+        name: nameValues.map[json["name"]]!,
         title: json["title"],
-        contactName: json["contact_name"],
+        contactName: contactNameValues.map[json["contact_name"]]!,
         companyName: json["company_name"],
         businessStatus: json["business_status"],
         businessLicense: json["business_license"],
@@ -433,7 +454,7 @@ class MemberInfo {
         wardId: json["ward_id"],
         countryPrefix: json["country_prefix"],
         taxId: json["tax_id"],
-        bankAccount: json["bank_account"],
+        bankAccount: bankAccountValues.map[json["bank_account"]]!,
         status: json["status"],
         groupId: json["group_id"],
         serviceProviderId: json["service_provider_id"],
@@ -465,10 +486,10 @@ class MemberInfo {
         "portal_code": portalCode,
         "client_id": clientId,
         "phone": phone,
-        "email": email,
-        "name": name,
+        "email": emailValues.reverse[email],
+        "name": nameValues.reverse[name],
         "title": title,
-        "contact_name": contactName,
+        "contact_name": contactNameValues.reverse[contactName],
         "company_name": companyName,
         "business_status": businessStatus,
         "business_license": businessLicense,
@@ -477,7 +498,7 @@ class MemberInfo {
         "ward_id": wardId,
         "country_prefix": countryPrefix,
         "tax_id": taxId,
-        "bank_account": bankAccount,
+        "bank_account": bankAccountValues.reverse[bankAccount],
         "status": status,
         "group_id": groupId,
         "service_provider_id": serviceProviderId,
@@ -499,17 +520,30 @@ class MemberInfo {
       };
 }
 
+enum BankAccount { NH_CHINHANH_CHUTK_STK }
+
+final bankAccountValues = EnumValues(
+    {"NH: \nCHINHANH: \nCHUTK: \nSTK: ": BankAccount.NH_CHINHANH_CHUTK_STK});
+
+enum ContactName { GTEL_Q1 }
+
+final contactNameValues = EnumValues({"Gtel Q1": ContactName.GTEL_Q1});
+
+enum Email { TAQUAN1_GMAIL_COM }
+
+final emailValues = EnumValues({"taquan1@gmail.com": Email.TAQUAN1_GMAIL_COM});
+
 class Images {
   Images();
-
-  factory Images.fromRawJson(String str) => Images.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
 
   factory Images.fromJson(Map<String, dynamic> json) => Images();
 
   Map<String, dynamic> toJson() => {};
 }
+
+enum Name { BU_T_Q1 }
+
+final nameValues = EnumValues({"Bưu tá Q1": Name.BU_T_Q1});
 
 class SequenceList {
   int? createdAt;
@@ -532,7 +566,7 @@ class SequenceList {
   int? kindOfPlan;
   String? changedpickupDatetime;
   String? orderCodeOfProvider;
-  String? transportId;
+  TransportId? transportId;
   int? status;
 
   SequenceList({
@@ -560,11 +594,6 @@ class SequenceList {
     this.status,
   });
 
-  factory SequenceList.fromRawJson(String str) =>
-      SequenceList.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
-
   factory SequenceList.fromJson(Map<String, dynamic> json) => SequenceList(
         createdAt: json["created_at"],
         modifiedAt: json["modified_at"],
@@ -586,7 +615,7 @@ class SequenceList {
         kindOfPlan: json["kind_of_plan"],
         changedpickupDatetime: json["changedpickup_datetime"],
         orderCodeOfProvider: json["order_code_of_provider"],
-        transportId: json["transport_id"],
+        transportId: transportIdValues.map[json["transport_id"]]!,
         status: json["status"],
       );
 
@@ -611,10 +640,24 @@ class SequenceList {
         "kind_of_plan": kindOfPlan,
         "changedpickup_datetime": changedpickupDatetime,
         "order_code_of_provider": orderCodeOfProvider,
-        "transport_id": transportId,
+        "transport_id": transportIdValues.reverse[transportId],
         "status": status,
       };
 }
+
+enum TransportId {
+  THE_1_GTELHCMQ1_Z,
+  THE_1_HCMQ1_Z,
+  THE_1_TXTH1_Z_HCMQ1_Z,
+  THE_1_UNDEFINED_Z
+}
+
+final transportIdValues = EnumValues({
+  "1-GTELHCMQ1-Z": TransportId.THE_1_GTELHCMQ1_Z,
+  "1-HCMQ1-Z": TransportId.THE_1_HCMQ1_Z,
+  "1-TXTH1-Z-HCMQ1-Z": TransportId.THE_1_TXTH1_Z_HCMQ1_Z,
+  "1-undefined-Z": TransportId.THE_1_UNDEFINED_Z
+});
 
 class Meta {
   int? totalItems;
@@ -631,10 +674,6 @@ class Meta {
     this.currentPage,
   });
 
-  factory Meta.fromRawJson(String str) => Meta.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
-
   factory Meta.fromJson(Map<String, dynamic> json) => Meta(
         totalItems: json["total_items"],
         itemCount: json["item_count"],
@@ -650,4 +689,16 @@ class Meta {
         "total_pages": totalPages,
         "current_page": currentPage,
       };
+}
+
+class EnumValues<T> {
+  Map<String, T> map;
+  late Map<T, String> reverseMap;
+
+  EnumValues(this.map);
+
+  Map<T, String> get reverse {
+    reverseMap = map.map((k, v) => MapEntry(v, k));
+    return reverseMap;
+  }
 }
