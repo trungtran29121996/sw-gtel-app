@@ -25,6 +25,7 @@ class AppRoutes {
       case NAVIGATION_BAR:
         screen = BottomNavigationPage();
         break;
+
       default:
         screen = Scaffold(
           body: Center(

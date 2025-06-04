@@ -7,6 +7,7 @@ import 'package:sw_app_gtel/srceen/home/bloc/home_event.dart';
 import 'package:sw_app_gtel/srceen/home/bloc/home_state.dart';
 import 'package:sw_app_gtel/srceen/home/widget/main_menu_button.dart';
 import 'package:sw_app_gtel/srceen/list_allroute/allroute_screen.dart';
+import 'package:sw_app_gtel/srceen/receive_bill/receive_bill_screen.dart';
 
 class HomeSrceen extends StatefulWidget {
   const HomeSrceen({super.key});
@@ -78,7 +79,14 @@ class _HomeSrceenState extends State<HomeSrceen> {
                                 BuildMainMenuButton(
                                   path: "assets/images/receive_orders_menu.png",
                                   text: "Tiếp nhận đơn hàng",
-                                  onButtonPressed: () {},
+                                  onButtonPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              ReceiveBillScreen(),
+                                        ));
+                                  },
                                 ),
                                 BuildMainMenuButton(
                                   path: "assets/images/order_handover_menu.png",

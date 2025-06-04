@@ -206,7 +206,7 @@ class _ListAllrouteScreenState extends State<ListAllrouteScreen> {
                                         countEachHandlingUnit =
                                         routeItem.countEachHandlingUnit![index];
                                     return Container(
-                                        margin: EdgeInsets.only(right: 40),
+                                        margin: EdgeInsets.only(right: 20),
                                         padding: EdgeInsets.symmetric(
                                             horizontal: 8, vertical: 4),
                                         decoration: BoxDecoration(
@@ -398,12 +398,16 @@ class _ListAllrouteScreenState extends State<ListAllrouteScreen> {
     return Container(
         child: item.handlingUnitId == 800
             ? Text(
+                textAlign: TextAlign.center,
                 '${item.count} 📦',
                 style: TextStyle(fontSize: 12),
               )
-            : Text(
-                '${item.count} 📮',
-                style: TextStyle(fontSize: 12),
+            : Expanded(
+                child: Text(
+                  textAlign: TextAlign.center,
+                  '${item.count} 📮',
+                  style: TextStyle(fontSize: 12),
+                ),
               ));
   }
 

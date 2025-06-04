@@ -114,6 +114,14 @@ class TextStylesUtils {
     fontStyle: FontStyle.normal,
   );
 
+  static final styleRegular14BrownGreyW400 = TextStyle(
+    fontFamily: "Roboto",
+    color: ColorsUtils.brownGrey,
+    fontSize: 14,
+    fontWeight: FontWeight.w400,
+    fontStyle: FontStyle.normal,
+  );
+
   static textStatus(Color Color) =>
       TextStyle(color: Color, fontSize: 14, fontWeight: FontWeight.w500);
 
