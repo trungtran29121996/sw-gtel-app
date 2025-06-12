@@ -56,12 +56,15 @@ class RouteDetailBloc extends BaseBloc<DetailsRouteEvent, DetailsRouteState> {
   Future _onRoutingStart(GetRoutingStartEvent event, Emitter emit) async {
     try {
       CPNRouteRepository cpnRouteRepository = CPNRouteRepository();
-      UpdatRouteCPNReponse? routingCpnStartReponse =
+      DataUpdatRouteCPNReponse? routingCpnStartReponse =
           await cpnRouteRepository.getRoutingCPNStart(event.routeId);
-      if (routingCpnStartReponse != null) {
+
+      if (routingCpnStartReponse!.success == true) {
         emit.call(state.copyWith(isRouteStart: StatusType.COMPLETED));
       } else {
-        emit.call(state.copyWith(isRouteStart: StatusType.FAILED));
+        emit.call(state.copyWith(
+            isRouteStart: StatusType.FAILED,
+            message: routingCpnStartReponse.message));
       }
       add(InitalEvent());
     } catch (e) {
@@ -92,12 +95,12 @@ class RouteDetailBloc extends BaseBloc<DetailsRouteEvent, DetailsRouteState> {
   //   }
   // }
 
-  Future<UpdatRouteCPNReponse?> onRoutingComplete(int route) async {
-    CPNRouteRepository cpnRouteRepository = CPNRouteRepository();
-    UpdatRouteCPNReponse? routingCpnStartReponse =
-        await cpnRouteRepository.getRoutingCPNcomplete(route);
-    return routingCpnStartReponse;
-  }
+  // Future<UpdatRouteCPNReponse?> onRoutingComplete(int route) async {
+  //   CPNRouteRepository cpnRouteRepository = CPNRouteRepository();
+  //   UpdatRouteCPNReponse? routingCpnStartReponse =
+  //       await cpnRouteRepository.getRoutingCPNcomplete(route);
+  //   return routingCpnStartReponse;
+  // }
 
   //Thay đổi trạng thái lấy hhàng
   // Future _onUpdatetStatus(UpdateStatusEvent event, Emitter emit) async {

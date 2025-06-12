@@ -14,7 +14,6 @@ class DataCnpRouteReponse {
   int? serviceProviderId;
   int? offerId;
   int? driverId;
-  int? volume;
   double? weight;
   int? countofpackage;
   int? countofroute;
@@ -68,7 +67,6 @@ class DataCnpRouteReponse {
     this.serviceProviderId,
     this.offerId,
     this.driverId,
-    this.volume,
     this.weight,
     this.countofpackage,
     this.countofroute,
@@ -124,7 +122,6 @@ class DataCnpRouteReponse {
         serviceProviderId: json["service_provider_id"],
         offerId: json["offer_id"],
         driverId: json["driver_id"],
-        volume: json["volume"],
         weight: json["weight"]?.toDouble(),
         countofpackage: json["countofpackage"],
         countofroute: json["countofroute"],
@@ -189,7 +186,6 @@ class DataCnpRouteReponse {
         "service_provider_id": serviceProviderId,
         "offer_id": offerId,
         "driver_id": driverId,
-        "volume": volume,
         "weight": weight,
         "countofpackage": countofpackage,
         "countofroute": countofroute,
@@ -566,7 +562,7 @@ class SequenceList {
   int? kindOfPlan;
   String? changedpickupDatetime;
   String? orderCodeOfProvider;
-  TransportId? transportId;
+  String? transportId;
   int? status;
 
   SequenceList({
@@ -615,7 +611,7 @@ class SequenceList {
         kindOfPlan: json["kind_of_plan"],
         changedpickupDatetime: json["changedpickup_datetime"],
         orderCodeOfProvider: json["order_code_of_provider"],
-        transportId: transportIdValues.map[json["transport_id"]]!,
+        transportId: json["transport_id"],
         status: json["status"],
       );
 
@@ -640,24 +636,10 @@ class SequenceList {
         "kind_of_plan": kindOfPlan,
         "changedpickup_datetime": changedpickupDatetime,
         "order_code_of_provider": orderCodeOfProvider,
-        "transport_id": transportIdValues.reverse[transportId],
+        "transport_id": transportId,
         "status": status,
       };
 }
-
-enum TransportId {
-  THE_1_GTELHCMQ1_Z,
-  THE_1_HCMQ1_Z,
-  THE_1_TXTH1_Z_HCMQ1_Z,
-  THE_1_UNDEFINED_Z
-}
-
-final transportIdValues = EnumValues({
-  "1-GTELHCMQ1-Z": TransportId.THE_1_GTELHCMQ1_Z,
-  "1-HCMQ1-Z": TransportId.THE_1_HCMQ1_Z,
-  "1-TXTH1-Z-HCMQ1-Z": TransportId.THE_1_TXTH1_Z_HCMQ1_Z,
-  "1-undefined-Z": TransportId.THE_1_UNDEFINED_Z
-});
 
 class Meta {
   int? totalItems;

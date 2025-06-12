@@ -20,6 +20,12 @@ class TextStylesUtils {
     fontStyle: FontStyle.normal,
   );
 
+  static final style24BlackBold = TextStyle(
+      color: ColorsUtils.normalText,
+      fontSize: 24,
+      fontStyle: FontStyle.normal,
+      fontWeight: FontWeight.bold);
+
 //15
   static const style15Fw400 = TextStyle(
     color: Colors.black,
@@ -36,6 +42,24 @@ class TextStylesUtils {
     fontStyle: FontStyle.normal,
   );
 
+  static final style16Gray = TextStyle(
+      color: ColorsUtils.brownGrey,
+      fontSize: 16,
+      fontStyle: FontStyle.normal,
+      fontWeight: FontWeight.w500);
+
+  static final style16WhiteBold = TextStyle(
+      color: Colors.white,
+      fontSize: 16,
+      fontStyle: FontStyle.normal,
+      fontWeight: FontWeight.bold);
+
+  static final style16WhiteNormal = TextStyle(
+    color: Colors.white,
+    fontSize: 16,
+    fontStyle: FontStyle.normal,
+  );
+
 //20
   static const styleBoldAppBar = TextStyle(
     color: Colors.black,
@@ -43,6 +67,12 @@ class TextStylesUtils {
     fontSize: 20,
     fontStyle: FontStyle.normal,
   );
+
+  static final style20White = TextStyle(
+      fontFamily: "Roboto",
+      fontSize: 20,
+      color: Colors.white,
+      fontWeight: FontWeight.bold);
 
 //14 red
   static const style14FnormalRed = TextStyle(
@@ -61,6 +91,12 @@ class TextStylesUtils {
     color: Colors.white,
     fontSize: 14,
     fontStyle: FontStyle.normal,
+  );
+
+  static final style12Gray = TextStyle(
+    color: ColorsUtils.brownGrey,
+    fontSize: 12,
+    fontWeight: FontWeight.w500,
   );
 
 //16 blue

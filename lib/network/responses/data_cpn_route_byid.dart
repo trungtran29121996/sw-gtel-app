@@ -14,7 +14,6 @@ class DataCnpRouteByIdReponse {
   int? serviceProviderId;
   int? offerId;
   int? driverId;
-  int? volume;
   double? weight;
   int? countofpackage;
   int? countofroute;
@@ -62,7 +61,6 @@ class DataCnpRouteByIdReponse {
     this.serviceProviderId,
     this.offerId,
     this.driverId,
-    this.volume,
     this.weight,
     this.countofpackage,
     this.countofroute,
@@ -112,7 +110,6 @@ class DataCnpRouteByIdReponse {
         serviceProviderId: json["service_provider_id"],
         offerId: json["offer_id"],
         driverId: json["driver_id"],
-        volume: json["volume"],
         weight: json["weight"]?.toDouble(),
         countofpackage: json["countofpackage"],
         countofroute: json["countofroute"],
@@ -169,7 +166,6 @@ class DataCnpRouteByIdReponse {
         "service_provider_id": serviceProviderId,
         "offer_id": offerId,
         "driver_id": driverId,
-        "volume": volume,
         "weight": weight,
         "countofpackage": countofpackage,
         "countofroute": countofroute,

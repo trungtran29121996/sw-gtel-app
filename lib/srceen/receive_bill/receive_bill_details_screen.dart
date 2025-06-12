@@ -4,8 +4,6 @@ import 'package:sw_app_gtel/common/style/color.dart';
 import 'package:sw_app_gtel/common/style/textstyles.dart';
 import 'package:sw_app_gtel/common/utils/formart.dart';
 import 'package:sw_app_gtel/common/widget/default_button.dart';
-import 'package:sw_app_gtel/common/widget/default_input.dart';
-import 'package:sw_app_gtel/common/widget/input_textfield.dart';
 import 'package:sw_app_gtel/srceen/receive_bill/add_info_customer_srceen.dart';
 
 class ReceiveBillDetailsScreen extends StatefulWidget {

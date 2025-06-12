@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:sw_app_gtel/common/pref/sp_util.dart';
@@ -69,9 +71,7 @@ class DioInterceptor extends Interceptor {
             );
 
             return handler.resolve(cloneReq);
-          } else {
-            // _logout();
-          }
+          } else {}
         } catch (e) {
           // _logout();
         }
@@ -79,7 +79,22 @@ class DioInterceptor extends Interceptor {
         // _logout();
       }
     } else {
-      return handler.next(error);
+      if (error.response?.statusCode == 400) {
+        // Tự tạo lại Response để không throw lỗi
+        final customResponse = Response(
+          requestOptions: error.requestOptions,
+          statusCode: 200,
+          data: {
+            'success': false,
+            'data': '',
+            'message':
+                error.response?.data['message'] ?? 'Yêu cầu không hợp lệ',
+          },
+        );
+        handler.resolve(customResponse);
+      } else {
+        handler.next(error);
+      }
     }
   }
 }

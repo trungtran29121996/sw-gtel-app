@@ -39,34 +39,35 @@ class CPNRouteRepository {
     }
   }
 
-  Future<UpdatRouteCPNReponse?> getRoutingCPNStart(int routeId) async {
+  Future<DataUpdatRouteCPNReponse?> getRoutingCPNStart(int routeId) async {
     try {
       final response = await dioMain
           .patch("api/v1/tms-service/routing/cpn/route/${routeId}/start");
 
       if (response["success"] == true) {
-        return UpdatRouteCPNReponse.fromJson(response["data"]);
-      } else {
-        return null;
+        return DataUpdatRouteCPNReponse.fromJson(response);
+      } else if (response["success"] == false) {
+        return DataUpdatRouteCPNReponse.fromJson(response);
       }
     } catch (e) {
-      throw Exception('Error fetching data: $e');
+      print("${e.toString()}");
     }
+    return null;
   }
 
-  Future<UpdatRouteCPNReponse?> getRoutingCPNcomplete(int routeId) async {
-    try {
-      final response = await dioMain
-          .patch("api/v1/tms-service/routing/cpn/route/${routeId}/complete");
-      if (response["success"] == true) {
-        return UpdatRouteCPNReponse.fromJson(response["data"]);
-      } else {
-        return null;
-      }
-    } catch (e) {
-      throw Exception('Error fetching data: $e');
-    }
-  }
+  // Future<UpdatRouteCPNReponse?> getRoutingCPNcomplete(int routeId) async {
+  //   try {
+  //     final response = await dioMain
+  //         .patch("api/v1/tms-service/routing/cpn/route/${routeId}/complete");
+  //     if (response["success"] == true) {
+  //       return UpdatRouteCPNReponse.fromJson(response["data"]);
+  //     } else {
+  //       return null;
+  //     }
+  //   } catch (e) {
+  //     throw Exception('Error fetching data: $e');
+  //   }
+  // }
 
   Future<bool> updateStatusSeq(
       int seqID, int status, int driverId, String note) async {

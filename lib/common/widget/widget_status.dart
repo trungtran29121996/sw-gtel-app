@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sw_app_gtel/common/style/color.dart';
 import 'package:sw_app_gtel/common/style/textstyles.dart';
 
 class WidgetStatus extends StatelessWidget {
@@ -23,8 +22,8 @@ class WidgetStatus extends StatelessWidget {
         decoration: BoxDecoration(
             color: getStatusInfo(status)["color"],
             borderRadius: BorderRadius.circular(8),
-            border:
-                Border.all(color: color ?? ColorsUtils.brownGrey, width: 1)),
+            border: Border.all(
+                color: getStatusInfo(status)["textColor"], width: 1)),
         child: Text(
           getStatusInfo(status)["text"],
           style: TextStylesUtils.textStatus(getStatusInfo(status)["textColor"]),

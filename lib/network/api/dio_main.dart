@@ -106,11 +106,12 @@ class DioMain {
       if (code == 204) {
         return {};
       }
-
       return response.data;
     }
 
     if (code == 406) {
+      return response.data;
+    } else if (code == 400) {
       return response.data;
     }
 

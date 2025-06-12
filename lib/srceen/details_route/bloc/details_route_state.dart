@@ -9,33 +9,38 @@ class DetailsRouteState extends BaseState {
   DataCnpRouteByIdReponse routeByID;
   List<RouteRequestList> routeRequestList;
   StatusType isRouteStart;
+  String message;
 
   DetailsRouteState(
       {required this.loading,
       required this.routeByID,
       required this.routeRequestList,
-      required this.isRouteStart});
+      required this.isRouteStart,
+      required this.message});
   factory DetailsRouteState.initial() {
     return DetailsRouteState(
         loading: Loading.initial(),
         routeByID: DataCnpRouteByIdReponse(),
         routeRequestList: [],
-        isRouteStart: StatusType.DEFAULT);
+        isRouteStart: StatusType.DEFAULT,
+        message: "");
   }
   DetailsRouteState copyWith(
       {Loading? loading,
       DataCnpRouteByIdReponse? routeByID,
       List<RouteRequestList>? routeRequestList,
       StatusType? isRouteStart,
-      UpdatRouteCPNReponse? routingCpnStartReponse}) {
+      UpdatRouteCPNReponse? routingCpnStartReponse,
+      String? message}) {
     return DetailsRouteState(
         loading: loading ?? this.loading,
         routeByID: routeByID ?? this.routeByID,
         routeRequestList: routeRequestList ?? this.routeRequestList,
-        isRouteStart: isRouteStart ?? this.isRouteStart);
+        isRouteStart: isRouteStart ?? this.isRouteStart,
+        message: message ?? this.message);
   }
 
   @override
   List<Object?> get props =>
-      [loading, routeByID, routeRequestList, isRouteStart];
+      [loading, routeByID, routeRequestList, isRouteStart, message];
 }

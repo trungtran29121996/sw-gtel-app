@@ -52,69 +52,68 @@ class _DetailsRouteSrceenState extends State<DetailsRouteSrceen> {
           child: BlocBuilder<RouteDetailBloc, DetailsRouteState>(
               builder: (BuildContext context, state) {
             return SafeArea(
-              child: Scaffold(
-                  backgroundColor: Color(0xFFe6f4ff),
-                  appBar: AppBar(
-                    backgroundColor: Color(0xFFb3e0ff),
-                    leading: InkWell(
-                        onTap: () {
-                          Navigator.pop(context, true);
-                        },
-                        child: Icon(Icons.arrow_back, color: Colors.black)),
-                    title: Text('Chi tiết chuyến',
-                        style: TextStyle(color: Colors.black)),
-                    centerTitle: true,
-                  ),
-                  body: Container(
-                      padding: EdgeInsets.all(8),
-                      color: Colors.white,
-                      child: Container(
-                        child: ListView.builder(
-                            controller: controller,
-                            itemCount: state.routeRequestList.length,
-                            itemBuilder: (context, index) {
-                              RouteRequestList item =
-                                  state.routeRequestList[index];
-                              //requestType 1 là giao - 2 là nhận
-                              requestType = state.routeByID.requestType!;
-                              status = state.routeByID.status!;
+                child: Scaffold(
+              backgroundColor: Color(0xFFe6f4ff),
+              appBar: AppBar(
+                backgroundColor: Color(0xFFb3e0ff),
+                leading: InkWell(
+                    onTap: () {
+                      Navigator.pop(context, true);
+                    },
+                    child: Icon(Icons.arrow_back, color: Colors.black)),
+                title: Text('Chi tiết chuyến',
+                    style: TextStyle(color: Colors.black)),
+                centerTitle: true,
+              ),
+              body: Container(
+                  padding: EdgeInsets.all(8),
+                  color: Colors.white,
+                  child: Container(
+                    child: ListView.builder(
+                        controller: controller,
+                        itemCount: state.routeRequestList.length,
+                        itemBuilder: (context, index) {
+                          RouteRequestList item = state.routeRequestList[index];
+                          //requestType 1 là giao - 2 là nhận
+                          requestType = state.routeByID.requestType!;
+                          status = state.routeByID.status!;
 
-                              return InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              ListOrderDetialsScreen(
-                                            routeItem: item,
-                                            requestType: requestType,
-                                          ),
-                                        ));
-                                  },
-                                  child: deliveryCard(item, requestType));
-                            }),
-                      )),
-                  bottomNavigationBar: Container(
-                    padding: EdgeInsets.all(10),
-                    child: DefaultButton(
-                        padding: EdgeInsets.only(right: 25, left: 25),
-                        borderRadius: BorderRadius.circular(15.0),
-                        borderColor: ColorsUtils.textColorGrey,
-                        backgroundColor: Colors.white,
-                        textColor: Colors.white,
-                        text: 'Kết thúc chuyến',
-                        textStyle: TextStylesUtils.style14FnormalGrey,
-                        press: () async {
-                          await routeDetailBloc
-                              .onRoutingComplete(widget.routeId)
-                              .then(
-                            (value) {
-                              Navigator.pop(context, true);
-                            },
-                          );
+                          return InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          ListOrderDetialsScreen(
+                                        routeItem: item,
+                                        requestType: requestType,
+                                      ),
+                                    ));
+                              },
+                              child: deliveryCard(item, requestType));
                         }),
                   )),
-            );
+              // bottomNavigationBar: Container(
+              //   padding: EdgeInsets.all(10),
+              //   child: DefaultButton(
+              //       padding: EdgeInsets.only(right: 25, left: 25),
+              //       borderRadius: BorderRadius.circular(15.0),
+              //       borderColor: ColorsUtils.textColorGrey,
+              //       backgroundColor: Colors.white,
+              //       textColor: Colors.white,
+              //       text: 'Kết thúc chuyến',
+              //       textStyle: TextStylesUtils.style14FnormalGrey,
+              //       press: () async {
+              //         await routeDetailBloc
+              //             .onRoutingComplete(widget.routeId)
+              //             .then(
+              //           (value) {
+              //             Navigator.pop(context, true);
+              //           },
+              //         );
+              //       }),
+              // )),
+            ));
           }),
         ));
   }
@@ -166,25 +165,27 @@ class _DetailsRouteSrceenState extends State<DetailsRouteSrceen> {
                       seq.status == 100 &&
                       item.requestInfo!.sequenceList[0].stoppointType == 2 &&
                       item.requestInfo!.sequenceList[0].status == 200
-                  ? DefaultButton(
-                      padding: EdgeInsets.all(5),
-                      borderRadius: BorderRadius.circular(15.0),
-                      borderColor: ColorsUtils.infoItemContact,
-                      backgroundColor: Colors.white,
-                      text: 'Giao hàng',
-                      textStyle: TextStylesUtils.style16Orange,
-                      press: () {
-                        showLoading(context);
-                        routeDetailBloc
-                            .onUpdatetStatus(seq.seqId!, 200,
-                                SpUtil.getInt("driverId"), "Giao hàng")
-                            .then(
-                          (value) {
-                            hideLoading(context);
-                            Navigator.pop(context, true);
-                          },
-                        );
-                      })
+                  ? item.requestInfo!.requestType == 2
+                      ? DefaultButton(
+                          padding: EdgeInsets.all(5),
+                          borderRadius: BorderRadius.circular(15.0),
+                          borderColor: ColorsUtils.infoItemContact,
+                          backgroundColor: Colors.white,
+                          text: 'Giao hàng',
+                          textStyle: TextStylesUtils.style16Orange,
+                          press: () {
+                            showLoading(context);
+                            routeDetailBloc
+                                .onUpdatetStatus(seq.seqId!, 200,
+                                    SpUtil.getInt("driverId"), "Giao hàng")
+                                .then(
+                              (value) {
+                                hideLoading(context);
+                                Navigator.pop(context, true);
+                              },
+                            );
+                          })
+                      : SizedBox()
                   : seq.stoppointType == 3 && seq.status == 101
                       ? Container(
                           decoration: BoxDecoration(
@@ -336,8 +337,8 @@ class _DetailsRouteSrceenState extends State<DetailsRouteSrceen> {
                 ),
               ],
             ),
-            Divider(
-              color: ColorsUtils.boderGray,
+            SizedBox(
+              height: 7,
             ),
             status == 500 ? SizedBox() : _buildButton(item)
           ],

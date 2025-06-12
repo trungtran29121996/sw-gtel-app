@@ -138,7 +138,7 @@ class MemberInfo {
 
   String toRawJson() => json.encode(toJson());
 
-  factory MemberInfo.fromJson(Map<String, dynamic> json) => MemberInfo(
+  factory MemberInfo.fromJson(Map<dynamic, dynamic> json) => MemberInfo(
         createdAt: json["created_at"],
         modifiedAt: json["modified_at"],
         memberCreated: json["member_created"],

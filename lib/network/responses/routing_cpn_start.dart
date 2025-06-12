@@ -1,3 +1,42 @@
+import 'dart:convert';
+
+DataUpdatRouteCPNReponse dataCnpRouteReponseFromJson(String str) =>
+    DataUpdatRouteCPNReponse.fromJson(json.decode(str));
+
+String dataCnpRouteReponseToJson(DataUpdatRouteCPNReponse data) =>
+    json.encode(data.toJson());
+
+class DataUpdatRouteCPNReponse {
+  bool? success;
+  String? message;
+  int? errorCode;
+  UpdatRouteCPNReponse? data;
+
+  DataUpdatRouteCPNReponse({
+    this.success,
+    this.message,
+    this.errorCode,
+    this.data,
+  });
+
+  factory DataUpdatRouteCPNReponse.fromJson(Map<String, dynamic> json) =>
+      DataUpdatRouteCPNReponse(
+        success: json["success"],
+        message: json["message"],
+        errorCode: json["error_code"],
+        data: json["data"] == ''
+            ? null
+            : UpdatRouteCPNReponse.fromJson(json["data"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "success": success,
+        "message": message,
+        "error_code": errorCode,
+        "data": data?.toJson()
+      };
+}
+
 class UpdatRouteCPNReponse {
   int? createdAt;
   int? modifiedAt;
@@ -14,7 +53,6 @@ class UpdatRouteCPNReponse {
   int? serviceProviderId;
   int? offerId;
   int? driverId;
-  int? volume;
   int? countofpackage;
   int? countofroute;
   int? distanceReal;
@@ -65,7 +103,6 @@ class UpdatRouteCPNReponse {
     this.serviceProviderId,
     this.offerId,
     this.driverId,
-    this.volume,
     this.countofpackage,
     this.countofroute,
     this.distanceReal,
@@ -118,7 +155,6 @@ class UpdatRouteCPNReponse {
         serviceProviderId: json["service_provider_id"],
         offerId: json["offer_id"],
         driverId: json["driver_id"],
-        volume: json["volume"],
         countofpackage: json["countofpackage"],
         countofroute: json["countofroute"],
         distanceReal: json["distance_real"],
@@ -178,7 +214,6 @@ class UpdatRouteCPNReponse {
         "service_provider_id": serviceProviderId,
         "offer_id": offerId,
         "driver_id": driverId,
-        "volume": volume,
         "countofpackage": countofpackage,
         "countofroute": countofroute,
         "distance_real": distanceReal,
@@ -308,8 +343,6 @@ class RequestInfo {
   List<dynamic>? discountCode;
   int? pickupTime;
   int? dropTime;
-  int? pickupLat;
-  int? pickupLon;
   String? pickupAddress;
   String? pickupW3Wcode;
   int? pickupWid;
@@ -394,8 +427,6 @@ class RequestInfo {
     this.discountCode,
     this.pickupTime,
     this.dropTime,
-    this.pickupLat,
-    this.pickupLon,
     this.pickupAddress,
     this.pickupW3Wcode,
     this.pickupWid,
@@ -483,8 +514,6 @@ class RequestInfo {
             : List<dynamic>.from(json["discount_code"]!.map((x) => x)),
         pickupTime: json["pickup_time"],
         dropTime: json["drop_time"],
-        pickupLat: json["pickup_lat"],
-        pickupLon: json["pickup_lon"],
         pickupAddress: json["pickup_address"],
         pickupW3Wcode: json["pickup_w3wcode"],
         pickupWid: json["pickup_wid"],
@@ -582,8 +611,6 @@ class RequestInfo {
             : List<dynamic>.from(discountCode!.map((x) => x)),
         "pickup_time": pickupTime,
         "drop_time": dropTime,
-        "pickup_lat": pickupLat,
-        "pickup_lon": pickupLon,
         "pickup_address": pickupAddress,
         "pickup_w3wcode": pickupW3Wcode,
         "pickup_wid": pickupWid,
