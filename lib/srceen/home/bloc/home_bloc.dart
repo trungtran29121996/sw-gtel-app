@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sw_app_gtel/common/core/base/bloc/base_bloc.dart';
 import 'package:sw_app_gtel/network/repository/cpn_route_respository.dart';
-import 'package:sw_app_gtel/network/responses/data_cpn_route.dart';
+import 'package:sw_app_gtel/network/responses/data_cpn_route_reponse.dart';
 import 'package:sw_app_gtel/srceen/home/bloc/home_event.dart';
 import 'package:sw_app_gtel/srceen/home/bloc/home_state.dart';
 

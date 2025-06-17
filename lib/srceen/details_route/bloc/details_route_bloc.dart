@@ -2,8 +2,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sw_app_gtel/common/core/base/bloc/base_bloc.dart';
 import 'package:sw_app_gtel/common/utils/status_type.dart';
 import 'package:sw_app_gtel/network/repository/cpn_route_respository.dart';
-import 'package:sw_app_gtel/network/responses/data_cpn_route_byid.dart';
-import 'package:sw_app_gtel/network/responses/routing_cpn_start.dart';
+import 'package:sw_app_gtel/network/responses/data_cpn_route_byid_reponse.dart';
+import 'package:sw_app_gtel/network/responses/routing_cpn_start_reponse.dart';
 import 'package:sw_app_gtel/srceen/details_route/bloc/details_route_event.dart';
 import 'package:sw_app_gtel/srceen/details_route/bloc/details_route_state.dart';
 

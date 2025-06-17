@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sw_app_gtel/common/core/base/bloc/base_bloc.dart';
-import 'package:sw_app_gtel/common/widget/login_repository.dart';
+import 'package:sw_app_gtel/network/repository/login_repository.dart';
 import 'package:sw_app_gtel/srceen/account/bloc/account_event.dart';
 import 'package:sw_app_gtel/srceen/account/bloc/account_state.dart';
 

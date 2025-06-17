@@ -1,6 +1,6 @@
 import 'package:sw_app_gtel/common/config/app_loading.dart';
 import 'package:sw_app_gtel/common/core/base/state/base_state.dart';
-import 'package:sw_app_gtel/network/responses/data_cpn_route.dart';
+import 'package:sw_app_gtel/network/responses/data_cpn_route_reponse.dart';
 
 class HomeState extends BaseState {
   Loading loading;

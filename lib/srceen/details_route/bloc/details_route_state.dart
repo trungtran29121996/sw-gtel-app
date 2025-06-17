@@ -1,8 +1,8 @@
 import 'package:sw_app_gtel/common/config/app_loading.dart';
 import 'package:sw_app_gtel/common/core/base/state/base_state.dart';
 import 'package:sw_app_gtel/common/utils/status_type.dart';
-import 'package:sw_app_gtel/network/responses/data_cpn_route_byid.dart';
-import 'package:sw_app_gtel/network/responses/routing_cpn_start.dart';
+import 'package:sw_app_gtel/network/responses/data_cpn_route_byid_reponse.dart';
+import 'package:sw_app_gtel/network/responses/routing_cpn_start_reponse.dart';
 
 class DetailsRouteState extends BaseState {
   Loading loading;

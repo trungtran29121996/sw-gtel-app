@@ -6,7 +6,7 @@ import 'package:sw_app_gtel/common/pref/sp_util.dart';
 import 'package:sw_app_gtel/common/style/color.dart';
 import 'package:sw_app_gtel/common/style/textstyles.dart';
 import 'package:sw_app_gtel/common/widget/default_button.dart';
-import 'package:sw_app_gtel/network/responses/data_cpn_route_byid.dart';
+import 'package:sw_app_gtel/network/responses/data_cpn_route_byid_reponse.dart';
 import 'package:sw_app_gtel/srceen/details_route/bloc/details_route_bloc.dart';
 import 'package:sw_app_gtel/srceen/details_route/bloc/details_route_event.dart';
 import 'package:sw_app_gtel/srceen/details_route/bloc/details_route_state.dart';

@@ -6,7 +6,7 @@ String formatTime(String time, DateTime date) {
 }
 
 String formatDataTime(DateTime date) {
-  return DateFormat('dd-MM-yyy HH:mm:ss').format(date);
+  return DateFormat('dd/MM/yyy HH:mm:ss').format(date);
 }
 
 String formatDay(DateTime date) {
@@ -70,7 +70,30 @@ String formatVND(int number) {
   return formatter.format(number);
 }
 
-DateFormat format_ddMMyyyy = DateFormat("dd/MM/yyyy");
 DateFormat format_HHmm = DateFormat("HH:mm");
 DateFormat dateFormat_dMyHm = DateFormat("dd/MM/yyyy | HH:mm");
 DateFormat dateFormat_dmy = DateFormat("dd/MM/yyyy");
+DateFormat format = DateFormat("dd/MM/yyyy HH:mm:ss");
+
+String startTime(String inputTime) {
+  String dateTime = "";
+  DateTime startTime = format.parse(inputTime);
+  // Thời gian hiện tại
+  DateTime now = DateTime.now();
+
+// Tính chênh lệch
+  Duration difference = now.difference(startTime);
+  int days = difference.inDays;
+  int hours = difference.inHours % 24;
+  int minutes = difference.inMinutes % 60;
+
+  if (days > 0) {
+    dateTime = "${days.abs()} ngày";
+  } else if (days <= 0 && hours > 0) {
+    dateTime = "${hours.abs()} giờ ${minutes.abs()} phút";
+  } else if (days <= 0 && hours <= 0) {
+    dateTime = "${minutes.abs()} phút";
+  }
+
+  return dateTime;
+}

@@ -1,7 +1,7 @@
 import 'package:sw_app_gtel/network/api/dio_main.dart';
-import 'package:sw_app_gtel/network/responses/data_cpn_route.dart';
-import 'package:sw_app_gtel/network/responses/data_cpn_route_byid.dart';
-import 'package:sw_app_gtel/network/responses/routing_cpn_start.dart';
+import 'package:sw_app_gtel/network/responses/data_cpn_route_reponse.dart';
+import 'package:sw_app_gtel/network/responses/data_cpn_route_byid_reponse.dart';
+import 'package:sw_app_gtel/network/responses/routing_cpn_start_reponse.dart';
 
 class CPNRouteRepository {
   DioMain dioMain = DioMain();
@@ -43,12 +43,7 @@ class CPNRouteRepository {
     try {
       final response = await dioMain
           .patch("api/v1/tms-service/routing/cpn/route/${routeId}/start");
-
-      if (response["success"] == true) {
-        return DataUpdatRouteCPNReponse.fromJson(response);
-      } else if (response["success"] == false) {
-        return DataUpdatRouteCPNReponse.fromJson(response);
-      }
+      return DataUpdatRouteCPNReponse.fromJson(response);
     } catch (e) {
       print("${e.toString()}");
     }

@@ -12,7 +12,7 @@ import 'package:sw_app_gtel/common/widget/default_app_bar.dart';
 import 'package:sw_app_gtel/common/widget/default_button.dart';
 import 'package:sw_app_gtel/common/widget/input_textfield.dart';
 import 'package:sw_app_gtel/common/widget/widget_status.dart';
-import 'package:sw_app_gtel/network/responses/data_cpn_route.dart';
+import 'package:sw_app_gtel/network/responses/data_cpn_route_reponse.dart';
 import 'package:sw_app_gtel/srceen/details_route/bloc/details_route_bloc.dart';
 import 'package:sw_app_gtel/srceen/details_route/bloc/details_route_event.dart';
 import 'package:sw_app_gtel/srceen/details_route/bloc/details_route_state.dart';
