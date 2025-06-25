@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sw_app_gtel/common/config/format.dart';
 import 'package:sw_app_gtel/common/config/show_loading.dart';
 import 'package:sw_app_gtel/common/pref/sp_util.dart';
@@ -8,9 +9,13 @@ import 'package:sw_app_gtel/common/style/textstyles.dart';
 import 'package:sw_app_gtel/common/widget/default_button.dart';
 import 'package:sw_app_gtel/common/widget/input_textfield.dart';
 import 'package:sw_app_gtel/network/responses/data_cpn_route_byid_reponse.dart';
+import 'package:sw_app_gtel/network/responses/tracking_log_reponse.dart';
 import 'package:sw_app_gtel/srceen/details_route/bloc/details_route_bloc.dart';
+import 'package:sw_app_gtel/srceen/details_route/bloc/details_route_event.dart';
+import 'package:sw_app_gtel/srceen/details_route/bloc/details_route_state.dart';
 import 'package:sw_app_gtel/srceen/details_route/widget/contact_info_header.dart';
 import 'package:sw_app_gtel/srceen/details_route/widget/section_title.dart';
+import 'package:timeline_tile/timeline_tile.dart';
 
 class ListOrderDetialsScreen extends StatefulWidget {
   RouteRequestList routeItem;
@@ -35,38 +40,64 @@ class _ListOrderDetialsScreenState extends State<ListOrderDetialsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(0xFFe6f4ff),
-      appBar: AppBar(
-        backgroundColor: Color(0xFFb3e0ff),
-        leading: InkWell(
-            onTap: () {
-              Navigator.pop(context, true);
-            },
-            child: Icon(Icons.arrow_back, color: Colors.black)),
-        title: Text('Chi tiết đơn ${widget.routeItem.requestId}',
-            style: TextStyle(color: Colors.black)),
-        centerTitle: true,
-        actions: [],
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.all(8),
-          color: Colors.white,
-          child: Column(
-            children: [
-              SizedBox(
-                height: 5,
-              ),
-              deliveryCard()
+    return MultiBlocProvider(
+        providers: [
+          BlocProvider<RouteDetailBloc>(
+            create: (context) =>
+                routeDetailBloc..add(TrackingLogEvent(requestId: 1000000597)),
+          )
+        ],
+        child: MultiBlocListener(
+            listeners: [
+              BlocListener<RouteDetailBloc, DetailsRouteState>(
+                listener: (context, state) {
+                  if (state.loading.isLoading) {
+                    showLoading(context);
+                  } else if (state.loading.isLoadSuccess) {
+                    hideLoading(context);
+                  }
+                },
+              )
             ],
-          ),
-        ),
-      ),
-    );
+            child: BlocBuilder<RouteDetailBloc, DetailsRouteState>(
+                builder: (BuildContext context, state) {
+              return Scaffold(
+                //backgroundColor: Color(0xFFe6f4ff),
+                appBar: AppBar(
+                  backgroundColor: Color(0xFFb3e0ff),
+                  leading: InkWell(
+                      onTap: () {
+                        Navigator.pop(context, true);
+                      },
+                      child: Icon(Icons.arrow_back, color: Colors.black)),
+                  title: Text('Chi tiết đơn ${widget.routeItem.requestId}',
+                      style: TextStyle(color: Colors.black)),
+                  centerTitle: true,
+                  actions: [],
+                ),
+                body: SingleChildScrollView(
+                  child: Container(
+                    padding: EdgeInsets.all(8),
+                    color: Colors.white,
+                    child: deliveryCard(state),
+                  ),
+                ),
+                bottomNavigationBar: DefaultButton(
+                    padding: EdgeInsets.all(5),
+                    borderRadius: BorderRadius.circular(15.0),
+                    borderColor: Colors.red,
+                    backgroundColor: Colors.white,
+                    //width: getDeviceWidth(context) * 0.8,
+                    text: 'Không thành công',
+                    textStyle: TextStylesUtils.style14FnormalRed,
+                    press: () {
+                      showBottomSheet();
+                    }),
+              );
+            })));
   }
 
-  Widget deliveryCard() {
+  Widget deliveryCard(DetailsRouteState state) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -260,36 +291,105 @@ class _ListOrderDetialsScreenState extends State<ListOrderDetialsScreen> {
             Divider(
               color: ColorsUtils.boderGray,
             ),
-            Row(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: DefaultButton(
-                      padding: EdgeInsets.all(5),
-                      borderRadius: BorderRadius.circular(15.0),
-                      borderColor: Colors.red,
-                      backgroundColor: Colors.white,
-                      //width: getDeviceWidth(context) * 0.8,
-                      text: 'Không thành công',
-                      textStyle: TextStylesUtils.style14FnormalRed,
-                      press: () {
-                        showBottomSheet();
-                      }),
+            Row(children: [
+              Image.asset("assets/images/icon_trackinglog.png",
+                  color: Colors.grey[700]),
+              SizedBox(
+                width: 5,
+              ),
+              Text(
+                'Hành trình đơn hàng',
+                style: TextStyle(
+                    color: Colors.grey[700],
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold),
+              ),
+            ]),
+
+            SingleChildScrollView(
+              child: Container(
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: state.listTrackingLogReponse.length,
+                  itemBuilder: (context, index) {
+                    Datum trackingItem = state.listTrackingLogReponse[index];
+                    return Container(
+                        height: 70,
+                        child: TimelineTile(
+                          alignment: TimelineAlign.manual,
+                          lineXY: 0.3,
+                          indicatorStyle: IndicatorStyle(
+                              color: index == 0
+                                  ? ColorsUtils.bgHome
+                                  : ColorsUtils.bgHome.withOpacity(0.3),
+                              iconStyle: IconStyle(
+                                  iconData: Icons.check,
+                                  color: Colors.white,
+                                  fontSize: 20),
+                              padding: EdgeInsets.only(right: 10)),
+                          startChild: Text(
+                            "${formatDataTime(trackingItem.createdAt!)}",
+                            style: index == 0
+                                ? TextStylesUtils.style14FnormalBlack
+                                : TextStylesUtils.styleRegular14BrownGreyW400,
+                          ),
+                          isFirst: index == 0 ? true : false,
+                          endChild: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Text(
+                                "${trackingItem.description}",
+                                style: TextStylesUtils.text14w600(index == 0
+                                    ? ColorsUtils.normalText
+                                    : ColorsUtils.brownGrey),
+                              ),
+                              // ExpansionTile(
+                              //   title: Text(
+                              //     trackingItem.fullAddress!,
+                              //     style: index == 0
+                              //         ? TextStylesUtils.style14FnormalBlack
+                              //         : TextStylesUtils
+                              //             .styleRegular14BrownGreyW400,
+                              //     maxLines: 5,
+                              //     overflow: TextOverflow.ellipsis,
+                              //   ),
+                              //   onExpansionChanged: (value) {
+                              //     setState(() {});
+                              //   },
+                              //   children: [
+                              //     // Container(
+                              //     //   height: 100,
+                              //     //   child: ListView.builder(
+                              //     //     scrollDirection: Axis.horizontal,
+                              //     //     shrinkWrap: true,
+                              //     //     physics: ScrollPhysics(),
+                              //     //     itemCount:
+                              //     //         trackingItem.evidenceImages!.length,
+                              //     //     itemBuilder: (context, index) {
+                              //     //       return Container(
+                              //     //         margin: EdgeInsets.symmetric(
+                              //     //             horizontal: 10),
+                              //     //         child: Image.network(
+                              //     //             trackingItem.evidenceImages![index],
+                              //     //             fit: BoxFit.cover),
+                              //     //       );
+                              //     //     },
+                              //     //   ),
+                              //     // ),
+                              //   ],
+                              // ),
+                            ],
+                          ),
+                          beforeLineStyle: LineStyle(
+                            color: index == 0
+                                ? ColorsUtils.bgHome
+                                : ColorsUtils.bgHome.withOpacity(0.3),
+                          ),
+                        ));
+                  },
                 ),
-                // Expanded(
-                //   flex: 1,
-                //   child: DefaultButton(
-                //     padding: EdgeInsets.all(5),
-                //     borderRadius: BorderRadius.circular(15.0),
-                //     borderColor: ColorsUtils.bgHome,
-                //     backgroundColor: Colors.white,
-                //     //width: getDeviceWidth(context) * 0.8,
-                //     text: 'Hoàn thành',
-                //     textStyle: TextStylesUtils.style16FnormalBlue,
-                //     press: () {},
-                //   ),
-                // )
-              ],
+              ),
             )
           ],
         ),

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:sw_app_gtel/common/style/color.dart';
 import 'package:sw_app_gtel/srceen/account/account_srceen.dart';
 import 'package:sw_app_gtel/srceen/home/home_srceen.dart';
-import 'package:sw_app_gtel/srceen/list_allroute/allroute_screen.dart';
 import 'package:sw_app_gtel/srceen/notification/notification_screen.dart';
 
 class BottomNavigationPage extends StatefulWidget {
@@ -16,10 +15,10 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
   int _currentIndex = 0;
 
   final List<Widget> _screen = [
-    const HomeSrceen(),
-    ListAllrouteScreen(),
-    const NoficationScreen(),
-    const AccounutSrceen(),
+    HomeSrceen(),
+    //ListAllrouteScreen(),
+    NoficationScreen(),
+    AccounutSrceen(),
   ];
   @override
   Widget build(BuildContext context) {
@@ -47,13 +46,13 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
                 ),
                 label: "Trang chủ",
               ),
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.edit_document,
-                  size: 25,
-                ),
-                label: "Vận đơn",
-              ),
+              // BottomNavigationBarItem(
+              //   icon: Icon(
+              //     Icons.edit_document,
+              //     size: 25,
+              //   ),
+              //   label: "Vận đơn",
+              // ),
               BottomNavigationBarItem(
                 icon: Icon(
                   Icons.notifications_none_rounded,

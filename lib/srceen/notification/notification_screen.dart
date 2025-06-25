@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sw_app_gtel/common/config/format.dart';
 import 'package:sw_app_gtel/common/config/show_loading.dart';
-import 'package:sw_app_gtel/common/utils/status_type.dart';
-import 'package:sw_app_gtel/navigation/route.dart';
 import 'package:sw_app_gtel/network/responses/data_notification_reponse.dart';
-import 'package:sw_app_gtel/srceen/list_allroute/allroute_screen.dart';
+import 'package:sw_app_gtel/srceen/details_route/details_route_srceen.dart';
 import 'package:sw_app_gtel/srceen/notification/bloc/notification_bloc.dart';
 import 'package:sw_app_gtel/srceen/notification/bloc/notification_event.dart';
 import 'package:sw_app_gtel/srceen/notification/bloc/notification_state.dart';
@@ -63,20 +61,27 @@ class _NoficationScreenState extends State<NoficationScreen> {
 
                         return InkWell(
                           onTap: () {
-                            showLoading(context);
-                            notificationBloc.onReadNotification(item.id!).then(
-                              (value) {
-                                hideLoading(context);
-                                if (value!.success == true) {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            ListAllrouteScreen(),
-                                      ));
-                                }
-                              },
-                            );
+                            if (item.screenName == "list_route_details") {
+                              showLoading(context);
+                              notificationBloc
+                                  .onReadNotification(item.id!)
+                                  .then(
+                                (value) {
+                                  hideLoading(context);
+                                  if (value!.success == true) {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              DetailsRouteSrceen(
+                                            isSrceen: 2,
+                                            routeId: item.screenParams!.id!,
+                                          ),
+                                        ));
+                                  }
+                                },
+                              );
+                            }
                           },
                           child: Container(
                             margin: EdgeInsets.all(5),

@@ -56,6 +56,9 @@ class LoginRepository {
         DriverReponse driverInfoResponse =
             DriverReponse.fromJson(response.data["data"]);
         await SpUtil.putInt("driverId", driverInfoResponse.driverId!);
+        await SpUtil.putInt("serviceProviderId",
+            driverInfoResponse.memberInfo!.serviceProviderId!);
+
         return response.data;
       } else {
         throw Exception("LOI");

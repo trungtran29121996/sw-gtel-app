@@ -47,7 +47,7 @@ class _ListAllrouteScreenState extends State<ListAllrouteScreen> {
             create: (context) => homeBloc
               ..add(
                 GetAllRoute(
-                    page: 1, size: 10, driver_id: SpUtil.getInt("driverId")),
+                    page: 1, size: 30, driver_id: SpUtil.getInt("driverId")),
               ))
       ],
       child: MultiBlocListener(
@@ -139,6 +139,7 @@ class _ListAllrouteScreenState extends State<ListAllrouteScreen> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => DetailsRouteSrceen(
+                                isSrceen: 1,
                                 routeId: routeItem.routeId!,
                               ),
                             ));
@@ -192,7 +193,7 @@ class _ListAllrouteScreenState extends State<ListAllrouteScreen> {
                                   fontWeight: FontWeight.bold,
                                 )),
                             SizedBox(
-                              width: 45,
+                              width: 35,
                             ),
                             Expanded(
                               child: Container(
@@ -207,7 +208,7 @@ class _ListAllrouteScreenState extends State<ListAllrouteScreen> {
                                           countEachHandlingUnit = routeItem
                                               .countEachHandlingUnit![index];
                                       return Container(
-                                          margin: EdgeInsets.only(right: 8),
+                                          margin: EdgeInsets.only(right: 5),
                                           padding: EdgeInsets.symmetric(
                                               horizontal: 5, vertical: 4),
                                           decoration: BoxDecoration(
@@ -307,6 +308,7 @@ class _ListAllrouteScreenState extends State<ListAllrouteScreen> {
                                               MaterialPageRoute(
                                                 builder: (context) =>
                                                     DetailsRouteSrceen(
+                                                  isSrceen: 1,
                                                   routeId: routeItem.routeId!,
                                                 ),
                                               ));
@@ -384,6 +386,7 @@ class _ListAllrouteScreenState extends State<ListAllrouteScreen> {
                                                 MaterialPageRoute(
                                                   builder: (context) =>
                                                       DetailsRouteSrceen(
+                                                    isSrceen: 1,
                                                     routeId: routeItem.routeId!,
                                                   ),
                                                 ));

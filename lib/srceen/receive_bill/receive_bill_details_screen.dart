@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:sw_app_gtel/common/style/color.dart';
 import 'package:sw_app_gtel/common/style/textstyles.dart';
 import 'package:sw_app_gtel/common/utils/formart.dart';
@@ -23,6 +26,61 @@ class _ReceiveBillDetailsScreenState extends State<ReceiveBillDetailsScreen> {
   TextEditingController heighthUnitController = TextEditingController();
   TextEditingController weighthUnitController = TextEditingController();
   TextEditingController moneyUnitController = TextEditingController();
+
+  List<XFile> images = [];
+
+  final ImagePicker picker = ImagePicker();
+
+  Future<void> pickImage() async {
+    if (images.length >= 5) return;
+
+    showModalBottomSheet(
+      context: context,
+      builder: (_) {
+        return SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                leading: Icon(Icons.camera_alt),
+                title: Text('Chụp ảnh'),
+                onTap: () async {
+                  Navigator.pop(context);
+                  final XFile? photo =
+                      await picker.pickImage(source: ImageSource.camera);
+                  if (photo != null) {
+                    setState(() {
+                      images.add(photo);
+                    });
+                  }
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.photo_library),
+                title: Text('Chọn từ thư viện'),
+                onTap: () async {
+                  Navigator.pop(context);
+                  final XFile? gallery =
+                      await picker.pickImage(source: ImageSource.gallery);
+                  if (gallery != null) {
+                    setState(() {
+                      images.add(gallery);
+                    });
+                  }
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void removeImage(int index) {
+    setState(() {
+      images.removeAt(index);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -154,21 +212,64 @@ class _ReceiveBillDetailsScreenState extends State<ReceiveBillDetailsScreen> {
               SizedBox(height: 16),
               Text("Hình ành tiếp nhận",
                   style: TextStylesUtils.style14FnormalGrey),
-              Row(
-                children: List.generate(4, (index) {
-                  return Padding(
-                    padding: const EdgeInsets.only(right: 8),
-                    child: Container(
-                      width: 70,
-                      height: 70,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey.shade300),
-                        borderRadius: BorderRadius.circular(8),
+              // Row(
+              //   children: List.generate(4, (index) {
+              //     return Padding(
+              //       padding: const EdgeInsets.only(right: 8),
+              //       child: Container(
+              //         width: 70,
+              //         height: 70,
+              //         decoration: BoxDecoration(
+              //           border: Border.all(color: Colors.grey.shade300),
+              //           borderRadius: BorderRadius.circular(8),
+              //         ),
+              //         child: Icon(Icons.camera_alt, color: Colors.grey),
+              //       ),
+              //     );
+              //   }),
+              // ),
+              SizedBox(height: 7),
+              GridView.builder(
+                shrinkWrap: true,
+                itemCount: images.length < 5 ? images.length + 1 : 5,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 5,
+                  crossAxisSpacing: 4,
+                  mainAxisSpacing: 4,
+                ),
+                itemBuilder: (context, index) {
+                  if (index < images.length) {
+                    return Stack(
+                      children: [
+                        Image.file(
+                          File(images[index].path),
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                        ),
+                        Positioned(
+                          top: 0,
+                          right: 0,
+                          child: GestureDetector(
+                            onTap: () => removeImage(index),
+                            child:
+                                Icon(Icons.cancel, color: Colors.red, size: 18),
+                          ),
+                        ),
+                      ],
+                    );
+                  } else {
+                    return GestureDetector(
+                      onTap: pickImage,
+                      child: Container(
+                        color: Colors.grey[200],
+                        child: Icon(
+                          Icons.add_a_photo,
+                          color: Colors.grey,
+                        ),
                       ),
-                      child: Icon(Icons.camera_alt, color: Colors.grey),
-                    ),
-                  );
-                }),
+                    );
+                  }
+                },
               ),
             ],
           )),

@@ -43,8 +43,8 @@ class Datum {
   String? message;
   dynamic redirectUrl;
   String? readAt;
-  dynamic screenName;
-  dynamic screenParams;
+  String? screenName;
+  ScreenParams? screenParams;
   String? type;
 
   Datum({
@@ -77,7 +77,9 @@ class Datum {
         redirectUrl: json["redirect_url"],
         readAt: json["read_at"],
         screenName: json["screen_name"],
-        screenParams: json["screen_params"],
+        screenParams: json["screen_params"] == null
+            ? null
+            : ScreenParams.fromJson(json["screen_params"]),
         type: json["type"],
       );
 
@@ -94,7 +96,23 @@ class Datum {
         "redirect_url": redirectUrl,
         "read_at": readAt,
         "screen_name": screenName,
-        "screen_params": screenParams,
+        "screen_params": screenParams?.toJson(),
         "type": type,
+      };
+}
+
+class ScreenParams {
+  int? id;
+
+  ScreenParams({
+    this.id,
+  });
+
+  factory ScreenParams.fromJson(Map<String, dynamic> json) => ScreenParams(
+        id: json["id"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
       };
 }

@@ -39,4 +39,6 @@ class ColorsUtils {
   static const itemCodeOrder = Color(0xff4E99C7);
   static const statusNotification = Color(0xFF56AB57);
   static const fillInput = Color(0xFFF1F1F1);
+  static const handover = Color(0xFF5DC3FC);
+  static const btnHandover = Color(0xFFFF6F61);
 }

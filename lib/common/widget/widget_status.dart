@@ -35,7 +35,7 @@ class WidgetStatus extends StatelessWidget {
       case 100:
         return {
           "textColor": Color(0xFF12A613),
-          "text": "Chuyến mới tạo",
+          "text": "Chuyến mới",
           "color": Color(0xFFE6FFE6)
         };
       case 310:
@@ -50,6 +50,18 @@ class WidgetStatus extends StatelessWidget {
           "text": "Đang giao hàng",
           "color": Color(0xFFDCF5FC)
         };
+      case 330:
+        return {
+          "textColor": Color(0xFF4E99C7),
+          "text": "Sẵn sàng bàn giao",
+          "color": Color(0xFFDCF5FC)
+        };
+      case 430:
+        return {
+          "textColor": Color(0xFF9D6DD6),
+          "text": "Đã bàn giao",
+          "color": Color(0xFFDEDCF5)
+        };
       case 500:
         return {
           "textColor": Color(0xFF525252),
@@ -58,6 +70,7 @@ class WidgetStatus extends StatelessWidget {
         };
       default:
         return {
+          "textColor": Color(0xFF4E99C7),
           "text": "Không xác định",
           "color": Colors.white,
         };

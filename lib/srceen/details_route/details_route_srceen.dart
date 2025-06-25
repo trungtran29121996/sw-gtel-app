@@ -16,8 +16,9 @@ import 'package:sw_app_gtel/srceen/details_route/widget/section_title.dart';
 
 class DetailsRouteSrceen extends StatefulWidget {
   int routeId;
+  int isSrceen; //1 - màn hình ds chuyến vô //2 - màn hình noti vô
 
-  DetailsRouteSrceen({required this.routeId});
+  DetailsRouteSrceen({required this.routeId, required this.isSrceen});
 
   @override
   State<DetailsRouteSrceen> createState() => _DetailsRouteSrceenState();
@@ -29,6 +30,9 @@ class _DetailsRouteSrceenState extends State<DetailsRouteSrceen> {
 
   int requestType = 0;
   int status = 0;
+  // bool _dialogShow = false;
+
+  // List<RouteRequestList> listRouteRequestList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +57,7 @@ class _DetailsRouteSrceenState extends State<DetailsRouteSrceen> {
               builder: (BuildContext context, state) {
             return SafeArea(
                 child: Scaffold(
-              backgroundColor: Color(0xFFe6f4ff),
+              //backgroundColor: Color(0xFFe6f4ff),
               appBar: AppBar(
                 backgroundColor: Color(0xFFb3e0ff),
                 leading: InkWell(
@@ -93,26 +97,51 @@ class _DetailsRouteSrceenState extends State<DetailsRouteSrceen> {
                               child: deliveryCard(item, requestType));
                         }),
                   )),
-              // bottomNavigationBar: Container(
-              //   padding: EdgeInsets.all(10),
-              //   child: DefaultButton(
-              //       padding: EdgeInsets.only(right: 25, left: 25),
-              //       borderRadius: BorderRadius.circular(15.0),
-              //       borderColor: ColorsUtils.textColorGrey,
-              //       backgroundColor: Colors.white,
-              //       textColor: Colors.white,
-              //       text: 'Kết thúc chuyến',
-              //       textStyle: TextStylesUtils.style14FnormalGrey,
-              //       press: () async {
-              //         await routeDetailBloc
-              //             .onRoutingComplete(widget.routeId)
-              //             .then(
-              //           (value) {
-              //             Navigator.pop(context, true);
-              //           },
-              //         );
-              //       }),
-              // )),
+              // bottomNavigationBar: widget.isSrceen == 2
+              //     ? state.routeByID.status == 100
+              //         ? Container(
+              //             padding: EdgeInsets.all(10),
+              //             child: DefaultButton(
+              //                 padding:
+              //                     EdgeInsets.only(right: 25, left: 25),
+              //                 borderRadius: BorderRadius.circular(15.0),
+              //                 borderColor: ColorsUtils.itemCodeOrder,
+              //                 backgroundColor: ColorsUtils.itemCodeOrder,
+              //                 textStyle:
+              //                     TextStylesUtils.style16WhiteNormal,
+              //                 text: 'Bắt đầu chạy',
+              //                 press: () async {
+              //                   context.read<RouteDetailBloc>().add(
+              //                       GetRoutingStartEvent(
+              //                           routeId: widget.routeId));
+              //                 }),
+              //           )
+              //         : SizedBox()
+              //     : SizedBox()
+              // // )),
+              // bottomNavigationBar: state.routeByID.status != 100
+              //     ? Container(
+              //         padding: EdgeInsets.all(10),
+              //         child: DefaultButton(
+              //             padding: EdgeInsets.only(right: 25, left: 25),
+              //             borderRadius: BorderRadius.circular(15.0),
+              //             borderColor: ColorsUtils.textColorGrey,
+              //             backgroundColor: Colors.white,
+              //             textColor: Colors.white,
+              //             text: 'Kết thúc chuyến',
+              //             textStyle: TextStylesUtils.style14FnormalGrey,
+              //             press: () async {
+              //               await routeDetailBloc
+              //                   .onRoutingComplete(widget.routeId)
+              //                   .then(
+              //                 (value) {
+              //                   Navigator.pop(context, true);
+              //                 },
+              //               );
+              //             }),
+              //         // )),
+              //       )
+              //     : SizedBox()
             ));
           }),
         ));
@@ -147,7 +176,7 @@ class _DetailsRouteSrceenState extends State<DetailsRouteSrceen> {
                   borderColor: ColorsUtils.bgHome,
                   backgroundColor: Colors.white,
                   textColor: ColorsUtils.bgHome,
-                  text: 'Lấy hàng',
+                  text: 'Xác nhận lấy hàng',
                   textStyle: TextStylesUtils.style16FnormalBlue,
                   press: () {
                     showLoading(context);
@@ -171,7 +200,7 @@ class _DetailsRouteSrceenState extends State<DetailsRouteSrceen> {
                           borderRadius: BorderRadius.circular(15.0),
                           borderColor: ColorsUtils.infoItemContact,
                           backgroundColor: Colors.white,
-                          text: 'Giao hàng',
+                          text: 'Xác nhận giao hàng',
                           textStyle: TextStylesUtils.style16Orange,
                           press: () {
                             showLoading(context);

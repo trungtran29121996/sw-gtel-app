@@ -2,6 +2,7 @@ import 'package:sw_app_gtel/network/api/dio_main.dart';
 import 'package:sw_app_gtel/network/responses/data_cpn_route_reponse.dart';
 import 'package:sw_app_gtel/network/responses/data_cpn_route_byid_reponse.dart';
 import 'package:sw_app_gtel/network/responses/routing_cpn_start_reponse.dart';
+import 'package:sw_app_gtel/network/responses/tracking_log_reponse.dart';
 
 class CPNRouteRepository {
   DioMain dioMain = DioMain();
@@ -50,19 +51,19 @@ class CPNRouteRepository {
     return null;
   }
 
-  // Future<UpdatRouteCPNReponse?> getRoutingCPNcomplete(int routeId) async {
-  //   try {
-  //     final response = await dioMain
-  //         .patch("api/v1/tms-service/routing/cpn/route/${routeId}/complete");
-  //     if (response["success"] == true) {
-  //       return UpdatRouteCPNReponse.fromJson(response["data"]);
-  //     } else {
-  //       return null;
-  //     }
-  //   } catch (e) {
-  //     throw Exception('Error fetching data: $e');
-  //   }
-  // }
+  Future<UpdatRouteCPNReponse?> getRoutingCPNcomplete(int routeId) async {
+    try {
+      final response = await dioMain
+          .patch("api/v1/tms-service/routing/cpn/route/${routeId}/complete");
+      if (response["success"] == true) {
+        return UpdatRouteCPNReponse.fromJson(response["data"]);
+      } else {
+        return null;
+      }
+    } catch (e) {
+      throw Exception('Error fetching data: $e');
+    }
+  }
 
   Future<bool> updateStatusSeq(
       int seqID, int status, int driverId, String note) async {
@@ -78,5 +79,16 @@ class CPNRouteRepository {
     } catch (e) {
       throw Exception('Error fetching data: $e');
     }
+  }
+
+  Future<TrackingLogReponse?> trackingLog(int request_id) async {
+    try {
+      final response = await dioMain
+          .get("api/v1/tms-service/request-tracking-log/request/1000000597");
+      return TrackingLogReponse.fromJson(response);
+    } catch (e) {
+      print("${e.toString()}");
+    }
+    return null;
   }
 }

@@ -30,3 +30,8 @@ class UpdateStatusEvent extends DetailsRouteEvent {
       required this.driverID,
       required this.note});
 }
+
+class TrackingLogEvent extends DetailsRouteEvent {
+  int requestId;
+  TrackingLogEvent({required this.requestId});
+}

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sw_app_gtel/common/pref/sp_util.dart';
 import 'package:sw_app_gtel/common/style/color.dart';
+import 'package:sw_app_gtel/srceen/hand_over/hand_over_srceen.dart';
 import 'package:sw_app_gtel/srceen/home/bloc/home_bloc.dart';
 import 'package:sw_app_gtel/srceen/home/bloc/home_event.dart';
 import 'package:sw_app_gtel/srceen/home/bloc/home_state.dart';
@@ -90,8 +91,15 @@ class _HomeSrceenState extends State<HomeSrceen> {
                                 ),
                                 BuildMainMenuButton(
                                   path: "assets/images/order_handover_menu.png",
-                                  text: "Bàn giao đơn hàng",
-                                  onButtonPressed: () {},
+                                  text: "Bàn giao nội bộ",
+                                  onButtonPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              HandOverSrceen(),
+                                        ));
+                                  },
                                 ),
                                 BuildMainMenuButton(
                                   path: "assets/images/delivery_menu.png",

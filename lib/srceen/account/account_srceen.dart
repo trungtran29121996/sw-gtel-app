@@ -20,7 +20,8 @@ class AccounutSrceen extends StatefulWidget {
 
 class _AccounutSrceenState extends State<AccounutSrceen> {
   AccountBloc accountBloc = AccountBloc();
-  MemberInfo user = MemberInfo.fromJson(SpUtil.getObject("member_info"));
+  MemberInfoLogin user =
+      MemberInfoLogin.fromJson(SpUtil.getObject("member_info"));
   @override
   Widget build(BuildContext context) {
     return BlocProvider(

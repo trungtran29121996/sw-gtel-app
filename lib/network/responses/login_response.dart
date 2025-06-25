@@ -5,7 +5,7 @@ class LoginReponse {
   String clientId;
   int status;
   String memberId;
-  MemberInfo memberInfo;
+  MemberInfoLogin memberInfo;
   String uid;
   String role;
   String token;
@@ -28,7 +28,7 @@ class LoginReponse {
         clientId: json["client_id"],
         status: json["status"],
         memberId: json["member_id"],
-        memberInfo: MemberInfo.fromJson(json["member_info"]),
+        memberInfo: MemberInfoLogin.fromJson(json["member_info"]),
         uid: json["uid"],
         role: json["role"],
         token: json["token"],
@@ -48,7 +48,7 @@ class LoginReponse {
       };
 }
 
-class MemberInfo {
+class MemberInfoLogin {
   String? createdAt;
   String? modifiedAt;
   String? memberCreated;
@@ -90,7 +90,7 @@ class MemberInfo {
   Images? images;
   String? uid;
 
-  MemberInfo({
+  MemberInfoLogin({
     this.createdAt,
     this.modifiedAt,
     this.memberCreated,
@@ -133,12 +133,13 @@ class MemberInfo {
     this.uid,
   });
 
-  factory MemberInfo.fromRawJson(String str) =>
-      MemberInfo.fromJson(json.decode(str));
+  factory MemberInfoLogin.fromRawJson(String str) =>
+      MemberInfoLogin.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory MemberInfo.fromJson(Map<dynamic, dynamic> json) => MemberInfo(
+  factory MemberInfoLogin.fromJson(Map<dynamic, dynamic> json) =>
+      MemberInfoLogin(
         createdAt: json["created_at"],
         modifiedAt: json["modified_at"],
         memberCreated: json["member_created"],
