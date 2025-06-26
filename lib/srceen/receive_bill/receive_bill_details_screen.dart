@@ -3,14 +3,18 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:sw_app_gtel/common/config/show_loading.dart';
 import 'package:sw_app_gtel/common/style/color.dart';
 import 'package:sw_app_gtel/common/style/textstyles.dart';
 import 'package:sw_app_gtel/common/utils/formart.dart';
 import 'package:sw_app_gtel/common/widget/default_button.dart';
+import 'package:sw_app_gtel/srceen/hand_over/bloc/hand_over_bloc.dart';
 import 'package:sw_app_gtel/srceen/receive_bill/add_info_customer_srceen.dart';
 
 class ReceiveBillDetailsScreen extends StatefulWidget {
-  const ReceiveBillDetailsScreen({super.key});
+  int routeID;
+  ReceiveBillDetailsScreen({required this.routeID});
 
   @override
   State<ReceiveBillDetailsScreen> createState() =>
@@ -27,50 +31,74 @@ class _ReceiveBillDetailsScreenState extends State<ReceiveBillDetailsScreen> {
   TextEditingController weighthUnitController = TextEditingController();
   TextEditingController moneyUnitController = TextEditingController();
 
+  HandOverBloc handOverBloc = HandOverBloc();
+
   List<XFile> images = [];
+  List<String> lstImage = [];
 
   final ImagePicker picker = ImagePicker();
+  Directory? dir;
 
   Future<void> pickImage() async {
+    dir = await getTemporaryDirectory();
     if (images.length >= 5) return;
 
     showModalBottomSheet(
       context: context,
       builder: (_) {
-        return SafeArea(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ListTile(
-                leading: Icon(Icons.camera_alt),
-                title: Text('Chụp ảnh'),
-                onTap: () async {
-                  Navigator.pop(context);
-                  final XFile? photo =
-                      await picker.pickImage(source: ImageSource.camera);
-                  if (photo != null) {
-                    setState(() {
-                      images.add(photo);
-                    });
-                  }
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.photo_library),
-                title: Text('Chọn từ thư viện'),
-                onTap: () async {
-                  Navigator.pop(context);
-                  final XFile? gallery =
-                      await picker.pickImage(source: ImageSource.gallery);
-                  if (gallery != null) {
-                    setState(() {
-                      images.add(gallery);
-                    });
-                  }
-                },
-              ),
-            ],
-          ),
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: Icon(Icons.camera_alt),
+              title: Text('Chụp ảnh'),
+              onTap: () async {
+                Navigator.pop(context);
+                final picker = ImagePicker();
+                final XFile? pickedFile =
+                    await picker.pickImage(source: ImageSource.camera);
+                if (pickedFile != null) {
+                  setState(() {
+                    showLoading(context);
+                    File imageFile = File(pickedFile.path);
+                    handOverBloc
+                        .onUploadImage(widget.routeID, imageFile, false, dir!)
+                        .then(
+                      (value) {
+                        hideLoading(context);
+                        lstImage.add(value!.data!.imageUrl!);
+                      },
+                    );
+                    images.add(pickedFile);
+                  });
+                }
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.photo_library),
+              title: Text('Chọn từ thư viện'),
+              onTap: () async {
+                Navigator.pop(context);
+                final XFile? gallery =
+                    await picker.pickImage(source: ImageSource.gallery);
+                if (gallery != null) {
+                  setState(() {
+                    showLoading(context);
+                    File imageFile = File(gallery.path);
+                    handOverBloc
+                        .onUploadImage(widget.routeID, imageFile, false, dir!)
+                        .then(
+                      (value) {
+                        hideLoading(context);
+                        lstImage.add(value!.data!.imageUrl!);
+                      },
+                    );
+                    images.add(gallery);
+                  });
+                }
+              },
+            ),
+          ],
         );
       },
     );

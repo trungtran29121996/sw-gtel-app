@@ -5,6 +5,7 @@ import 'package:sw_app_gtel/common/core/base/bloc/base_bloc.dart';
 import 'package:sw_app_gtel/network/repository/hand_over_repository.dart';
 import 'package:sw_app_gtel/network/responses/data_hand_over_reponse.dart';
 import 'package:sw_app_gtel/network/responses/image_upload_reponse.dart';
+import 'package:sw_app_gtel/network/responses/route_handover_reponse.dart';
 import 'package:sw_app_gtel/network/responses/sub_account_reponse.dart';
 import 'package:sw_app_gtel/srceen/hand_over/bloc/hand_over_event.dart';
 import 'package:sw_app_gtel/srceen/hand_over/bloc/hand_over_state.dart';
@@ -13,7 +14,7 @@ class HandOverBloc extends BaseBloc<HandOverEvent, HandOverState> {
   HandOverBloc() : super(state: HandOverState.initial()) {
     on<GetAllHandOver>(_onGetAllHandOver);
     on<GetSubAccount>(_onGetSubAccount);
-    //on<UploadImage>(_onUploadImage);
+    on<GetInfoHandOver>(_onGetInfoHandOver);
   }
   HandOverRepository handOverRepository = HandOverRepository();
   Future _onGetAllHandOver(GetAllHandOver event, Emitter emit) async {
@@ -31,8 +32,7 @@ class HandOverBloc extends BaseBloc<HandOverEvent, HandOverState> {
         for (int i = 0; i < listAllHandOver.length; i++) {
           if (listAllHandOver[i].status == 310 ||
               listAllHandOver[i].status == 320 ||
-              listAllHandOver[i].status == 330 ||
-              listAllHandOver[i].status == 430) {
+              listAllHandOver[i].status == 330) {
             lstHandOver.add(listAllHandOver[i]);
           }
         }
@@ -74,6 +74,28 @@ class HandOverBloc extends BaseBloc<HandOverEvent, HandOverState> {
     }
   }
 
+  Future _onGetInfoHandOver(GetInfoHandOver event, Emitter emit) async {
+    try {
+      RouteHandoverReponse routeHandoverReponse = RouteHandoverReponse();
+      emit.call(state.copyWith(
+          loading:
+              state.loading.copyWith(isLoading: true, isLoadSuccess: false)));
+
+      routeHandoverReponse =
+          await handOverRepository.getinfoHandOver(event.routeId);
+
+      emit.call(state.copyWith(
+          loading:
+              state.loading.copyWith(isLoading: false, isLoadSuccess: true),
+          routeHandoverReponse: routeHandoverReponse));
+    } catch (e) {
+      print("LOI $e");
+      emit.call(state.copyWith(
+          loading: state.loading.copyWith(
+              isLoading: false, isLoadSuccess: false, loadError: true)));
+    }
+  }
+
   Future<ImageUploadReponse?> onUploadImage(
       int routeId, File imageFile, bool deletable, Directory dir) async {
     ImageUploadReponse uploadReponse = ImageUploadReponse();
@@ -81,26 +103,6 @@ class HandOverBloc extends BaseBloc<HandOverEvent, HandOverState> {
         routeId, imageFile, deletable, dir);
 
     return uploadReponse;
-
-    // try {
-    //   ImageUploadReponse uploadReponse = ImageUploadReponse();
-    //   emit.call(state.copyWith(
-    //       loading:
-    //           state.loading.copyWith(isLoading: true, isLoadSuccess: false)));
-    //   HandOverRepository handOverRepository = HandOverRepository();
-    //   uploadReponse =
-    //       await handOverRepository.uploadImage(event.routeId, event.imageFile);
-
-    //   emit.call(state.copyWith(
-    //       loading:
-    //           state.loading.copyWith(isLoading: false, isLoadSuccess: true),
-    //       imageUploadReponse: uploadReponse));
-    // } catch (e) {
-    //   print("LOI $e");
-    //   emit.call(state.copyWith(
-    //       loading: state.loading.copyWith(
-    //           isLoading: false, isLoadSuccess: false, loadError: true)));
-    // }
   }
 
   // Future<UpdatRouteCPNReponse?> onRoutingComplete(int route) async {

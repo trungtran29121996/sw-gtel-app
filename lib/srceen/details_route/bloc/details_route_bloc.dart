@@ -100,10 +100,11 @@ class RouteDetailBloc extends BaseBloc<DetailsRouteEvent, DetailsRouteState> {
   //   }
   // }
 
-  Future<UpdatRouteCPNReponse?> onRoutingComplete(int route) async {
+  Future<UpdatRouteCPNReponse?> onRoutingComplete(int route,
+      String handover_note, String assignee_id, List<String> lstimage) async {
     cpnRouteRepository = CPNRouteRepository();
-    UpdatRouteCPNReponse? routingCpnStartReponse =
-        await cpnRouteRepository.getRoutingCPNcomplete(route);
+    UpdatRouteCPNReponse? routingCpnStartReponse = await cpnRouteRepository
+        .getRoutingCPNcomplete(route, handover_note, assignee_id, lstimage);
     return routingCpnStartReponse;
   }
 

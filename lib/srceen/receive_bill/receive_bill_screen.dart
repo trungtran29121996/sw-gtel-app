@@ -236,7 +236,9 @@ class _ReceiveBillScreenWidgetState extends State<ReceiveBillScreen> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => ReceiveBillDetailsScreen(),
+                      builder: (context) => ReceiveBillDetailsScreen(
+                        routeID: 0,
+                      ),
                     ));
               }),
         ));

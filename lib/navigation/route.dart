@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sw_app_gtel/srceen/hand_over/hand_over_srceen.dart';
 import 'package:sw_app_gtel/srceen/home/home_srceen.dart';
-import 'package:sw_app_gtel/srceen/list_allroute/allroute_screen.dart';
 import 'package:sw_app_gtel/srceen/login/login_srceen.dart';
 import 'package:sw_app_gtel/srceen/login/navigation_bar.dart';
 import 'package:sw_app_gtel/srceen/splash/splash_screen.dart';
@@ -28,9 +27,6 @@ class AppRoutes {
         break;
       case NAVIGATION_BAR:
         screen = BottomNavigationPage();
-        break;
-      case LIST_ROUTE:
-        screen = ListAllrouteScreen();
         break;
       case HAND_OVER:
         screen = HandOverSrceen();

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sw_app_gtel/common/helper/screen_type.dart';
 import 'package:sw_app_gtel/common/pref/sp_util.dart';
 import 'package:sw_app_gtel/common/style/color.dart';
 import 'package:sw_app_gtel/srceen/hand_over/hand_over_srceen.dart';
@@ -8,7 +9,6 @@ import 'package:sw_app_gtel/srceen/home/bloc/home_event.dart';
 import 'package:sw_app_gtel/srceen/home/bloc/home_state.dart';
 import 'package:sw_app_gtel/srceen/home/widget/main_menu_button.dart';
 import 'package:sw_app_gtel/srceen/list_allroute/allroute_screen.dart';
-import 'package:sw_app_gtel/srceen/receive_bill/receive_bill_screen.dart';
 
 class HomeSrceen extends StatefulWidget {
   const HomeSrceen({super.key});
@@ -25,7 +25,10 @@ class _HomeSrceenState extends State<HomeSrceen> {
     return BlocProvider(
         create: (context) => homeBloc
           ..add(GetAllRoute(
-              page: 1, size: 20, driver_id: SpUtil.getInt("driverId"))),
+              page: 1,
+              size: 20,
+              driver_id: SpUtil.getInt("driverId"),
+              request_type: [1, 2])),
         child: BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
           return Scaffold(
               backgroundColor: ColorsUtils.bgHome,
@@ -67,25 +70,29 @@ class _HomeSrceenState extends State<HomeSrceen> {
                                   //Status: Mới + Đang lấy hàng + Đang giao hàng
                                   path: "assets/images/list_order_menu.png",
                                   text:
-                                      "Danh sách chuyến (${state.totalStatus})",
+                                      "Danh sách vận đơn (${state.totalStatus})",
                                   onButtonPressed: () {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                              ListAllrouteScreen(),
+                                              ListAllrouteScreen(
+                                            screen: SCREEN.SCREEN_LIST_ALL,
+                                          ),
                                         ));
                                   },
                                 ),
                                 BuildMainMenuButton(
                                   path: "assets/images/receive_orders_menu.png",
-                                  text: "Tiếp nhận đơn hàng",
+                                  text: "Thao tác lấy hàng",
                                   onButtonPressed: () {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                              ReceiveBillScreen(),
+                                              ListAllrouteScreen(
+                                            screen: SCREEN.SCREEN_PICKUP_GOODS,
+                                          ),
                                         ));
                                   },
                                 ),
@@ -103,8 +110,17 @@ class _HomeSrceenState extends State<HomeSrceen> {
                                 ),
                                 BuildMainMenuButton(
                                   path: "assets/images/delivery_menu.png",
-                                  text: "Giao đơn hàng",
-                                  onButtonPressed: () {},
+                                  text: "Thao thác giao hàng",
+                                  onButtonPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              ListAllrouteScreen(
+                                            screen: SCREEN.SCREEN_DELIVERY,
+                                          ),
+                                        ));
+                                  },
                                 ),
                                 BuildMainMenuButton(
                                   path: "assets/images/baocao_thongke_menu.png",

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:sw_app_gtel/network/api/dio_main.dart';
 import 'package:sw_app_gtel/network/responses/data_cpn_route_reponse.dart';
 import 'package:sw_app_gtel/network/responses/data_cpn_route_byid_reponse.dart';
@@ -7,10 +9,17 @@ import 'package:sw_app_gtel/network/responses/tracking_log_reponse.dart';
 class CPNRouteRepository {
   DioMain dioMain = DioMain();
   Future<List<DataCnpRouteReponse>> getAllRoute(
-      int page, int size, int driver_id) async {
+      int page, int size, int driver_id, List<int> lstType) async {
     try {
-      final response = await dioMain.get(
-          "api/v1/tms-service/routing/cpn/route?page=$page&size=$size&service_provider_id=$driver_id");
+      final response = await dioMain
+          .get("api/v1/tms-service/routing/cpn/route", queryParameters: {
+        "page": page,
+        "size": size,
+        "service_provider_id": driver_id,
+        "filter": jsonEncode([
+          {"col": "request_type", "op": "\$in", "val": lstType}
+        ])
+      });
 
       if (response["success"] == true) {
         List<DataCnpRouteReponse> listRoute =
@@ -51,10 +60,16 @@ class CPNRouteRepository {
     return null;
   }
 
-  Future<UpdatRouteCPNReponse?> getRoutingCPNcomplete(int routeId) async {
+  Future<UpdatRouteCPNReponse?> getRoutingCPNcomplete(int routeId,
+      String handover_note, String assignee_id, List<String> lstimage) async {
     try {
-      final response = await dioMain
-          .patch("api/v1/tms-service/routing/cpn/route/${routeId}/complete");
+      final response = await dioMain.patch(
+          "api/v1/tms-service/routing/cpn/route/${routeId}/complete",
+          queryParameters: {
+            "handover_note": handover_note,
+            "assignee_id": assignee_id,
+            "handover_images": lstimage
+          });
       if (response["success"] == true) {
         return UpdatRouteCPNReponse.fromJson(response["data"]);
       } else {

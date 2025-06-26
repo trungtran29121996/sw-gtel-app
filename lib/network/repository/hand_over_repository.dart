@@ -7,6 +7,7 @@ import 'package:dio/dio.dart';
 import 'package:sw_app_gtel/network/api/dio_main.dart';
 import 'package:sw_app_gtel/network/responses/data_hand_over_reponse.dart';
 import 'package:sw_app_gtel/network/responses/image_upload_reponse.dart';
+import 'package:sw_app_gtel/network/responses/route_handover_reponse.dart';
 import 'package:sw_app_gtel/network/responses/sub_account_reponse.dart';
 
 class HandOverRepository {
@@ -43,6 +44,17 @@ class HandOverRepository {
         ])
       });
       return SubAccountReponse.fromJson(response);
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<RouteHandoverReponse> getinfoHandOver(int routeID) async {
+    try {
+      final response = await dioMain
+          .get("api/v1/tms-service/routing/cpn/route/handover/421");
+
+      return RouteHandoverReponse.fromJson(response);
     } catch (e) {
       throw Exception(e);
     }

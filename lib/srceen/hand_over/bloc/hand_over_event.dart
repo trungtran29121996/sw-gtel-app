@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:sw_app_gtel/common/core/base/event/base_event.dart';
 
 class HandOverEvent extends BaseEvent {}
@@ -22,8 +20,7 @@ class GetSubAccount extends HandOverEvent {
       required this.service_provider_id});
 }
 
-class UploadImage extends HandOverEvent {
+class GetInfoHandOver extends HandOverEvent {
   int routeId;
-  File imageFile;
-  UploadImage({required this.routeId, required this.imageFile});
+  GetInfoHandOver({required this.routeId});
 }

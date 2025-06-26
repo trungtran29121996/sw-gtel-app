@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sw_app_gtel/common/config/app_dimensions.dart';
 import 'package:sw_app_gtel/common/config/format.dart';
 import 'package:sw_app_gtel/common/config/show_loading.dart';
 import 'package:sw_app_gtel/common/style/color.dart';
@@ -7,6 +8,8 @@ import 'package:sw_app_gtel/common/style/textstyles.dart';
 import 'package:sw_app_gtel/common/widget/default_button.dart';
 import 'package:sw_app_gtel/common/widget/widget_status.dart';
 import 'package:sw_app_gtel/network/responses/data_hand_over_reponse.dart';
+import 'package:sw_app_gtel/network/responses/login_response.dart';
+import 'package:sw_app_gtel/srceen/details_route/bloc/details_route_bloc.dart';
 import 'package:sw_app_gtel/srceen/hand_over/bloc/hand_over_bloc.dart';
 import 'package:sw_app_gtel/srceen/hand_over/bloc/hand_over_event.dart';
 import 'package:sw_app_gtel/srceen/hand_over/bloc/hand_over_state.dart';
@@ -29,6 +32,12 @@ class _HandOverSrceenState extends State<HandOverSrceen> {
   int selectedIndex = 0;
   bool isSelectCheckbox = false;
 
+  MemberInfoLogin user =
+      MemberInfoLogin.fromJson(SpUtil.getObject("member_info"));
+
+  TextEditingController noteController = TextEditingController();
+  RouteDetailBloc routeDetailBloc = RouteDetailBloc();
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -40,7 +49,7 @@ class _HandOverSrceenState extends State<HandOverSrceen> {
               ..add(GetSubAccount(
                   page: 1,
                   size: 10,
-                  service_provider_id: SpUtil.getInt("serviceProviderId")))),
+                  service_provider_id: SpUtil.getInt("serviceProviderId"))))
       ],
       child: MultiBlocListener(
           listeners: [
@@ -54,8 +63,6 @@ class _HandOverSrceenState extends State<HandOverSrceen> {
                 }
               },
             ),
-            // BlocListener<RouteDetailBloc, DetailsRouteState>(
-            //     listener: (context, state) {})
           ],
           child: BlocBuilder<HandOverBloc, HandOverState>(
               builder: (BuildContext context, state) {
@@ -115,91 +122,15 @@ class _HandOverSrceenState extends State<HandOverSrceen> {
                           ],
                         ),
                       ),
+                      SizedBox(
+                        height: 5,
+                      ),
                       _itemHandOver(state),
                     ],
                   )),
             );
           })),
     );
-    // BlocProvider(
-    //     create: (context) => HandOverBloc()
-    //       ..add(GetAllHandOver(
-    //           page: 1, size: 20, driver_id: SpUtil.getInt("driverId")))
-    //       ..add(GetSubAccount(
-    //           page: 1,
-    //           size: 10,
-    //           service_provider_id: SpUtil.getInt("serviceProviderId"))),
-    //     child: Builder(builder: (context) {
-    //       return BlocConsumer<HandOverBloc, HandOverState>(
-    //           listener: (context, state) {
-    //         if (state.loading.isLoading) {
-    //           showLoading(context);
-    //         } else if (state.loading.isLoadSuccess && state.handOver == true) {
-    //           hideLoading(context);
-    //         }
-    //       }, builder: (context, state) {
-    //         return Scaffold(
-    //           backgroundColor: Colors.white,
-    //           appBar: AppBar(
-    //             backgroundColor: Color(0xFFb3e0ff),
-    //             title: Text('Bàn giao nội bộ',
-    //                 style: TextStyle(color: Colors.black)),
-    //             centerTitle: true,
-    //           ),
-    //           body: Container(
-    //               padding: EdgeInsets.all(8),
-    //               color: Colors.white,
-    //               child: Column(
-    //                 children: [
-    //                   Row(
-    //                     children: [
-    //                       Expanded(
-    //                           child: TextField(
-    //                               decoration: InputDecoration(
-    //                                   hintText:
-    //                                       'Mã vận đơn, Tên khách, Số điện thoại, ...',
-    //                                   hintStyle: TextStyle(color: Colors.grey),
-    //                                   filled: true,
-    //                                   fillColor: Colors.grey.shade100,
-    //                                   border: OutlineInputBorder(
-    //                                     borderRadius:
-    //                                         BorderRadius.circular(6.0),
-    //                                     borderSide: BorderSide.none,
-    //                                   ),
-    //                                   contentPadding: EdgeInsets.symmetric(
-    //                                       horizontal: 12, vertical: 14),
-    //                                   suffixIcon: Row(
-    //                                       mainAxisSize: MainAxisSize.min,
-    //                                       children: [
-    //                                         IconButton(
-    //                                           icon: Icon(Icons.grid_view,
-    //                                               color: Colors.cyan),
-    //                                           onPressed: () {
-    //                                             // handle grid view
-    //                                           },
-    //                                         ),
-    //                                       ])))),
-    //                     ],
-    //                   ),
-    //                   SizedBox(
-    //                     height: 7,
-    //                   ),
-    //                   Center(
-    //                     child: Row(
-    //                       mainAxisAlignment: MainAxisAlignment.center,
-    //                       children: [
-    //                         _buildTab("Đơn có thể bàn giao", 0, 0),
-    //                         const SizedBox(width: 20),
-    //                         _buildTab("Đơn đã bàn giao", 1, 0),
-    //                       ],
-    //                     ),
-    //                   ),
-    //                   _itemHandOver(state),
-    //                 ],
-    //               )),
-    //         );
-    //       });
-    //     }));
   }
 
   Widget _clickChosseHandOver(HandOverState state) {
@@ -418,46 +349,47 @@ class _HandOverSrceenState extends State<HandOverSrceen> {
                             press: () {}),
                       ),
                       Expanded(
-                        flex: 1,
-                        child: DefaultButton(
-                            disable: item.status! >= 330 ? false : true,
-                            padding:
-                                EdgeInsets.only(top: 13, right: 10, left: 10),
-                            borderRadius: BorderRadius.circular(10.0),
-                            borderColor: ColorsUtils.handover,
-                            backgroundColor: ColorsUtils.handover,
-                            text: 'Bàn giao',
-                            textStyle: TextStylesUtils.style16WhiteNormal,
-                            press: () {
-                              showDialog(
-                                  barrierDismissible: false,
-                                  context: context,
-                                  builder: (_) => Container(
-                                        child: AlertDialog(
+                          flex: 1,
+                          child: DefaultButton(
+                              disable: item.status! >= 330 ? false : true,
+                              padding:
+                                  EdgeInsets.only(top: 13, right: 10, left: 10),
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderColor: ColorsUtils.handover,
+                              backgroundColor: ColorsUtils.handover,
+                              text: 'Bàn giao',
+                              textStyle: TextStylesUtils.style16WhiteNormal,
+                              press: () {
+                                showDialog(
+                                    barrierDismissible: false,
+                                    context: context,
+                                    builder: (context) => AlertDialog(
                                           shape: RoundedRectangleBorder(
                                               borderRadius: BorderRadius.all(
                                                   Radius.circular(10.0))),
                                           contentPadding: EdgeInsets.all(15.0),
-                                          content: DialogConfirrmHandover(
-                                            routeID: item.routeId!,
-                                            subAccountReponse:
-                                                state.subAccountReponse,
+                                          content: SizedBox(
+                                            width: getDeviceWidth(context),
+                                            height: 510,
+                                            child: DialogConfirrmHandover(
+                                              routeID: item.routeId!,
+                                              subAccountReponse:
+                                                  state.subAccountReponse,
+                                            ),
                                           ),
-                                        ),
-                                      )).then(
-                                (value) {
-                                  if (value == true) {
-                                    context.read<HandOverBloc>().add(
-                                        GetAllHandOver(
-                                            page: 1,
-                                            size: 20,
-                                            driver_id:
-                                                SpUtil.getInt("driverId")));
-                                  }
-                                },
-                              );
-                            }),
-                      ),
+                                        )).then(
+                                  (value) {
+                                    if (value == true) {
+                                      context.read<HandOverBloc>().add(
+                                          GetAllHandOver(
+                                              page: 1,
+                                              size: 20,
+                                              driver_id:
+                                                  SpUtil.getInt("driverId")));
+                                    }
+                                  },
+                                );
+                              }))
                     ],
                   )
                 ],
@@ -500,11 +432,4 @@ class _HandOverSrceenState extends State<HandOverSrceen> {
       ),
     );
   }
-
-  // Color _color(DataCnpRouteReponse routeItem) {
-  //   Color color = routeItem.requestType == 1
-  //       ? ColorsUtils.infoItemContact
-  //       : ColorsUtils.bgWareHouse;
-  //   return color;
-  // }
 }

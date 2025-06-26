@@ -25,8 +25,9 @@ class HomeBloc extends BaseBloc<HomeEvent, HomeState> {
       int statusDelivery = 0;
       int totalStatus = 0;
       CPNRouteRepository routeRepository = CPNRouteRepository();
-      List<DataCnpRouteReponse> listAllRoute = await routeRepository
-          .getAllRoute(event.page, event.size, event.driver_id);
+      List<DataCnpRouteReponse> listAllRoute =
+          await routeRepository.getAllRoute(
+              event.page, event.size, event.driver_id, event.request_type);
 
       if (listAllRoute.isNotEmpty) {
         for (var element in listAllRoute) {

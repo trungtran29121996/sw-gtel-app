@@ -4,6 +4,7 @@ import 'package:sw_app_gtel/common/config/app_dimensions.dart';
 import 'package:sw_app_gtel/common/config/format.dart';
 import 'package:sw_app_gtel/common/config/show_dialog.dart';
 import 'package:sw_app_gtel/common/config/show_loading.dart';
+import 'package:sw_app_gtel/common/helper/screen_type.dart';
 import 'package:sw_app_gtel/common/pref/sp_util.dart';
 import 'package:sw_app_gtel/common/style/color.dart';
 import 'package:sw_app_gtel/common/style/textstyles.dart';
@@ -22,6 +23,10 @@ import 'package:sw_app_gtel/srceen/home/bloc/home_event.dart';
 import 'package:sw_app_gtel/srceen/home/bloc/home_state.dart';
 
 class ListAllrouteScreen extends StatefulWidget {
+  SCREEN screen;
+
+  ListAllrouteScreen({required this.screen});
+
   @override
   State<ListAllrouteScreen> createState() => _ListAllrouteScreenState();
 }
@@ -47,7 +52,10 @@ class _ListAllrouteScreenState extends State<ListAllrouteScreen> {
             create: (context) => homeBloc
               ..add(
                 GetAllRoute(
-                    page: 1, size: 30, driver_id: SpUtil.getInt("driverId")),
+                    page: 1,
+                    size: 30,
+                    driver_id: SpUtil.getInt("driverId"),
+                    request_type: requestType(widget.screen)),
               ))
       ],
       child: MultiBlocListener(
@@ -320,7 +328,8 @@ class _ListAllrouteScreenState extends State<ListAllrouteScreen> {
                                                     page: 1,
                                                     size: 10,
                                                     driver_id: SpUtil.getInt(
-                                                        "driverId")));
+                                                        "driverId"),
+                                                    request_type: [1, 2]));
                                           }
                                         }).then(
                                       (_) {
@@ -496,6 +505,18 @@ class _ListAllrouteScreenState extends State<ListAllrouteScreen> {
       requestType = 'Đi giao';
     } else {
       requestType = 'Đi lấy';
+    }
+    return requestType;
+  }
+
+  List<int> requestType(SCREEN screen) {
+    List<int> requestType = [];
+    if (screen == SCREEN.SCREEN_LIST_ALL) {
+      requestType = [1, 2];
+    } else if (screen == SCREEN.SCREEN_PICKUP_GOODS) {
+      requestType = [2];
+    } else if (screen == SCREEN.SCREEN_DELIVERY) {
+      requestType = [1];
     }
     return requestType;
   }

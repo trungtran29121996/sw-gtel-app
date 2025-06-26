@@ -13,6 +13,7 @@ import 'package:sw_app_gtel/srceen/details_route/bloc/details_route_state.dart';
 import 'package:sw_app_gtel/srceen/details_route/details_item_router_screen.dart';
 import 'package:sw_app_gtel/srceen/details_route/widget/contact_info_header.dart';
 import 'package:sw_app_gtel/srceen/details_route/widget/section_title.dart';
+import 'package:sw_app_gtel/srceen/receive_bill/receive_bill_details_screen.dart';
 
 class DetailsRouteSrceen extends StatefulWidget {
   int routeId;
@@ -79,7 +80,7 @@ class _DetailsRouteSrceenState extends State<DetailsRouteSrceen> {
                         itemBuilder: (context, index) {
                           RouteRequestList item = state.routeRequestList[index];
                           //requestType 1 là giao - 2 là nhận
-                          requestType = state.routeByID.requestType!;
+                          // requestType = state.routeByID.requestType!;
                           status = state.routeByID.status!;
 
                           return InkWell(
@@ -94,7 +95,7 @@ class _DetailsRouteSrceenState extends State<DetailsRouteSrceen> {
                                       ),
                                     ));
                               },
-                              child: deliveryCard(item, requestType));
+                              child: deliveryCard(item, state));
                         }),
                   )),
               // bottomNavigationBar: widget.isSrceen == 2
@@ -159,7 +160,7 @@ class _DetailsRouteSrceenState extends State<DetailsRouteSrceen> {
     );
   }
 
-  Widget _buildButton(RouteRequestList item) {
+  Widget _buildButton(RouteRequestList item, DetailsRouteState state) {
     return BlocListener<RouteDetailBloc, DetailsRouteState>(
       listener: (context, state) {},
       child: Container(
@@ -179,16 +180,26 @@ class _DetailsRouteSrceenState extends State<DetailsRouteSrceen> {
                   text: 'Xác nhận lấy hàng',
                   textStyle: TextStylesUtils.style16FnormalBlue,
                   press: () {
-                    showLoading(context);
-                    routeDetailBloc
-                        .onUpdatetStatus(seq.seqId!, 200,
-                            SpUtil.getInt("driverId"), "Lấy hàng")
-                        .then(
-                      (value) {
-                        hideLoading(context);
-                        Navigator.pop(context, true);
-                      },
-                    );
+                    if (state.routeByID.sourceType == 7) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ReceiveBillDetailsScreen(
+                              routeID: state.routeByID.routeId!,
+                            ),
+                          ));
+                    } else {
+                      showLoading(context);
+                      routeDetailBloc
+                          .onUpdatetStatus(seq.seqId!, 200,
+                              SpUtil.getInt("driverId"), "Lấy hàng")
+                          .then(
+                        (value) {
+                          hideLoading(context);
+                          Navigator.pop(context, true);
+                        },
+                      );
+                    }
                   })
               : seq.stoppointType == 3 &&
                       seq.status == 100 &&
@@ -240,7 +251,7 @@ class _DetailsRouteSrceenState extends State<DetailsRouteSrceen> {
     );
   }
 
-  Widget deliveryCard(RouteRequestList item, int requestType) {
+  Widget deliveryCard(RouteRequestList item, DetailsRouteState state) {
     return Container(
       margin: EdgeInsets.only(bottom: 7),
       decoration: BoxDecoration(
@@ -369,7 +380,7 @@ class _DetailsRouteSrceenState extends State<DetailsRouteSrceen> {
             SizedBox(
               height: 7,
             ),
-            status == 500 ? SizedBox() : _buildButton(item)
+            status == 500 ? SizedBox() : _buildButton(item, state)
           ],
         ),
       ),
