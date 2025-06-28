@@ -9,6 +9,7 @@ class HandOverState extends BaseState {
   Loading loading;
   bool handOver;
   List<HandOverReponse> listHandOver;
+  List<HandOverReponse> listHandOverComplete;
   SubAccountReponse subAccountReponse;
   ImageUploadReponse imageUploadReponse;
   RouteHandoverReponse routeHandoverReponse;
@@ -17,6 +18,7 @@ class HandOverState extends BaseState {
       {required this.loading,
       required this.handOver,
       required this.listHandOver,
+      required this.listHandOverComplete,
       required this.subAccountReponse,
       required this.imageUploadReponse,
       required this.routeHandoverReponse});
@@ -24,6 +26,7 @@ class HandOverState extends BaseState {
     return HandOverState(
         loading: Loading.initial(),
         listHandOver: [],
+        listHandOverComplete: [],
         subAccountReponse: SubAccountReponse(),
         imageUploadReponse: ImageUploadReponse(),
         routeHandoverReponse: RouteHandoverReponse(),
@@ -33,6 +36,7 @@ class HandOverState extends BaseState {
     Loading? loading,
     bool? handOver,
     List<HandOverReponse>? listHandOver,
+    List<HandOverReponse>? listHandOverComplete,
     ImageUploadReponse? imageUploadReponse,
     RouteHandoverReponse? routeHandoverReponse,
     SubAccountReponse? subAccountReponse,
@@ -40,6 +44,7 @@ class HandOverState extends BaseState {
     return HandOverState(
         loading: loading ?? this.loading,
         handOver: handOver ?? this.handOver,
+        listHandOverComplete: listHandOverComplete ?? this.listHandOverComplete,
         listHandOver: listHandOver ?? this.listHandOver,
         imageUploadReponse: imageUploadReponse ?? this.imageUploadReponse,
         subAccountReponse: subAccountReponse ?? this.subAccountReponse,
@@ -52,6 +57,7 @@ class HandOverState extends BaseState {
         loading,
         handOver,
         listHandOver,
+        listHandOverComplete,
         subAccountReponse,
         imageUploadReponse,
         routeHandoverReponse

@@ -11,7 +11,6 @@ import 'package:sw_app_gtel/common/style/textstyles.dart';
 import 'package:sw_app_gtel/common/widget/default_button.dart';
 import 'package:sw_app_gtel/common/widget/default_input.dart';
 import 'package:sw_app_gtel/network/responses/login_response.dart';
-import 'package:sw_app_gtel/network/responses/route_handover_reponse.dart';
 import 'package:sw_app_gtel/network/responses/sub_account_reponse.dart';
 import 'package:sw_app_gtel/srceen/details_route/bloc/details_route_bloc.dart';
 import 'package:sw_app_gtel/srceen/hand_over/bloc/hand_over_bloc.dart';
@@ -37,7 +36,7 @@ class _DialogConfirrmHandoverState extends State<DialogConfirrmHandover> {
   HandOverBloc handOverBloc = HandOverBloc();
 
   String? selectedPostOffice;
-  String _selectedValue = "";
+  String? selectedValue;
   int? assignee_id = 0;
   bool confirmChecked = false;
   List<XFile> images = [];
@@ -117,22 +116,19 @@ class _DialogConfirrmHandoverState extends State<DialogConfirrmHandover> {
     });
   }
 
-  void handleSubmit() {
-    if (_selectedValue == "") {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("Vui lòng chọn người nhận bàn giao."),
-        backgroundColor: Colors.red,
-      ));
-      return;
-    }
+  // void handleSubmit() {
+  //   if (selectedValue == null) {
 
-    Navigator.of(context).pop(); // đóng dialog
+  //     return;
+  //   }
 
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text("Đã xác nhận bàn giao thành công!"),
-      backgroundColor: Colors.green,
-    ));
-  }
+  //   Navigator.of(context).pop(); // đóng dialog
+
+  //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+  //     content: Text("Đã xác nhận bàn giao thành công!"),
+  //     backgroundColor: Colors.green,
+  //   ));
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -188,7 +184,7 @@ class _DialogConfirrmHandoverState extends State<DialogConfirrmHandover> {
                       ),
                       SizedBox(height: 7),
                       DropdownButtonFormField<String>(
-                        value: _selectedValue,
+                        value: selectedValue,
                         decoration: InputDecoration(
                           labelText: 'Chọn người nhận bàn giao',
                           border: OutlineInputBorder(),
@@ -208,7 +204,7 @@ class _DialogConfirrmHandoverState extends State<DialogConfirrmHandover> {
                         }).toList(),
                         onChanged: (value) {
                           setState(() {
-                            _selectedValue = value!;
+                            selectedValue = value!;
                           });
                         },
                         validator: (value) =>
@@ -311,18 +307,30 @@ class _DialogConfirrmHandoverState extends State<DialogConfirrmHandover> {
                           text: 'Xác nhận',
                           textStyle: TextStylesUtils.style16WhiteNormal,
                           press: () {
-                            //handleSubmit();
-                            routeDetailBloc
-                                .onRoutingComplete(
-                                    widget.routeID,
-                                    noteController.text,
-                                    _selectedValue,
-                                    lstImage)
-                                .then(
-                              (value) {
-                                Navigator.pop(context, true);
-                              },
-                            );
+                            if (selectedValue == null) {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(
+                                content:
+                                    Text("Vui lòng chọn người nhận bàn giao."),
+                                backgroundColor: Colors.red,
+                              ));
+                            } else {
+                              routeDetailBloc
+                                  .onRoutingComplete(
+                                      widget.routeID,
+                                      noteController.text,
+                                      selectedValue!,
+                                      lstImage)
+                                  .then(
+                                (value) {
+                                  //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                  //     content: Text("Đã xác nhận bàn giao thành công!"),
+                                  //     backgroundColor: Colors.green,
+                                  //   ));
+                                  Navigator.pop(context, true);
+                                },
+                              );
+                            }
                           }),
                     ),
                   ],

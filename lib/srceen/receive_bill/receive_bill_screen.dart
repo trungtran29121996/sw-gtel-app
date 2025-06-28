@@ -3,7 +3,6 @@ import 'package:sw_app_gtel/common/style/color.dart';
 import 'package:sw_app_gtel/common/style/textstyles.dart';
 import 'package:sw_app_gtel/common/widget/default_button.dart';
 import 'package:sw_app_gtel/srceen/details_route/widget/contact_info_header.dart';
-import 'package:sw_app_gtel/srceen/receive_bill/receive_bill_details_screen.dart';
 
 class ReceiveBillScreen extends StatefulWidget {
   const ReceiveBillScreen({super.key});
@@ -233,13 +232,14 @@ class _ReceiveBillScreenWidgetState extends State<ReceiveBillScreen> {
               text: '+ Tạo mới tiếp nhận theo lô',
               textStyle: TextStylesUtils.style14Fnormalwhite,
               press: () async {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ReceiveBillDetailsScreen(
-                        routeID: 0,
-                      ),
-                    ));
+                // Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //       builder: (context) => ReceiveBillDetailsScreen(
+                //         routeID: 0,
+                //         requestId: 0,
+                //       ),
+                //     ));
               }),
         ));
   }

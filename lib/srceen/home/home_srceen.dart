@@ -9,6 +9,7 @@ import 'package:sw_app_gtel/srceen/home/bloc/home_event.dart';
 import 'package:sw_app_gtel/srceen/home/bloc/home_state.dart';
 import 'package:sw_app_gtel/srceen/home/widget/main_menu_button.dart';
 import 'package:sw_app_gtel/srceen/list_allroute/allroute_screen.dart';
+import 'package:sw_app_gtel/srceen/report/report_screen.dart';
 
 class HomeSrceen extends StatefulWidget {
   const HomeSrceen({super.key});
@@ -125,7 +126,13 @@ class _HomeSrceenState extends State<HomeSrceen> {
                                 BuildMainMenuButton(
                                   path: "assets/images/baocao_thongke_menu.png",
                                   text: "Báo cáo & thống kê",
-                                  onButtonPressed: () {},
+                                  onButtonPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => ReportScreen(),
+                                        ));
+                                  },
                                 ),
                                 BuildMainMenuButton(
                                   path: "assets/images/account_menu.png",

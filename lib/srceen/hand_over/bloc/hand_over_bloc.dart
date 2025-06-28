@@ -21,6 +21,7 @@ class HandOverBloc extends BaseBloc<HandOverEvent, HandOverState> {
     try {
       List<HandOverReponse> listAllHandOver = [];
       List<HandOverReponse> lstHandOver = [];
+      List<HandOverReponse> lstHandOverComplete = [];
       emit.call(state.copyWith(
           loading:
               state.loading.copyWith(isLoading: true, isLoadSuccess: false)));
@@ -36,12 +37,20 @@ class HandOverBloc extends BaseBloc<HandOverEvent, HandOverState> {
             lstHandOver.add(listAllHandOver[i]);
           }
         }
+
+        for (int i = 0; i < listAllHandOver.length; i++) {
+          if (listAllHandOver[i].status == 430 ||
+              listAllHandOver[i].status == 440) {
+            lstHandOverComplete.add(listAllHandOver[i]);
+          }
+        }
       }
       emit.call(state.copyWith(
           loading: state.loading.copyWith(
             isLoading: false,
             isLoadSuccess: true,
           ),
+          listHandOverComplete: lstHandOverComplete,
           listHandOver: lstHandOver,
           handOver: true));
     } catch (e) {

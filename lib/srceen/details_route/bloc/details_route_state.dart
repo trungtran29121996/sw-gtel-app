@@ -2,6 +2,7 @@ import 'package:sw_app_gtel/common/config/app_loading.dart';
 import 'package:sw_app_gtel/common/core/base/state/base_state.dart';
 import 'package:sw_app_gtel/common/utils/status_type.dart';
 import 'package:sw_app_gtel/network/responses/data_cpn_route_byid_reponse.dart';
+import 'package:sw_app_gtel/network/responses/request_cpn_reponse.dart';
 import 'package:sw_app_gtel/network/responses/routing_cpn_start_reponse.dart';
 import 'package:sw_app_gtel/network/responses/tracking_log_reponse.dart';
 
@@ -13,6 +14,7 @@ class DetailsRouteState extends BaseState {
   String message;
   TrackingLogReponse trackingLogReponse;
   List<Datum> listTrackingLogReponse;
+  RequsetCPN requsetCPN;
   final List<bool> isExpansion;
 
   DetailsRouteState(
@@ -23,6 +25,7 @@ class DetailsRouteState extends BaseState {
       required this.message,
       required this.trackingLogReponse,
       required this.listTrackingLogReponse,
+      required this.requsetCPN,
       required this.isExpansion});
   factory DetailsRouteState.initial() {
     return DetailsRouteState(
@@ -33,6 +36,7 @@ class DetailsRouteState extends BaseState {
         message: "",
         trackingLogReponse: TrackingLogReponse(),
         listTrackingLogReponse: [],
+        requsetCPN: RequsetCPN(requestPackageItems: [], urlPictures: []),
         isExpansion: []);
   }
   DetailsRouteState copyWith(
@@ -44,6 +48,7 @@ class DetailsRouteState extends BaseState {
       String? message,
       TrackingLogReponse? trackingLogReponse,
       List<Datum>? listTrackingLogReponse,
+      RequsetCPN? requsetCPN,
       List<bool>? isExpansion}) {
     return DetailsRouteState(
         loading: loading ?? this.loading,
@@ -54,6 +59,7 @@ class DetailsRouteState extends BaseState {
         trackingLogReponse: trackingLogReponse ?? this.trackingLogReponse,
         listTrackingLogReponse:
             listTrackingLogReponse ?? this.listTrackingLogReponse,
+        requsetCPN: requsetCPN ?? this.requsetCPN,
         isExpansion: isExpansion ?? this.isExpansion);
   }
 
@@ -66,6 +72,7 @@ class DetailsRouteState extends BaseState {
         message,
         trackingLogReponse,
         listTrackingLogReponse,
+        requsetCPN,
         isExpansion
       ];
 }

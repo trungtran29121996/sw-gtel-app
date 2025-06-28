@@ -178,81 +178,7 @@ class _ListAllrouteScreenState extends State<ListAllrouteScreen> {
                           SizedBox(
                             height: 7,
                           ),
-                          Row(children: [
-                            Icon(Icons.calendar_today,
-                                size: 14, color: _color(routeItem)),
-                            SizedBox(width: 4),
-                            Text(formatDay(DateTime.fromMillisecondsSinceEpoch(
-                                routeItem.startTime!))),
-                            SizedBox(width: 15),
-                            Text("${routeItem.countofpackage}",
-                                style: TextStyle(
-                                  color: _color(routeItem),
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                )),
-                            SizedBox(
-                              width: 2,
-                            ),
-                            Text("đơn",
-                                style: TextStyle(
-                                  color: ColorsUtils.brownGrey,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                )),
-                            SizedBox(
-                              width: 35,
-                            ),
-                            Expanded(
-                              child: Container(
-                                height: 30,
-                                child: ListView.builder(
-                                    scrollDirection: Axis.horizontal,
-                                    controller: controller,
-                                    itemCount:
-                                        routeItem.countEachHandlingUnit!.length,
-                                    itemBuilder: (context, index) {
-                                      CountEachHandlingUnit
-                                          countEachHandlingUnit = routeItem
-                                              .countEachHandlingUnit![index];
-                                      return Container(
-                                          margin: EdgeInsets.only(right: 5),
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 5, vertical: 4),
-                                          decoration: BoxDecoration(
-                                            color: Colors.grey.shade200,
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                          ),
-                                          child: Center(
-                                            child: _countPackage(
-                                                countEachHandlingUnit),
-                                          ));
-                                    }),
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(right: 15, left: 10),
-                              child: RichText(
-                                text: TextSpan(
-                                  children: [
-                                    WidgetSpan(
-                                      child: Image.asset(
-                                        "assets/images/icon_kg.png",
-                                        width: 15,
-                                        height: 15,
-                                      ),
-                                    ),
-                                    TextSpan(
-                                      style: TextStyle(
-                                          fontSize: 12, color: Colors.black),
-                                      text: "${routeItem.weight}",
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ]),
+                          _buildinfoLWH(routeItem),
                           SizedBox(
                             height: 5,
                           ),
@@ -339,6 +265,7 @@ class _ListAllrouteScreenState extends State<ListAllrouteScreen> {
                                   } else if (state.isRouteStart ==
                                           StatusType.FAILED &&
                                       !_dialogShow) {
+                                    hideLoading(context);
                                     _dialogShow = true;
                                     showAppDialog(
                                             barrierDismissible: false,
@@ -419,6 +346,7 @@ class _ListAllrouteScreenState extends State<ListAllrouteScreen> {
                                                 textStyle: TextStylesUtils
                                                     .style16WhiteNormal,
                                                 press: () {
+                                                  showLoading(context);
                                                   context
                                                       .read<RouteDetailBloc>()
                                                       .add(GetRoutingStartEvent(
@@ -490,6 +418,82 @@ class _ListAllrouteScreenState extends State<ListAllrouteScreen> {
               )
       ],
     );
+  }
+
+  Widget _buildinfoLWH(DataCnpRouteReponse routeItem) {
+    return Row(children: [
+      Icon(Icons.calendar_today, size: 14, color: _color(routeItem)),
+      SizedBox(width: 4),
+      Text(
+          formatDay(DateTime.fromMillisecondsSinceEpoch(routeItem.startTime!))),
+      SizedBox(width: 15),
+      Text("${routeItem.countofpackage}",
+          style: TextStyle(
+            color: _color(routeItem),
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+          )),
+      SizedBox(
+        width: 2,
+      ),
+      Text("đơn",
+          style: TextStyle(
+            color: ColorsUtils.brownGrey,
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+          )),
+      SizedBox(
+        width: 35,
+      ),
+      routeItem.sourceType != 7
+          ? Expanded(
+              child: Container(
+                height: 30,
+                child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    controller: controller,
+                    itemCount: routeItem.countEachHandlingUnit!.length,
+                    itemBuilder: (context, index) {
+                      CountEachHandlingUnit countEachHandlingUnit =
+                          routeItem.countEachHandlingUnit![index];
+                      return Container(
+                          margin: EdgeInsets.only(right: 5),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 5, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade200,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Center(
+                            child: _countPackage(countEachHandlingUnit),
+                          ));
+                    }),
+              ),
+            )
+          : SizedBox(),
+      routeItem.sourceType != 7
+          ? Container(
+              margin: EdgeInsets.only(right: 15, left: 10),
+              child: RichText(
+                text: TextSpan(
+                  children: [
+                    WidgetSpan(
+                      child: Image.asset(
+                        "assets/images/icon_kg.png",
+                        width: 15,
+                        height: 15,
+                      ),
+                    ),
+                    TextSpan(
+                      style: TextStyle(fontSize: 12, color: Colors.black),
+                      text: "${routeItem.weight}",
+                    ),
+                  ],
+                ),
+              ),
+            )
+          : SizedBox(),
+    ]);
   }
 
   Color _color(DataCnpRouteReponse routeItem) {

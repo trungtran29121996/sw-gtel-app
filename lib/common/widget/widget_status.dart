@@ -58,8 +58,14 @@ class WidgetStatus extends StatelessWidget {
         };
       case 430:
         return {
+          "textColor": Color(0xFFE39F0F),
+          "text": "Nhận bàn giao",
+          "color": Color(0xFFFCEAD1)
+        };
+      case 440:
+        return {
           "textColor": Color(0xFF9D6DD6),
-          "text": "Đã bàn giao",
+          "text": "Đang xử lý",
           "color": Color(0xFFDEDCF5)
         };
       case 500:

@@ -12,11 +12,6 @@ class GetRoutingStartEvent extends DetailsRouteEvent {
   GetRoutingStartEvent({required this.routeId});
 }
 
-class GetRoutingCompleteEvent extends DetailsRouteEvent {
-  int routeId;
-  GetRoutingCompleteEvent({required this.routeId});
-}
-
 class InitalEvent extends DetailsRouteEvent {}
 
 class UpdateStatusEvent extends DetailsRouteEvent {
@@ -31,7 +26,17 @@ class UpdateStatusEvent extends DetailsRouteEvent {
       required this.note});
 }
 
+class GetRoutingCompleteEvent extends DetailsRouteEvent {
+  int routeId;
+  GetRoutingCompleteEvent({required this.routeId});
+}
+
 class TrackingLogEvent extends DetailsRouteEvent {
   int requestId;
   TrackingLogEvent({required this.requestId});
+}
+
+class GetRequsetCPNEvent extends DetailsRouteEvent {
+  int requestID;
+  GetRequsetCPNEvent({required this.requestID});
 }

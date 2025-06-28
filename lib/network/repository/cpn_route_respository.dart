@@ -1,8 +1,10 @@
 import 'dart:convert';
 
 import 'package:sw_app_gtel/network/api/dio_main.dart';
+import 'package:sw_app_gtel/network/request/create_cpnlot_request.dart';
 import 'package:sw_app_gtel/network/responses/data_cpn_route_reponse.dart';
 import 'package:sw_app_gtel/network/responses/data_cpn_route_byid_reponse.dart';
+import 'package:sw_app_gtel/network/responses/request_cpn_reponse.dart';
 import 'package:sw_app_gtel/network/responses/routing_cpn_start_reponse.dart';
 import 'package:sw_app_gtel/network/responses/tracking_log_reponse.dart';
 
@@ -65,7 +67,7 @@ class CPNRouteRepository {
     try {
       final response = await dioMain.patch(
           "api/v1/tms-service/routing/cpn/route/${routeId}/complete",
-          queryParameters: {
+          data: {
             "handover_note": handover_note,
             "assignee_id": assignee_id,
             "handover_images": lstimage
@@ -105,5 +107,42 @@ class CPNRouteRepository {
       print("${e.toString()}");
     }
     return null;
+  }
+
+  Future<bool> createCPNLot(
+      int requestId, CreateCpnLotRequest createCpnLotRequest) async {
+    try {
+      final response = await dioMain
+          .patch("api/v1/tms-service/request/cpn/lot/${requestId}", data: {
+        "rlength": createCpnLotRequest.rlength,
+        "rwidth": createCpnLotRequest.rwidth,
+        "rheight": createCpnLotRequest.rheight,
+        "rweight": createCpnLotRequest.rweight,
+        "note": createCpnLotRequest.note,
+        "request_package_items": createCpnLotRequest.requestPackageItems,
+        "url_pictures": createCpnLotRequest.urlPictures
+      });
+      if (response["success"] == true) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      throw Exception('Error fetching data: $e');
+    }
+  }
+
+  Future<RequsetCPN?> getRequsetCPN(int requestID) async {
+    try {
+      final response =
+          await dioMain.get("api/v1/tms-service/request/cpn/${requestID}");
+      if (response["success"] == true) {
+        return RequsetCPN.fromJson(response["data"]);
+      } else {
+        return null;
+      }
+    } catch (e) {
+      throw Exception('Error fetching data: $e');
+    }
   }
 }

@@ -13,7 +13,7 @@ import 'package:sw_app_gtel/srceen/details_route/bloc/details_route_bloc.dart';
 import 'package:sw_app_gtel/srceen/hand_over/bloc/hand_over_bloc.dart';
 import 'package:sw_app_gtel/srceen/hand_over/bloc/hand_over_event.dart';
 import 'package:sw_app_gtel/srceen/hand_over/bloc/hand_over_state.dart';
-import 'package:sw_app_gtel/srceen/hand_over/dialog_confirrm_handover.dart';
+import 'package:sw_app_gtel/srceen/details_route/widget/dialog_confirrm_handover.dart';
 
 import '../../common/pref/sp_util.dart';
 
@@ -116,16 +116,18 @@ class _HandOverSrceenState extends State<HandOverSrceen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            _buildTab("Đơn có thể bàn giao", 0, 0),
+                            _buildTab("Chuyến bàn giao", 0,
+                                state.listHandOver.length),
                             const SizedBox(width: 20),
-                            _buildTab("Đơn đã bàn giao", 1, 0),
+                            _buildTab("Chuyến đã bàn giao", 1,
+                                state.listHandOverComplete.length),
                           ],
                         ),
                       ),
                       SizedBox(
                         height: 5,
                       ),
-                      _itemHandOver(state),
+                      itemHandOver(state)
                     ],
                   )),
             );
@@ -192,13 +194,21 @@ class _HandOverSrceenState extends State<HandOverSrceen> {
     );
   }
 
-  Widget _itemHandOver(HandOverState state) {
+  Widget itemHandOver(HandOverState state) {
+    HandOverReponse item;
+
     return Expanded(
       child: ListView.builder(
-        itemCount: state.listHandOver.length,
+        itemCount: selectedIndex == 0
+            ? state.listHandOver.length
+            : state.listHandOverComplete.length,
         controller: controller,
         itemBuilder: (context, index) {
-          HandOverReponse item = state.listHandOver[index];
+          if (selectedIndex == 0) {
+            item = state.listHandOver[index];
+          } else {
+            item = state.listHandOverComplete[index];
+          }
 
           return Container(
               margin: EdgeInsets.all(3),
@@ -250,53 +260,6 @@ class _HandOverSrceenState extends State<HandOverSrceen> {
                     Text(formatDay(
                         DateTime.fromMillisecondsSinceEpoch(item.startTime!))),
                   ]),
-                  // Row(
-                  //   children: [
-                  //     RichText(
-                  //       text: TextSpan(
-                  //         children: [
-                  //           WidgetSpan(
-                  //             child: Image.asset(
-                  //               "assets/images/icon_name.png",
-                  //               width: 15,
-                  //               height: 15,
-                  //             ),
-                  //           ),
-                  //           TextSpan(
-                  //             style: TextStyle(
-                  //                 fontWeight: FontWeight.bold,
-                  //                 fontSize: 14,
-                  //                 color: Colors.black),
-                  //             text: "",
-                  //           ),
-                  //         ],
-                  //       ),
-                  //     ),
-                  //     SizedBox(
-                  //       width: 20,
-                  //     ),
-                  //     RichText(
-                  //       text: TextSpan(
-                  //         children: [
-                  //           WidgetSpan(
-                  //             child: Image.asset(
-                  //               "assets/images/phone.png",
-                  //               width: 15,
-                  //               height: 15,
-                  //             ),
-                  //           ),
-                  //           TextSpan(
-                  //             style: TextStyle(
-                  //                 fontWeight: FontWeight.bold,
-                  //                 fontSize: 14,
-                  //                 color: Colors.black),
-                  //             text: "0908376564",
-                  //           ),
-                  //         ],
-                  //       ),
-                  //     ),
-                  //   ],
-                  // ),
                   SizedBox(
                     height: 10,
                   ),
@@ -333,65 +296,72 @@ class _HandOverSrceenState extends State<HandOverSrceen> {
                   Divider(
                     color: ColorsUtils.boderGray,
                   ),
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: DefaultButton(
-                            padding:
-                                EdgeInsets.only(top: 13, right: 10, left: 10),
-                            borderRadius: BorderRadius.circular(10.0),
-                            borderColor: ColorsUtils.disableButon,
-                            backgroundColor: Colors.white,
-                            textColor: Colors.white,
-                            text: 'Xem chi tiết',
-                            textStyle: TextStylesUtils.style16FnormalGrey,
-                            press: () {}),
-                      ),
-                      Expanded(
-                          flex: 1,
-                          child: DefaultButton(
-                              disable: item.status! >= 330 ? false : true,
-                              padding:
-                                  EdgeInsets.only(top: 13, right: 10, left: 10),
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderColor: ColorsUtils.handover,
-                              backgroundColor: ColorsUtils.handover,
-                              text: 'Bàn giao',
-                              textStyle: TextStylesUtils.style16WhiteNormal,
-                              press: () {
-                                showDialog(
-                                    barrierDismissible: false,
-                                    context: context,
-                                    builder: (context) => AlertDialog(
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(10.0))),
-                                          contentPadding: EdgeInsets.all(15.0),
-                                          content: SizedBox(
-                                            width: getDeviceWidth(context),
-                                            height: 510,
-                                            child: DialogConfirrmHandover(
-                                              routeID: item.routeId!,
-                                              subAccountReponse:
-                                                  state.subAccountReponse,
-                                            ),
-                                          ),
-                                        )).then(
-                                  (value) {
-                                    if (value == true) {
-                                      context.read<HandOverBloc>().add(
-                                          GetAllHandOver(
-                                              page: 1,
-                                              size: 20,
-                                              driver_id:
-                                                  SpUtil.getInt("driverId")));
-                                    }
-                                  },
-                                );
-                              }))
-                    ],
-                  )
+                  item.status! != 430
+                      ? Row(
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: DefaultButton(
+                                  padding: EdgeInsets.only(
+                                      top: 13, right: 10, left: 10),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderColor: ColorsUtils.disableButon,
+                                  backgroundColor: Colors.white,
+                                  textColor: Colors.white,
+                                  text: 'Xem chi tiết',
+                                  textStyle: TextStylesUtils.style16FnormalGrey,
+                                  press: () {}),
+                            ),
+                            Expanded(
+                                flex: 1,
+                                child: DefaultButton(
+                                    disable: item.status! >= 330 ? false : true,
+                                    padding: EdgeInsets.only(
+                                        top: 13, right: 10, left: 10),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    borderColor: ColorsUtils.handover,
+                                    backgroundColor: ColorsUtils.handover,
+                                    text: 'Bàn giao',
+                                    textStyle:
+                                        TextStylesUtils.style16WhiteNormal,
+                                    press: () {
+                                      showDialog(
+                                          barrierDismissible: false,
+                                          context: context,
+                                          builder: (context) => AlertDialog(
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                10.0))),
+                                                contentPadding:
+                                                    EdgeInsets.all(15.0),
+                                                content: SizedBox(
+                                                  width:
+                                                      getDeviceWidth(context),
+                                                  height: 510,
+                                                  child: DialogConfirrmHandover(
+                                                    routeID: item.routeId!,
+                                                    subAccountReponse:
+                                                        state.subAccountReponse,
+                                                  ),
+                                                ),
+                                              )).then(
+                                        (value) {
+                                          if (value == true) {
+                                            context.read<HandOverBloc>().add(
+                                                GetAllHandOver(
+                                                    page: 1,
+                                                    size: 20,
+                                                    driver_id: SpUtil.getInt(
+                                                        "driverId")));
+                                          }
+                                        },
+                                      );
+                                    }))
+                          ],
+                        )
+                      : SizedBox()
                 ],
               ));
         },

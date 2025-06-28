@@ -229,7 +229,9 @@ class _ListOrderDetialsScreenState extends State<ListOrderDetialsScreen> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
-                    '${widget.routeItem.requestInfo!.basePackagingInfo!.packageName!}',
+                    widget.routeItem.requestInfo!.basePackagingInfo != null
+                        ? '${widget.routeItem.requestInfo!.basePackagingInfo!.packageName!}'
+                        : "",
                     style: TextStyle(fontSize: 12),
                   ),
                 ),
