@@ -17,3 +17,7 @@ void showLoading(BuildContext context) {
 void hideLoading(BuildContext context) {
   Navigator.of(context).pop();
 }
+
+void hideLoadingBool(BuildContext context) {
+  Navigator.pop(context, true);
+}

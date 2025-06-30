@@ -70,6 +70,60 @@ String formatVND(int number) {
   return formatter.format(number);
 }
 
+int formatDaysToDate(String days, int hour, int min) {
+  DateFormat format = DateFormat("dd/MM/yyyy");
+  DateTime parsedDate = format.parse(days);
+
+  DateTime dateTimeWithTime = DateTime(
+    parsedDate.year,
+    parsedDate.month,
+    parsedDate.day,
+    hour,
+    min,
+  );
+
+  return dateTimeWithTime.millisecondsSinceEpoch;
+}
+
+String dayOfWeekNow() {
+  DateTime now = DateTime.now();
+  String dayOfWeek = DateFormat.EEEE('vi').format(now);
+  return dayOfWeek;
+}
+
+String dateNow() {
+  DateTime now = DateTime.now();
+  String date = DateFormat('dd/MM/yyyy').format(now);
+  return date;
+}
+
+String daysMon() {
+  DateTime now = DateTime.now();
+
+  // Lùi lại tới thứ Hai đầu tuần
+  DateTime monday = now.subtract(Duration(days: now.weekday - 1));
+
+  // Format ngày theo dd/MM/yyyy
+  String mondayStr = DateFormat('dd/MM/yyyy').format(monday);
+
+  return mondayStr;
+}
+
+String daysSun() {
+  DateTime now = DateTime.now();
+
+  // Lùi lại tới thứ Hai đầu tuần
+  DateTime monday = now.subtract(Duration(days: now.weekday - 1));
+
+  // Tính tới Chủ Nhật cuối tuần
+  DateTime sunday = monday.add(Duration(days: 6));
+
+  // Format ngày theo dd/MM/yyyy
+  String sundayStr = DateFormat('dd/MM/yyyy').format(sunday);
+
+  return sundayStr;
+}
+
 DateFormat format_HHmm = DateFormat("HH:mm");
 DateFormat dateFormat_dMyHm = DateFormat("dd/MM/yyyy | HH:mm");
 DateFormat dateFormat_dmy = DateFormat("dd/MM/yyyy");

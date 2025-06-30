@@ -156,15 +156,10 @@ class _ListAllrouteScreenState extends State<ListAllrouteScreen> {
                         children: [
                           Row(
                             children: [
-                              // Icon(
-                              //   Icons.scaner,
-                              //   color: _color(routeItem),
-                              // ),
                               Container(
                                   margin: EdgeInsets.only(top: 8),
                                   child: Image.asset(
                                       "assets/images/scan_qrcode.png")),
-
                               Text("${routeItem.orderCodeOfClient}",
                                   style: TextStyle(
                                     color: _color(routeItem),
@@ -346,7 +341,7 @@ class _ListAllrouteScreenState extends State<ListAllrouteScreen> {
                                                 textStyle: TextStylesUtils
                                                     .style16WhiteNormal,
                                                 press: () {
-                                                  showLoading(context);
+                                                  //showLoading(context);
                                                   context
                                                       .read<RouteDetailBloc>()
                                                       .add(GetRoutingStartEvent(

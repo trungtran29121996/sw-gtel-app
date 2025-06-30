@@ -133,7 +133,8 @@ class _DialogConfirrmHandoverState extends State<DialogConfirrmHandover> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context) => HandOverBloc()..add(GetInfoHandOver(routeId: 421)),
+        create: (context) =>
+            HandOverBloc()..add(GetInfoHandOver(routeId: widget.routeID)),
         child: Builder(builder: (context) {
           return BlocConsumer<HandOverBloc, HandOverState>(
             listener: (context, state) {
@@ -307,6 +308,7 @@ class _DialogConfirrmHandoverState extends State<DialogConfirrmHandover> {
                           text: 'Xác nhận',
                           textStyle: TextStylesUtils.style16WhiteNormal,
                           press: () {
+                            showLoading(context);
                             if (selectedValue == null) {
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(SnackBar(
@@ -323,11 +325,7 @@ class _DialogConfirrmHandoverState extends State<DialogConfirrmHandover> {
                                       lstImage)
                                   .then(
                                 (value) {
-                                  //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                  //     content: Text("Đã xác nhận bàn giao thành công!"),
-                                  //     backgroundColor: Colors.green,
-                                  //   ));
-                                  Navigator.pop(context, true);
+                                  hideLoadingBool(context);
                                 },
                               );
                             }

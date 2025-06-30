@@ -59,6 +59,11 @@ class _ReceiveBillDetailsScreenState extends State<ReceiveBillDetailsScreen> {
             listeners: [
               BlocListener<RouteDetailBloc, DetailsRouteState>(
                   listener: (context, state) {
+                if (state.loading.isLoading) {
+                  showLoading(context);
+                } else if (state.loading.isLoadSuccess) {
+                  //hideLoading(context);
+                }
                 routeDetailBloc.getPackageItemsDoc(state.requsetCPN).then(
                   (value) {
                     documentCount = value;

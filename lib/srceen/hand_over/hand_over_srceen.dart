@@ -10,6 +10,7 @@ import 'package:sw_app_gtel/common/widget/widget_status.dart';
 import 'package:sw_app_gtel/network/responses/data_hand_over_reponse.dart';
 import 'package:sw_app_gtel/network/responses/login_response.dart';
 import 'package:sw_app_gtel/srceen/details_route/bloc/details_route_bloc.dart';
+import 'package:sw_app_gtel/srceen/details_route/details_route_srceen.dart';
 import 'package:sw_app_gtel/srceen/hand_over/bloc/hand_over_bloc.dart';
 import 'package:sw_app_gtel/srceen/hand_over/bloc/hand_over_event.dart';
 import 'package:sw_app_gtel/srceen/hand_over/bloc/hand_over_state.dart';
@@ -195,8 +196,6 @@ class _HandOverSrceenState extends State<HandOverSrceen> {
   }
 
   Widget itemHandOver(HandOverState state) {
-    HandOverReponse item;
-
     return Expanded(
       child: ListView.builder(
         itemCount: selectedIndex == 0
@@ -204,6 +203,7 @@ class _HandOverSrceenState extends State<HandOverSrceen> {
             : state.listHandOverComplete.length,
         controller: controller,
         itemBuilder: (context, index) {
+          HandOverReponse item;
           if (selectedIndex == 0) {
             item = state.listHandOver[index];
           } else {
@@ -302,6 +302,7 @@ class _HandOverSrceenState extends State<HandOverSrceen> {
                             Expanded(
                               flex: 1,
                               child: DefaultButton(
+                                  disable: item.status! < 330 ? false : true,
                                   padding: EdgeInsets.only(
                                       top: 13, right: 10, left: 10),
                                   borderRadius: BorderRadius.circular(10.0),
@@ -310,7 +311,17 @@ class _HandOverSrceenState extends State<HandOverSrceen> {
                                   textColor: Colors.white,
                                   text: 'Xem chi tiết',
                                   textStyle: TextStylesUtils.style16FnormalGrey,
-                                  press: () {}),
+                                  press: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              DetailsRouteSrceen(
+                                            isSrceen: 1,
+                                            routeId: item.routeId!,
+                                          ),
+                                        ));
+                                  }),
                             ),
                             Expanded(
                                 flex: 1,

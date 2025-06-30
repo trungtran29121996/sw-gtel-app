@@ -62,8 +62,6 @@ class UpdatRouteCPNReponse {
   int? duration;
   int? servicelevel;
   String? fromAddress;
-  int? fromLat;
-  int? fromLon;
   int? fromFleetAddressId;
   String? fileName;
   String? toAddress;
@@ -112,8 +110,6 @@ class UpdatRouteCPNReponse {
     this.duration,
     this.servicelevel,
     this.fromAddress,
-    this.fromLat,
-    this.fromLon,
     this.fromFleetAddressId,
     this.fileName,
     this.toAddress,
@@ -164,8 +160,6 @@ class UpdatRouteCPNReponse {
         duration: json["duration"],
         servicelevel: json["servicelevel"],
         fromAddress: json["from_address"],
-        fromLat: json["from_lat"],
-        fromLon: json["from_lon"],
         fromFleetAddressId: json["from_fleet_address_id"],
         fileName: json["file_name"],
         toAddress: json["to_address"],
@@ -223,8 +217,6 @@ class UpdatRouteCPNReponse {
         "duration": duration,
         "servicelevel": servicelevel,
         "from_address": fromAddress,
-        "from_lat": fromLat,
-        "from_lon": fromLon,
         "from_fleet_address_id": fromFleetAddressId,
         "file_name": fileName,
         "to_address": toAddress,

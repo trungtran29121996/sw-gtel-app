@@ -197,7 +197,7 @@ class _DetailsRouteSrceenState extends State<DetailsRouteSrceen> {
                             item.requestInfo!.sequenceList[0].stoppointType ==
                                 2 &&
                             item.requestInfo!.sequenceList[0].status == 200
-                        ? item.requestInfo!.requestType == 2
+                        ? item.requestInfo!.requestType != 1
                             ? DefaultButton(
                                 padding: EdgeInsets.all(5),
                                 borderRadius: BorderRadius.circular(15.0),

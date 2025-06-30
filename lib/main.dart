@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(builder: (_, child) {
           return MaterialApp(
             title: 'Gtel',
-            //debugShowCheckedModeBanner: true,
+            debugShowCheckedModeBanner: false,
             theme: ColorsUtils.driverTheme,
             initialRoute: AppRoutes.INITIAL_ROOT,
             onGenerateRoute: AppRoutes.generateRoute,
