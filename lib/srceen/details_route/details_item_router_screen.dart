@@ -312,6 +312,7 @@ class _ListOrderDetialsScreenState extends State<ListOrderDetialsScreen> {
               child: Container(
                 child: ListView.builder(
                   shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
                   itemCount: state.listTrackingLogReponse.length,
                   itemBuilder: (context, index) {
                     Datum trackingItem = state.listTrackingLogReponse[index];
@@ -346,7 +347,7 @@ class _ListOrderDetialsScreenState extends State<ListOrderDetialsScreen> {
                                     ? ColorsUtils.normalText
                                     : ColorsUtils.brownGrey),
                               ),
-                              // ExpansionTile(
+
                               //   title: Text(
                               //     trackingItem.fullAddress!,
                               //     style: index == 0
@@ -465,7 +466,6 @@ class _ListOrderDetialsScreenState extends State<ListOrderDetialsScreen> {
                       borderRadius: BorderRadius.circular(15.0),
                       borderColor: Colors.red,
                       backgroundColor: Colors.white,
-                      //width: getDeviceWidth(context) * 0.8,
                       text: 'Đồng ý',
                       textStyle: TextStylesUtils.style14FnormalRed,
                       press: () {

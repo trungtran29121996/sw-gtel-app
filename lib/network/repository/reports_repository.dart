@@ -1,4 +1,5 @@
 import 'package:sw_app_gtel/network/api/dio_main.dart';
+import 'package:sw_app_gtel/network/responses/collect_chart_reponse.dart';
 import 'package:sw_app_gtel/network/responses/dashboard_list_reponse.dart';
 import 'package:sw_app_gtel/network/responses/dashboard_summary_reponse.dart';
 
@@ -29,6 +30,21 @@ class ReportsRepository {
             "to_date": to_date,
           });
       return DashboardListReponse.fromJson(response);
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<CollectedChartReponse> getCollectedChart(
+      int from_date, int to_date) async {
+    try {
+      final response = await dioMain.get(
+          "api/v1/tms-service/courier/dashboard/collected-chart",
+          queryParameters: {
+            "from_date": from_date,
+            "to_date": to_date,
+          });
+      return CollectedChartReponse.fromJson(response);
     } catch (e) {
       throw Exception(e);
     }

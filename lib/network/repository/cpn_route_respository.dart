@@ -135,7 +135,7 @@ class CPNRouteRepository {
   Future<RequsetCPN?> getRequsetCPN(int requestID) async {
     try {
       final response =
-          await dioMain.get("api/v1/tms-service/request/cpn/${requestID}");
+          await dioMain.get("api/v1/tms-service/request/cpn/lot/${requestID}");
       if (response["success"] == true) {
         return RequsetCPN.fromJson(response["data"]);
       } else {

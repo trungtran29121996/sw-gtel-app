@@ -41,4 +41,5 @@ class ColorsUtils {
   static const fillInput = Color(0xFFF1F1F1);
   static const handover = Color(0xFF5DC3FC);
   static const btnHandover = Color(0xFFFF6F61);
+  static const columChart = Color(0xFF00B5E2);
 }

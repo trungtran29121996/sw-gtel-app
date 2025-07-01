@@ -6,6 +6,7 @@ import 'package:sw_app_gtel/network/responses/dashboard_list_reponse.dart';
 import 'package:sw_app_gtel/srceen/report/bloc/reports_bloc.dart';
 import 'package:sw_app_gtel/srceen/report/bloc/reports_event.dart';
 import 'package:sw_app_gtel/srceen/report/bloc/reports_state.dart';
+import 'package:sw_app_gtel/srceen/report/widget/widget_chart_reports.dart';
 
 class ReportScreen extends StatefulWidget {
   const ReportScreen({super.key});
@@ -35,7 +36,7 @@ class _ReportScreenState extends State<ReportScreen> {
             ..add(DashboardListEvent(
                 form_date: formatDaysToDate(dateNow(), 00, 01),
                 to_date: formatDaysToDate(dateNow(), 23, 59)))
-            ..add(DashboardListEvent(
+            ..add(DashboardListWeeksEvent(
                 form_date: formatDaysToDate(daysMon(), 00, 01),
                 to_date: formatDaysToDate(daysSun(), 23, 59))),
         ),
@@ -53,7 +54,6 @@ class _ReportScreenState extends State<ReportScreen> {
           ],
           child: BlocBuilder<ReportsBloc, ReportsState>(
               builder: (BuildContext context, state) {
-            //print("Trung ${state.dashboardListReponseWeeks.data.length}");
             return Scaffold(
               backgroundColor: Colors.white,
               appBar: AppBar(
@@ -100,6 +100,7 @@ class _ReportScreenState extends State<ReportScreen> {
                                   ),
                                   ListView.builder(
                                     shrinkWrap: true,
+                                    physics: NeverScrollableScrollPhysics(),
                                     itemCount:
                                         state.dashboardListReponse.data.length,
                                     itemBuilder: (context, index) {
@@ -119,6 +120,7 @@ class _ReportScreenState extends State<ReportScreen> {
                                   ),
                                   ListView.builder(
                                     shrinkWrap: true,
+                                    physics: NeverScrollableScrollPhysics(),
                                     itemCount: state
                                         .dashboardListReponseWeeks.data.length,
                                     itemBuilder: (context, index) {
@@ -167,9 +169,10 @@ class _ReportScreenState extends State<ReportScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               _buildAmountColumn(
-                  "${state.dashboardSummaryNows.data?.totalCod}đ", 'Tiền mặt'),
+                  "${formatVND(state.dashboardSummaryNows.data?.totalCod)}đ",
+                  'Tiền mặt'),
               _buildAmountColumn(
-                  "${state.dashboardSummaryNows.data?.shippingFee}đ",
+                  "${formatVND(state.dashboardSummaryNows.data?.shippingFee)}đ",
                   'Thu hộ (COD)'),
             ],
           ),
@@ -228,9 +231,10 @@ class _ReportScreenState extends State<ReportScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               _buildAmountColumn(
-                  "${state.dashboardSummaryWeeks.data?.totalCod}đ", 'Tiền mặt'),
+                  "${formatVND(state.dashboardSummaryWeeks.data?.totalCod)}đ",
+                  'Tiền mặt'),
               _buildAmountColumn(
-                  "${state.dashboardSummaryWeeks.data?.shippingFee}đ",
+                  "${formatVND(state.dashboardSummaryWeeks.data?.shippingFee)}đ",
                   'Thu hộ (COD)'),
             ],
           ),
@@ -255,6 +259,8 @@ class _ReportScreenState extends State<ReportScreen> {
                   Colors.orange),
             ],
           ),
+          SizedBox(height: 25),
+          WidgetChartReports()
         ],
       ),
     );
@@ -278,15 +284,7 @@ class _ReportScreenState extends State<ReportScreen> {
       child: Row(
         children: [
           // Icon hình hộp
-          CircleAvatar(
-            backgroundColor: Colors.blue.shade50,
-            radius: 24,
-            child: Image.asset(
-              "assets/images/report_package.png",
-              color: Colors.blue,
-            ),
-            //Icon(Icons.local_shipping, color: Colors.blue, size: 28)
-          ),
+          _buildicon(item),
           SizedBox(width: 12),
           // Nội dung chính
           Expanded(
@@ -344,7 +342,7 @@ class _ReportScreenState extends State<ReportScreen> {
                     ),
               SizedBox(height: 8),
               Text(
-                '${item.shippingFee}đ',
+                '${formatVND(item.shippingFee)}đ',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
@@ -352,7 +350,7 @@ class _ReportScreenState extends State<ReportScreen> {
               ),
               SizedBox(height: 4),
               Text(
-                'COD ${item.cod} đ',
+                'COD: ${formatVND(item.cod)}đ',
                 style: TextStyle(color: Colors.blue, fontSize: 12),
               ),
             ],
@@ -360,6 +358,25 @@ class _ReportScreenState extends State<ReportScreen> {
         ],
       ),
     );
+  }
+
+  Widget _buildicon(Datum item) {
+    return item.packageName == "Bưu kiện"
+        ? CircleAvatar(
+            backgroundColor: Color(0XFFC6DCE2),
+            radius: 24,
+            child: Image.asset(
+              "assets/images/report_package.png",
+              color: Color(0XFF00A3CB),
+            ))
+        : CircleAvatar(
+            backgroundColor: Color(0xFFFCEAD1),
+            radius: 24,
+            child: Image.asset(
+              "assets/images/report_letter.png",
+              color: Color(0xFFDB9F4B),
+            ),
+          );
   }
 
   Widget _buildAmountColumn(String value, String label) {

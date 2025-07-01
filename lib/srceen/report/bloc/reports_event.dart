@@ -19,3 +19,15 @@ class DashboardListEvent extends ReportsEvent {
   int to_date;
   DashboardListEvent({required this.form_date, required this.to_date});
 }
+
+class DashboardListWeeksEvent extends ReportsEvent {
+  int form_date;
+  int to_date;
+  DashboardListWeeksEvent({required this.form_date, required this.to_date});
+}
+
+class CollectedChartEvent extends ReportsEvent {
+  int form_date;
+  int to_date;
+  CollectedChartEvent({required this.form_date, required this.to_date});
+}

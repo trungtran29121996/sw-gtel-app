@@ -81,17 +81,6 @@ class _ListAllrouteScreenState extends State<ListAllrouteScreen> {
               ? DefaultAppBar(
                   backgroundColor: Color(0xFFb3e0ff),
                   title: "Danh sách chuyến",
-                  action: Row(
-                    children: [
-                      IconButton(
-                          icon: Icon(Icons.search_outlined),
-                          onPressed: () {
-                            setState(() {
-                              isShowInput = true;
-                            });
-                          }),
-                    ],
-                  ),
                 )
               : DefaultAppBar(
                   elevation: 5,

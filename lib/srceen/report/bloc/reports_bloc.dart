@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sw_app_gtel/common/core/base/bloc/base_bloc.dart';
 import 'package:sw_app_gtel/network/repository/reports_repository.dart';
+import 'package:sw_app_gtel/network/responses/collect_chart_reponse.dart';
 import 'package:sw_app_gtel/network/responses/dashboard_list_reponse.dart';
 import 'package:sw_app_gtel/network/responses/dashboard_summary_reponse.dart';
 import 'package:sw_app_gtel/srceen/report/bloc/reports_event.dart';
@@ -11,6 +12,8 @@ class ReportsBloc extends BaseBloc<ReportsEvent, ReportsState> {
     on<GetReportsNowsEvent>(_onGetReportsNows);
     on<GetReportsWeeksEvent>(_onGetReportsWeeks);
     on<DashboardListEvent>(_onGetDashboardList);
+    on<DashboardListWeeksEvent>(_onGetDashboardListWeeks);
+    on<CollectedChartEvent>(_onGetCollectedChart);
   }
 
   ReportsRepository reportsRepository = ReportsRepository();
@@ -66,8 +69,7 @@ class ReportsBloc extends BaseBloc<ReportsEvent, ReportsState> {
     try {
       DashboardListReponse dashboardListReponse =
           DashboardListReponse(data: []);
-      DashboardListReponse dashboardListReponseWeeks =
-          DashboardListReponse(data: []);
+
       emit.call(state.copyWith(
           loading:
               state.loading.copyWith(isLoading: true, isLoadSuccess: false)));
@@ -75,14 +77,60 @@ class ReportsBloc extends BaseBloc<ReportsEvent, ReportsState> {
       dashboardListReponse = await reportsRepository.getDashboardList(
           event.form_date, event.to_date);
 
+      emit.call(state.copyWith(
+          loading:
+              state.loading.copyWith(isLoading: false, isLoadSuccess: true),
+          dashboardListReponse: dashboardListReponse,
+          dialogLoading: false));
+    } catch (e) {
+      print("LOI $e");
+      emit.call(state.copyWith(
+          loading: state.loading.copyWith(
+              isLoading: false, isLoadSuccess: false, loadError: true)));
+    }
+  }
+
+  Future _onGetDashboardListWeeks(
+      DashboardListWeeksEvent event, Emitter emit) async {
+    try {
+      DashboardListReponse dashboardListReponseWeeks =
+          DashboardListReponse(data: []);
+      emit.call(state.copyWith(
+          loading:
+              state.loading.copyWith(isLoading: true, isLoadSuccess: false)));
+
       dashboardListReponseWeeks = await reportsRepository.getDashboardList(
           event.form_date, event.to_date);
 
       emit.call(state.copyWith(
           loading:
               state.loading.copyWith(isLoading: false, isLoadSuccess: true),
-          dashboardListReponse: dashboardListReponse,
           dashboardListReponseWeeks: dashboardListReponseWeeks,
+          dialogLoading: false));
+    } catch (e) {
+      print("LOI $e");
+      emit.call(state.copyWith(
+          loading: state.loading.copyWith(
+              isLoading: false, isLoadSuccess: false, loadError: true)));
+    }
+  }
+
+  Future _onGetCollectedChart(CollectedChartEvent event, Emitter emit) async {
+    try {
+      CollectedChartReponse chartReponse = CollectedChartReponse(
+          data: DataNum(collectedAmount: [], maxCash: 0, maxCod: 0, color: []));
+
+      emit.call(state.copyWith(
+          loading:
+              state.loading.copyWith(isLoading: true, isLoadSuccess: false)));
+
+      chartReponse = await reportsRepository.getCollectedChart(
+          event.form_date, event.to_date);
+
+      emit.call(state.copyWith(
+          loading:
+              state.loading.copyWith(isLoading: false, isLoadSuccess: true),
+          chartReponse: chartReponse,
           dialogLoading: false));
     } catch (e) {
       print("LOI $e");

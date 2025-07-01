@@ -65,9 +65,13 @@ String formatDayString2(DateTime date) {
   return DateFormat('EEEE MMMM d, yyyy').format(date);
 }
 
-String formatVND(int number) {
-  final formatter = NumberFormat.currency(locale: 'vi_VN', symbol: "");
-  return formatter.format(number);
+String formatVND(int? number) {
+  if (number != null) {
+    // xử lý
+    final formatter = NumberFormat.currency(locale: 'vi_VN', symbol: "");
+    return formatter.format(number);
+  }
+  return "";
 }
 
 int formatDaysToDate(String days, int hour, int min) {

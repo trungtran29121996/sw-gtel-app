@@ -80,36 +80,30 @@ class _HandOverSrceenState extends State<HandOverSrceen> {
                   color: Colors.white,
                   child: Column(
                     children: [
-                      Row(
-                        children: [
-                          Expanded(
-                              child: TextField(
-                                  decoration: InputDecoration(
-                                      hintText:
-                                          'Mã vận đơn, Tên khách, Số điện thoại, ...',
-                                      hintStyle: TextStyle(color: Colors.grey),
-                                      filled: true,
-                                      fillColor: Colors.grey.shade100,
-                                      border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(6.0),
-                                        borderSide: BorderSide.none,
-                                      ),
-                                      contentPadding: EdgeInsets.symmetric(
-                                          horizontal: 12, vertical: 14),
-                                      suffixIcon: Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            IconButton(
-                                              icon: Icon(Icons.grid_view,
-                                                  color: Colors.cyan),
-                                              onPressed: () {
-                                                // handle grid view
-                                              },
-                                            ),
-                                          ])))),
-                        ],
-                      ),
+                      TextField(
+                          decoration: InputDecoration(
+                              hintText:
+                                  'Mã vận đơn, Tên khách, Số điện thoại, ...',
+                              hintStyle: TextStyle(color: Colors.grey),
+                              filled: true,
+                              fillColor: Colors.grey.shade100,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(6.0),
+                                borderSide: BorderSide.none,
+                              ),
+                              contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 14),
+                              suffixIcon: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    IconButton(
+                                      icon: Icon(Icons.grid_view,
+                                          color: Colors.cyan),
+                                      onPressed: () {
+                                        // handle grid view
+                                      },
+                                    ),
+                                  ]))),
                       SizedBox(
                         height: 7,
                       ),
@@ -296,88 +290,82 @@ class _HandOverSrceenState extends State<HandOverSrceen> {
                   Divider(
                     color: ColorsUtils.boderGray,
                   ),
-                  item.status! != 430
-                      ? Row(
-                          children: [
-                            Expanded(
-                              flex: 1,
-                              child: DefaultButton(
-                                  disable: item.status! < 330 ? false : true,
-                                  padding: EdgeInsets.only(
-                                      top: 13, right: 10, left: 10),
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  borderColor: ColorsUtils.disableButon,
-                                  backgroundColor: Colors.white,
-                                  textColor: Colors.white,
-                                  text: 'Xem chi tiết',
-                                  textStyle: TextStylesUtils.style16FnormalGrey,
-                                  press: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              DetailsRouteSrceen(
-                                            isSrceen: 1,
-                                            routeId: item.routeId!,
-                                          ),
-                                        ));
-                                  }),
-                            ),
-                            Expanded(
-                                flex: 1,
-                                child: DefaultButton(
-                                    disable: item.status! >= 330 ? false : true,
-                                    padding: EdgeInsets.only(
-                                        top: 13, right: 10, left: 10),
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    borderColor: ColorsUtils.handover,
-                                    backgroundColor: ColorsUtils.handover,
-                                    text: 'Bàn giao',
-                                    textStyle:
-                                        TextStylesUtils.style16WhiteNormal,
-                                    press: () {
-                                      showDialog(
-                                          barrierDismissible: false,
-                                          context: context,
-                                          builder: (context) => AlertDialog(
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                            Radius.circular(
-                                                                10.0))),
-                                                contentPadding:
-                                                    EdgeInsets.all(15.0),
-                                                content: SizedBox(
-                                                  width:
-                                                      getDeviceWidth(context),
-                                                  height: 510,
-                                                  child: DialogConfirrmHandover(
-                                                    routeID: item.routeId!,
-                                                    subAccountReponse:
-                                                        state.subAccountReponse,
-                                                  ),
-                                                ),
-                                              )).then(
-                                        (value) {
-                                          if (value == true) {
-                                            context.read<HandOverBloc>().add(
-                                                GetAllHandOver(
-                                                    page: 1,
-                                                    size: 20,
-                                                    driver_id: SpUtil.getInt(
-                                                        "driverId")));
-                                          }
-                                        },
-                                      );
-                                    }))
-                          ],
-                        )
-                      : SizedBox()
+                  selectedIndex == 0 ? _buildbutton(item, state) : SizedBox()
                 ],
               ));
         },
       ),
     );
+  }
+
+  Widget _buildbutton(HandOverReponse item, HandOverState state) {
+    return item.status! != 430
+        ? Row(
+            children: [
+              Expanded(
+                flex: 1,
+                child: DefaultButton(
+                    disable: item.status! < 330 ? false : true,
+                    padding: EdgeInsets.only(top: 13, right: 10, left: 10),
+                    borderRadius: BorderRadius.circular(10.0),
+                    borderColor: ColorsUtils.disableButon,
+                    backgroundColor: Colors.white,
+                    textColor: Colors.white,
+                    text: 'Xem chi tiết',
+                    textStyle: TextStylesUtils.style16FnormalGrey,
+                    press: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DetailsRouteSrceen(
+                              isSrceen: 1,
+                              routeId: item.routeId!,
+                            ),
+                          ));
+                    }),
+              ),
+              Expanded(
+                  flex: 1,
+                  child: DefaultButton(
+                      disable: item.status! >= 330 ? false : true,
+                      padding: EdgeInsets.only(top: 13, right: 10, left: 10),
+                      borderRadius: BorderRadius.circular(10.0),
+                      borderColor: ColorsUtils.handover,
+                      backgroundColor: ColorsUtils.handover,
+                      text: 'Bàn giao',
+                      textStyle: TextStylesUtils.style16WhiteNormal,
+                      press: () {
+                        showDialog(
+                            barrierDismissible: false,
+                            context: context,
+                            builder: (context) => AlertDialog(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10.0))),
+                                  contentPadding: EdgeInsets.all(15.0),
+                                  content: SizedBox(
+                                    width: getDeviceWidth(context),
+                                    height: 510,
+                                    child: DialogConfirrmHandover(
+                                      routeID: item.routeId!,
+                                      subAccountReponse:
+                                          state.subAccountReponse,
+                                    ),
+                                  ),
+                                )).then(
+                          (value) {
+                            if (value == true) {
+                              context.read<HandOverBloc>().add(GetAllHandOver(
+                                  page: 1,
+                                  size: 20,
+                                  driver_id: SpUtil.getInt("driverId")));
+                            }
+                          },
+                        );
+                      }))
+            ],
+          )
+        : SizedBox();
   }
 
   Widget _buildTab(String text, int index, int count) {

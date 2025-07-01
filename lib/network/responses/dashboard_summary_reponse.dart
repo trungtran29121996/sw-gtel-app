@@ -1,15 +1,3 @@
-// To parse this JSON data, do
-//
-//     final dashboardSummary = dashboardSummaryFromJson(jsonString);
-
-import 'dart:convert';
-
-DashboardSummaryReponse dashboardSummaryFromJson(String str) =>
-    DashboardSummaryReponse.fromJson(json.decode(str));
-
-String dashboardSummaryToJson(DashboardSummaryReponse data) =>
-    json.encode(data.toJson());
-
 class DashboardSummaryReponse {
   bool? success;
   String? message;
@@ -55,11 +43,11 @@ class Data {
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-        shippingFee: json["shipping_fee"],
-        totalCod: json["total_cod"],
-        successCount: json["success_count"],
-        failedCount: json["failed_count"],
-        onTimeRate: json["on_time_rate"],
+        shippingFee: json["shipping_fee"] == null ? 0 : json["shipping_fee"],
+        totalCod: json["total_cod"] == null ? 0 : json["total_cod"],
+        successCount: json["success_count"] == null ? 0 : json["success_count"],
+        failedCount: json["failed_count"] == null ? 0 : json["failed_count"],
+        onTimeRate: json["on_time_rate"] == null ? 0 : json["on_time_rate"],
       );
 
   Map<String, dynamic> toJson() => {
