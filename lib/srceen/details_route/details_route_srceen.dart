@@ -29,7 +29,6 @@ class _DetailsRouteSrceenState extends State<DetailsRouteSrceen> {
   ScrollController controller = ScrollController();
 
   int requestType = 0;
-  bool? relust;
 
   @override
   Widget build(BuildContext context) {
@@ -66,32 +65,39 @@ class _DetailsRouteSrceenState extends State<DetailsRouteSrceen> {
                     style: TextStyle(color: Colors.black)),
                 centerTitle: true,
               ),
-              body: Container(
-                  padding: EdgeInsets.all(8),
-                  color: Colors.white,
-                  child: Container(
-                    child: ListView.builder(
-                        controller: controller,
-                        itemCount: state.routeRequestList.length,
-                        itemBuilder: (context, index) {
-                          RouteRequestList item = state.routeRequestList[index];
-                          //requestType 1 là giao - 2 là nhận
+              body: WillPopScope(
+                onWillPop: () async {
+                  Navigator.pop(context, true);
+                  return true;
+                },
+                child: Container(
+                    padding: EdgeInsets.all(8),
+                    color: Colors.white,
+                    child: Container(
+                      child: ListView.builder(
+                          controller: controller,
+                          itemCount: state.routeRequestList.length,
+                          itemBuilder: (context, index) {
+                            RouteRequestList item =
+                                state.routeRequestList[index];
+                            //requestType 1 là giao - 2 là nhận
 
-                          return InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          ListOrderDetialsScreen(
-                                        routeItem: item,
-                                        requestType: requestType,
-                                      ),
-                                    ));
-                              },
-                              child: deliveryCard(item, state));
-                        }),
-                  )),
+                            return InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            ListOrderDetialsScreen(
+                                          routeItem: item,
+                                          requestType: requestType,
+                                        ),
+                                      ));
+                                },
+                                child: deliveryCard(item, state));
+                          }),
+                    )),
+              ),
             ));
           }),
         ));
@@ -110,8 +116,6 @@ class _DetailsRouteSrceenState extends State<DetailsRouteSrceen> {
   }
 
   Widget deliveryCard(RouteRequestList item, DetailsRouteState state) {
-    print("Trung ${state.routeByID.status}");
-
     return Container(
       margin: EdgeInsets.only(bottom: 7),
       decoration: BoxDecoration(
@@ -278,10 +282,8 @@ class _DetailsRouteSrceenState extends State<DetailsRouteSrceen> {
                               .then(
                             (value) {
                               hideLoading(context);
-                              relust = true;
                               context.read<RouteDetailBloc>().add(
                                   GetRouteByIDEvent(routeId: widget.routeId));
-                              //Navigator.pop(context, true);
                             },
                           );
                         })

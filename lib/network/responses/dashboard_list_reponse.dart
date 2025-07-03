@@ -33,7 +33,7 @@ class Datum {
   String? serviceName;
   String? packageName;
   String? orderCodeOfClient;
-  int? rweight;
+  double? rweight;
   int? cod;
   int? shippingFee;
   RequestStatus? requestStatus;
@@ -52,7 +52,7 @@ class Datum {
         serviceName: json["service_name"],
         packageName: json["package_name"],
         orderCodeOfClient: json["order_code_of_client"],
-        rweight: json["rweight"],
+        rweight: json["rweight"]?.toDouble(),
         cod: json["cod"],
         shippingFee: json["shipping_fee"],
         requestStatus: json["request_status"] == null
