@@ -75,56 +75,174 @@ class _HandOverSrceenState extends State<HandOverSrceen> {
                     style: TextStyle(color: Colors.black)),
                 centerTitle: true,
               ),
-              body: Container(
-                  padding: EdgeInsets.all(8),
-                  color: Colors.white,
-                  child: Column(
-                    children: [
-                      TextField(
-                          decoration: InputDecoration(
-                              hintText:
-                                  'Mã vận đơn, Tên khách, Số điện thoại, ...',
-                              hintStyle: TextStyle(color: Colors.grey),
-                              filled: true,
-                              fillColor: Colors.grey.shade100,
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(6.0),
-                                borderSide: BorderSide.none,
-                              ),
-                              contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 12, vertical: 14),
-                              suffixIcon: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    IconButton(
-                                      icon: Icon(Icons.grid_view,
-                                          color: Colors.cyan),
-                                      onPressed: () {
-                                        // handle grid view
-                                      },
-                                    ),
-                                  ]))),
-                      SizedBox(
-                        height: 7,
-                      ),
-                      Center(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            _buildTab("Chuyến bàn giao", 0,
-                                state.listHandOver.length),
-                            const SizedBox(width: 20),
-                            _buildTab("Chuyến đã bàn giao", 1,
-                                state.listHandOverComplete.length),
-                          ],
+              body: Builder(builder: (context) {
+                return Container(
+                    padding: EdgeInsets.all(8),
+                    color: Colors.white,
+                    child: Column(
+                      children: [
+                        TextField(
+                            decoration: InputDecoration(
+                                hintText:
+                                    'Mã vận đơn, Tên khách, Số điện thoại, ...',
+                                hintStyle: TextStyle(color: Colors.grey),
+                                filled: true,
+                                fillColor: Colors.grey.shade100,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(6.0),
+                                  borderSide: BorderSide.none,
+                                ),
+                                contentPadding: EdgeInsets.symmetric(
+                                    horizontal: 12, vertical: 14),
+                                suffixIcon: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      IconButton(
+                                        icon: Icon(Icons.grid_view,
+                                            color: Colors.cyan),
+                                        onPressed: () {
+                                          // handle grid view
+                                        },
+                                      ),
+                                    ]))),
+                        SizedBox(
+                          height: 7,
                         ),
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      itemHandOver(state)
-                    ],
-                  )),
+                        Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              _buildTab("Chuyến bàn giao", 0,
+                                  state.listHandOver.length),
+                              const SizedBox(width: 20),
+                              _buildTab("Chuyến đã bàn giao", 1,
+                                  state.listHandOverComplete.length),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Expanded(
+                          child: ListView.builder(
+                            itemCount: selectedIndex == 0
+                                ? state.listHandOver.length
+                                : state.listHandOverComplete.length,
+                            controller: controller,
+                            itemBuilder: (context, index) {
+                              HandOverReponse item;
+                              if (selectedIndex == 0) {
+                                item = state.listHandOver[index];
+                              } else {
+                                item = state.listHandOverComplete[index];
+                              }
+
+                              return Container(
+                                  margin: EdgeInsets.all(3),
+                                  padding: EdgeInsets.all(8),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(16),
+                                    border:
+                                        Border.all(color: ColorsUtils.bgHome),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.1),
+                                        blurRadius: 8,
+                                        offset: const Offset(0, 2),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          if (isSelectCheckbox)
+                                            Image.asset(
+                                                "assets/images/checkbox.png"),
+                                          SizedBox(
+                                            width: 5,
+                                          ),
+                                          Icon(
+                                            Icons.qr_code_scanner_sharp,
+                                            color: ColorsUtils.bgWareHouse,
+                                          ),
+                                          SizedBox(
+                                            width: 5,
+                                          ),
+                                          Text(item.orderCodeOfClient!,
+                                              style: TextStyle(
+                                                color: ColorsUtils.bgWareHouse,
+                                                fontWeight: FontWeight.bold,
+                                              )),
+                                          Spacer(),
+                                          WidgetStatus(status: item.status!),
+                                        ],
+                                      ),
+                                      Divider(
+                                        color: ColorsUtils.boderGray,
+                                      ),
+                                      Row(children: [
+                                        Icon(Icons.calendar_today,
+                                            size: 14,
+                                            color: ColorsUtils.bgWareHouse),
+                                        SizedBox(width: 4),
+                                        Text(formatDay(
+                                            DateTime.fromMillisecondsSinceEpoch(
+                                                item.startTime!))),
+                                      ]),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Container(
+                                        child: ListView.builder(
+                                            shrinkWrap: true,
+                                            controller: controller,
+                                            itemCount:
+                                                item.routeAddressList!.length,
+                                            itemBuilder: (context, index) {
+                                              String routeAddressList =
+                                                  item.routeAddressList![index];
+                                              if (index < 5) {
+                                                return Column(
+                                                  children: [
+                                                    Divider(
+                                                      color:
+                                                          ColorsUtils.boderGray,
+                                                    ),
+                                                    Row(children: [
+                                                      Icon(Icons.location_on,
+                                                          size: 14,
+                                                          color: ColorsUtils
+                                                              .bgWareHouse),
+                                                      SizedBox(width: 4),
+                                                      Expanded(
+                                                          child: Text(
+                                                        routeAddressList,
+                                                        style: TextStyle(
+                                                            fontSize: 14),
+                                                      ))
+                                                    ]),
+                                                  ],
+                                                );
+                                              }
+                                              return null;
+                                            }),
+                                      ),
+                                      Divider(
+                                        color: ColorsUtils.boderGray,
+                                      ),
+                                      selectedIndex == 0
+                                          ? _buildbutton(item, state, context)
+                                          : SizedBox()
+                                    ],
+                                  ));
+                            },
+                          ),
+                        )
+                      ],
+                    ));
+              }),
             );
           })),
     );
@@ -189,116 +307,8 @@ class _HandOverSrceenState extends State<HandOverSrceen> {
     );
   }
 
-  Widget itemHandOver(HandOverState state) {
-    return Expanded(
-      child: ListView.builder(
-        itemCount: selectedIndex == 0
-            ? state.listHandOver.length
-            : state.listHandOverComplete.length,
-        controller: controller,
-        itemBuilder: (context, index) {
-          HandOverReponse item;
-          if (selectedIndex == 0) {
-            item = state.listHandOver[index];
-          } else {
-            item = state.listHandOverComplete[index];
-          }
-
-          return Container(
-              margin: EdgeInsets.all(3),
-              padding: EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: ColorsUtils.bgHome),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.1),
-                    blurRadius: 8,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      if (isSelectCheckbox)
-                        Image.asset("assets/images/checkbox.png"),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Icon(
-                        Icons.qr_code_scanner_sharp,
-                        color: ColorsUtils.bgWareHouse,
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Text(item.orderCodeOfClient!,
-                          style: TextStyle(
-                            color: ColorsUtils.bgWareHouse,
-                            fontWeight: FontWeight.bold,
-                          )),
-                      Spacer(),
-                      WidgetStatus(status: item.status!),
-                    ],
-                  ),
-                  Divider(
-                    color: ColorsUtils.boderGray,
-                  ),
-                  Row(children: [
-                    Icon(Icons.calendar_today,
-                        size: 14, color: ColorsUtils.bgWareHouse),
-                    SizedBox(width: 4),
-                    Text(formatDay(
-                        DateTime.fromMillisecondsSinceEpoch(item.startTime!))),
-                  ]),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    child: ListView.builder(
-                        shrinkWrap: true,
-                        controller: controller,
-                        itemCount: item.routeAddressList!.length,
-                        itemBuilder: (context, index) {
-                          String routeAddressList =
-                              item.routeAddressList![index];
-                          if (index < 5) {
-                            return Column(
-                              children: [
-                                Divider(
-                                  color: ColorsUtils.boderGray,
-                                ),
-                                Row(children: [
-                                  Icon(Icons.location_on,
-                                      size: 14, color: ColorsUtils.bgWareHouse),
-                                  SizedBox(width: 4),
-                                  Expanded(
-                                      child: Text(
-                                    routeAddressList,
-                                    style: TextStyle(fontSize: 14),
-                                  ))
-                                ]),
-                              ],
-                            );
-                          }
-                          return null;
-                        }),
-                  ),
-                  Divider(
-                    color: ColorsUtils.boderGray,
-                  ),
-                  selectedIndex == 0 ? _buildbutton(item, state) : SizedBox()
-                ],
-              ));
-        },
-      ),
-    );
-  }
-
-  Widget _buildbutton(HandOverReponse item, HandOverState state) {
+  Widget _buildbutton(
+      HandOverReponse item, HandOverState state, BuildContext context) {
     return item.status! != 430
         ? Row(
             children: [
@@ -318,7 +328,6 @@ class _HandOverSrceenState extends State<HandOverSrceen> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => DetailsRouteSrceen(
-                              isSrceen: 1,
                               routeId: item.routeId!,
                             ),
                           ));
@@ -336,29 +345,31 @@ class _HandOverSrceenState extends State<HandOverSrceen> {
                       textStyle: TextStylesUtils.style16WhiteNormal,
                       press: () {
                         showDialog(
-                            barrierDismissible: false,
-                            context: context,
-                            builder: (context) => AlertDialog(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(10.0))),
-                                  contentPadding: EdgeInsets.all(15.0),
-                                  content: SizedBox(
-                                    width: getDeviceWidth(context),
-                                    height: 510,
-                                    child: DialogConfirrmHandover(
-                                      routeID: item.routeId!,
-                                      subAccountReponse:
-                                          state.subAccountReponse,
-                                    ),
-                                  ),
-                                )).then(
+                          barrierDismissible: false,
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10.0))),
+                            contentPadding: EdgeInsets.all(15.0),
+                            content: SizedBox(
+                              width: getDeviceWidth(context),
+                              height: 510,
+                              child: DialogConfirrmHandover(
+                                routeID: item.routeId!,
+                                subAccountReponse: state.subAccountReponse,
+                              ),
+                            ),
+                          ),
+                        ).then(
                           (value) {
                             if (value == true) {
-                              context.read<HandOverBloc>().add(GetAllHandOver(
-                                  page: 1,
-                                  size: 20,
-                                  driver_id: SpUtil.getInt("driverId")));
+                              setState(() {
+                                context.read<HandOverBloc>().add(GetAllHandOver(
+                                    page: 1,
+                                    size: 20,
+                                    driver_id: SpUtil.getInt("driverId")));
+                              });
                             }
                           },
                         );

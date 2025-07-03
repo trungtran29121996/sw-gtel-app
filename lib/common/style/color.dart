@@ -42,4 +42,6 @@ class ColorsUtils {
   static const handover = Color(0xFF5DC3FC);
   static const btnHandover = Color(0xFFFF6F61);
   static const columChart = Color(0xFF00B5E2);
+  static const bgSnackBarNoti = Color(0xFFDCF5FC);
+  static const textNoti = Color(0xFF4E99C7);
 }

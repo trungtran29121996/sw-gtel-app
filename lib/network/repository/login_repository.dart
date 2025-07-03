@@ -15,6 +15,7 @@ class LoginRepository {
       if (response["success"] == true) {
         LoginReponse reponse = LoginReponse.fromJson(response["data"]);
         await SpUtil.putObject("member_info", reponse.memberInfo.toJson());
+        await SpUtil.putString("uid", reponse.memberInfo.uid!);
         await SpUtil.putString("token", reponse.token);
         await SpUtil.putString("refreshToken", reponse.refreshToken);
         await getDriverMe(reponse.token);

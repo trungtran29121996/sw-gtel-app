@@ -42,7 +42,6 @@ class DataCnpRouteReponse {
   String? countryPrefix;
   int? vehicleId;
   int? status;
-  int? shippingFee;
   String? note;
   List<SequenceList>? sequenceList;
   DriverInfo? driverInfo;
@@ -95,7 +94,6 @@ class DataCnpRouteReponse {
     this.countryPrefix,
     this.vehicleId,
     this.status,
-    this.shippingFee,
     this.note,
     this.sequenceList,
     this.driverInfo,
@@ -150,7 +148,6 @@ class DataCnpRouteReponse {
         countryPrefix: json["country_prefix"],
         vehicleId: json["vehicle_id"],
         status: json["status"],
-        shippingFee: json["shipping_fee"],
         note: json["note"],
         sequenceList: json["sequence_list"] == null
             ? []
@@ -214,7 +211,6 @@ class DataCnpRouteReponse {
         "country_prefix": countryPrefix,
         "vehicle_id": vehicleId,
         "status": status,
-        "shipping_fee": shippingFee,
         "note": note,
         "sequence_list": sequenceList == null
             ? []

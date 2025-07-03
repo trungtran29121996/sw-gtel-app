@@ -75,7 +75,7 @@ class Datum {
         title: json["title"],
         message: json["message"],
         redirectUrl: json["redirect_url"],
-        readAt: json["read_at"],
+        readAt: json["read_at"] == null ? "" : json["read_at"],
         screenName: json["screen_name"],
         screenParams: json["screen_params"] == null
             ? null

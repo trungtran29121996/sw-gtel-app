@@ -308,7 +308,8 @@ class _DialogConfirrmHandoverState extends State<DialogConfirrmHandover> {
                           text: 'Xác nhận',
                           textStyle: TextStylesUtils.style16WhiteNormal,
                           press: () {
-                            showLoading(context);
+                            //Navigator.pop(context, true);
+
                             if (selectedValue == null) {
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(SnackBar(
@@ -325,7 +326,7 @@ class _DialogConfirrmHandoverState extends State<DialogConfirrmHandover> {
                                       lstImage)
                                   .then(
                                 (value) {
-                                  hideLoadingBool(context);
+                                  Navigator.pop(context, true);
                                 },
                               );
                             }

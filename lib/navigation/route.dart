@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:sw_app_gtel/srceen/hand_over/hand_over_srceen.dart';
 import 'package:sw_app_gtel/srceen/home/home_srceen.dart';
 import 'package:sw_app_gtel/srceen/login/login_srceen.dart';
-import 'package:sw_app_gtel/srceen/login/navigation_bar.dart';
+import 'package:sw_app_gtel/srceen/navigation_bar/navigation_bar.dart';
 import 'package:sw_app_gtel/srceen/splash/splash_screen.dart';
 
 class AppRoutes {
@@ -14,10 +14,13 @@ class AppRoutes {
   static const String LIST_ROUTE = "/list_route";
   static const String HAND_OVER = "/hand_over";
   static Route<dynamic> generateRoute(RouteSettings settings) {
+    GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
     Widget screen;
     switch (settings.name) {
       case INITIAL_ROOT:
-        screen = SplashScreen();
+        screen = SplashScreen(
+          navigatorKey: navigatorKey,
+        );
         break;
       case LOGIN:
         screen = LoginScreen();

@@ -74,7 +74,6 @@ class _NoficationScreenState extends State<NoficationScreen> {
                                         MaterialPageRoute(
                                           builder: (context) =>
                                               DetailsRouteSrceen(
-                                            isSrceen: 2,
                                             routeId: item.screenParams!.id!,
                                           ),
                                         ));
@@ -87,9 +86,9 @@ class _NoficationScreenState extends State<NoficationScreen> {
                             margin: EdgeInsets.all(5),
                             padding: EdgeInsets.all(8),
                             decoration: BoxDecoration(
-                              color: item.readAt != null
+                              color: item.readAt == ""
                                   ? Colors.white
-                                  : Color(0xFFF1FAFD),
+                                  : Color(0xFFDCF5FC),
                               borderRadius: BorderRadius.circular(16),
                               boxShadow: [
                                 BoxShadow(

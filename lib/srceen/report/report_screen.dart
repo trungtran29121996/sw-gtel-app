@@ -182,17 +182,17 @@ class _ReportScreenState extends State<ReportScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               _buildStatusColumn(
-                  "${state.dashboardSummaryNows.data?.successCount}",
+                  "${state.dashboardSummaryNows.data?.successCount ?? 0}",
                   'Thành công',
                   Colors.green),
               Image.asset("assets/images/drive_line.png"),
               _buildStatusColumn(
-                  "${state.dashboardSummaryNows.data?.failedCount}",
+                  "${state.dashboardSummaryNows.data?.failedCount ?? 0}",
                   'Thất bại',
                   Colors.red),
               Image.asset("assets/images/drive_line.png"),
               _buildStatusColumn(
-                  "${state.dashboardSummaryNows.data?.onTimeRate}%",
+                  "${state.dashboardSummaryNows.data?.onTimeRate ?? 0}%",
                   'Tỉ lệ đúng hẹn',
                   Colors.orange),
             ],
@@ -231,10 +231,10 @@ class _ReportScreenState extends State<ReportScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               _buildAmountColumn(
-                  "${formatVND(state.dashboardSummaryWeeks.data?.totalCod)}đ",
+                  "${formatVND(state.dashboardSummaryWeeks.data?.totalCod ?? 0)}đ",
                   'Tiền mặt'),
               _buildAmountColumn(
-                  "${formatVND(state.dashboardSummaryWeeks.data?.shippingFee)}đ",
+                  "${formatVND(state.dashboardSummaryWeeks.data?.shippingFee ?? 0)}đ",
                   'Thu hộ (COD)'),
             ],
           ),
@@ -244,17 +244,17 @@ class _ReportScreenState extends State<ReportScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               _buildStatusColumn(
-                  "${state.dashboardSummaryWeeks.data?.successCount}",
+                  "${state.dashboardSummaryWeeks.data?.successCount ?? 0}",
                   'Thành công',
                   Colors.green),
               Image.asset("assets/images/drive_line.png"),
               _buildStatusColumn(
-                  "${state.dashboardSummaryWeeks.data?.failedCount}",
+                  "${state.dashboardSummaryWeeks.data?.failedCount ?? 0}",
                   'Thất bại',
                   Colors.red),
               Image.asset("assets/images/drive_line.png"),
               _buildStatusColumn(
-                  "${state.dashboardSummaryWeeks.data?.onTimeRate}%",
+                  "${state.dashboardSummaryWeeks.data?.onTimeRate ?? 0}%",
                   'Tỉ lệ đúng hẹn',
                   Colors.orange),
             ],

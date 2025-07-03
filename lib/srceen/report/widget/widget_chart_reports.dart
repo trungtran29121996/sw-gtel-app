@@ -24,7 +24,7 @@ class _WidgetChartReportsState extends State<WidgetChartReports>
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 2000),
+      duration: Duration(milliseconds: 1500),
     );
     _animation =
         CurvedAnimation(parent: _controller, curve: Curves.easeInOutBack);

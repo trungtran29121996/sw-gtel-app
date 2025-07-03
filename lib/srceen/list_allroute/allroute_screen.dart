@@ -68,6 +68,9 @@ class _ListAllrouteScreenState extends State<ListAllrouteScreen> {
                 hideLoading(context);
                 setState(() {
                   lstDataCnpRoute = state.listRoute;
+                  lstDataCnpRoute.sort(
+                    (a, b) => b.modifiedAt!.compareTo(a.modifiedAt!),
+                  );
                 });
               } else {
                 hideLoading(context);
@@ -136,7 +139,6 @@ class _ListAllrouteScreenState extends State<ListAllrouteScreen> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => DetailsRouteSrceen(
-                                isSrceen: 1,
                                 routeId: routeItem.routeId!,
                               ),
                             ));
@@ -226,17 +228,17 @@ class _ListAllrouteScreenState extends State<ListAllrouteScreen> {
                                               MaterialPageRoute(
                                                 builder: (context) =>
                                                     DetailsRouteSrceen(
-                                                  isSrceen: 1,
                                                   routeId: routeItem.routeId!,
                                                 ),
                                               ));
+                                          _dialogShow = false;
                                           if (result == true) {
                                             _dialogShow = false;
-                                            Navigator.of(context).pop();
+                                            Navigator.pop(context);
                                             context.read<HomeBloc>().add(
                                                 GetAllRoute(
                                                     page: 1,
-                                                    size: 10,
+                                                    size: 30,
                                                     driver_id: SpUtil.getInt(
                                                         "driverId"),
                                                     request_type: [1, 2]));
@@ -275,6 +277,10 @@ class _ListAllrouteScreenState extends State<ListAllrouteScreen> {
                                   if (state.listRoute.isNotEmpty) {
                                     setState(() {
                                       lstDataCnpRoute = state.listRoute;
+                                      lstDataCnpRoute.sort(
+                                        (a, b) => b.modifiedAt!
+                                            .compareTo(a.modifiedAt!),
+                                      );
                                     });
                                   }
                                 },
@@ -306,7 +312,6 @@ class _ListAllrouteScreenState extends State<ListAllrouteScreen> {
                                                 MaterialPageRoute(
                                                   builder: (context) =>
                                                       DetailsRouteSrceen(
-                                                    isSrceen: 1,
                                                     routeId: routeItem.routeId!,
                                                   ),
                                                 ));

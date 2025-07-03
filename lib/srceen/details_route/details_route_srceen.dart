@@ -17,9 +17,8 @@ import 'package:sw_app_gtel/srceen/receive_bill/receive_bill_details_screen.dart
 
 class DetailsRouteSrceen extends StatefulWidget {
   int routeId;
-  int isSrceen; //1 - màn hình ds chuyến vô //2 - màn hình noti vô
 
-  DetailsRouteSrceen({required this.routeId, required this.isSrceen});
+  DetailsRouteSrceen({required this.routeId});
 
   @override
   State<DetailsRouteSrceen> createState() => _DetailsRouteSrceenState();
@@ -30,7 +29,7 @@ class _DetailsRouteSrceenState extends State<DetailsRouteSrceen> {
   ScrollController controller = ScrollController();
 
   int requestType = 0;
-  int status = 0;
+  bool? relust;
 
   @override
   Widget build(BuildContext context) {
@@ -77,8 +76,6 @@ class _DetailsRouteSrceenState extends State<DetailsRouteSrceen> {
                         itemBuilder: (context, index) {
                           RouteRequestList item = state.routeRequestList[index];
                           //requestType 1 là giao - 2 là nhận
-                          // requestType = state.routeByID.requestType!;
-                          status = state.routeByID.status!;
 
                           return InkWell(
                               onTap: () {
@@ -95,51 +92,6 @@ class _DetailsRouteSrceenState extends State<DetailsRouteSrceen> {
                               child: deliveryCard(item, state));
                         }),
                   )),
-              // bottomNavigationBar: widget.isSrceen == 2
-              //     ? state.routeByID.status == 100
-              //         ? Container(
-              //             padding: EdgeInsets.all(10),
-              //             child: DefaultButton(
-              //                 padding:
-              //                     EdgeInsets.only(right: 25, left: 25),
-              //                 borderRadius: BorderRadius.circular(15.0),
-              //                 borderColor: ColorsUtils.itemCodeOrder,
-              //                 backgroundColor: ColorsUtils.itemCodeOrder,
-              //                 textStyle:
-              //                     TextStylesUtils.style16WhiteNormal,
-              //                 text: 'Bắt đầu chạy',
-              //                 press: () async {
-              //                   context.read<RouteDetailBloc>().add(
-              //                       GetRoutingStartEvent(
-              //                           routeId: widget.routeId));
-              //                 }),
-              //           )
-              //         : SizedBox()
-              //     : SizedBox()
-              // // )),
-              // bottomNavigationBar: state.routeByID.status != 100
-              //     ? Container(
-              //         padding: EdgeInsets.all(10),
-              //         child: DefaultButton(
-              //             padding: EdgeInsets.only(right: 25, left: 25),
-              //             borderRadius: BorderRadius.circular(15.0),
-              //             borderColor: ColorsUtils.textColorGrey,
-              //             backgroundColor: Colors.white,
-              //             textColor: Colors.white,
-              //             text: 'Kết thúc chuyến',
-              //             textStyle: TextStylesUtils.style14FnormalGrey,
-              //             press: () async {
-              //               await routeDetailBloc
-              //                   .onRoutingComplete(widget.routeId)
-              //                   .then(
-              //                 (value) {
-              //                   Navigator.pop(context, true);
-              //                 },
-              //               );
-              //             }),
-              //         // )),
-              //       )
-              //     : SizedBox()
             ));
           }),
         ));
@@ -157,119 +109,9 @@ class _DetailsRouteSrceenState extends State<DetailsRouteSrceen> {
     );
   }
 
-  Widget _buildButton(RouteRequestList item, DetailsRouteState state) {
-    return Row(
-      children: [
-        Expanded(
-          flex: 1,
-          child: BlocListener<RouteDetailBloc, DetailsRouteState>(
-            listener: (context, state) {},
-            child: Container(
-                child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: item.requestInfo!.sequenceList.length,
-              itemBuilder: (context, index) {
-                SequenceList seq = item.requestInfo!.sequenceList[index];
-
-                return seq.stoppointType == 2 && seq.status == 100
-                    ? DefaultButton(
-                        padding: EdgeInsets.all(5),
-                        borderRadius: BorderRadius.circular(15.0),
-                        borderColor: ColorsUtils.bgHome,
-                        backgroundColor: Colors.white,
-                        textColor: ColorsUtils.bgHome,
-                        text: 'Xác nhận lấy hàng',
-                        textStyle: TextStylesUtils.style16FnormalBlue,
-                        press: () {
-                          showLoading(context);
-                          routeDetailBloc
-                              .onUpdatetStatus(seq.seqId!, 200,
-                                  SpUtil.getInt("driverId"), "Lấy hàng")
-                              .then(
-                            (value) {
-                              hideLoading(context);
-                              Navigator.pop(context, true);
-                            },
-                          );
-                        })
-                    : seq.stoppointType == 3 &&
-                            seq.status == 100 &&
-                            item.requestInfo!.sequenceList[0].stoppointType ==
-                                2 &&
-                            item.requestInfo!.sequenceList[0].status == 200
-                        ? item.requestInfo!.requestType != 1
-                            ? DefaultButton(
-                                padding: EdgeInsets.all(5),
-                                borderRadius: BorderRadius.circular(15.0),
-                                borderColor: ColorsUtils.infoItemContact,
-                                backgroundColor: Colors.white,
-                                text: 'Xác nhận giao hàng',
-                                textStyle: TextStylesUtils.style16Orange,
-                                press: () {
-                                  showLoading(context);
-                                  routeDetailBloc
-                                      .onUpdatetStatus(
-                                          seq.seqId!,
-                                          200,
-                                          SpUtil.getInt("driverId"),
-                                          "Giao hàng")
-                                      .then(
-                                    (value) {
-                                      hideLoading(context);
-                                      Navigator.pop(context, true);
-                                    },
-                                  );
-                                })
-                            : SizedBox()
-                        : seq.stoppointType == 3 && seq.status == 101
-                            ? Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(16),
-                                  border: Border.all(color: Colors.red),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.red.withOpacity(0.1),
-                                      blurRadius: 8,
-                                      offset: const Offset(0, 2),
-                                    ),
-                                  ],
-                                ),
-                                padding: EdgeInsets.all(7),
-                                child: Text(
-                                    textAlign: TextAlign.center,
-                                    "Giao không thành công",
-                                    style: TextStylesUtils.style16FnormalRed))
-                            : SizedBox();
-              },
-            )),
-          ),
-        ),
-        state.routeByID.sourceType == 7
-            ? Expanded(
-                child: DefaultButton(
-                    padding: EdgeInsets.all(5),
-                    borderRadius: BorderRadius.circular(15.0),
-                    borderColor: ColorsUtils.btnHandover,
-                    backgroundColor: Colors.white,
-                    text: 'Cập nhật',
-                    textStyle: TextStylesUtils.style16FnormalRed,
-                    press: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ReceiveBillDetailsScreen(
-                              routeID: state.routeByID.routeId!,
-                              requestId: item.requestId!,
-                            ),
-                          ));
-                    }))
-            : SizedBox()
-      ],
-    );
-  }
-
   Widget deliveryCard(RouteRequestList item, DetailsRouteState state) {
+    print("Trung ${state.routeByID.status}");
+
     return Container(
       margin: EdgeInsets.only(bottom: 7),
       decoration: BoxDecoration(
@@ -398,10 +240,125 @@ class _DetailsRouteSrceenState extends State<DetailsRouteSrceen> {
             SizedBox(
               height: 7,
             ),
-            status == 500 ? SizedBox() : _buildButton(item, state)
+            state.routeByID.status! == 500
+                ? SizedBox()
+                : _buildButton(item, state)
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildButton(RouteRequestList item, DetailsRouteState state) {
+    return Row(
+      children: [
+        Expanded(
+            flex: 1,
+            child: Container(
+                child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: item.requestInfo!.sequenceList.length,
+              itemBuilder: (context, index) {
+                SequenceList seq = item.requestInfo!.sequenceList[index];
+
+                return seq.stoppointType == 2 && seq.status == 100
+                    ? DefaultButton(
+                        padding: EdgeInsets.all(5),
+                        borderRadius: BorderRadius.circular(15.0),
+                        borderColor: ColorsUtils.bgHome,
+                        backgroundColor: Colors.white,
+                        textColor: ColorsUtils.bgHome,
+                        text: 'Xác nhận lấy hàng',
+                        textStyle: TextStylesUtils.style16FnormalBlue,
+                        press: () {
+                          showLoading(context);
+                          routeDetailBloc
+                              .onUpdatetStatus(seq.seqId!, 200,
+                                  SpUtil.getInt("driverId"), "Lấy hàng")
+                              .then(
+                            (value) {
+                              hideLoading(context);
+                              relust = true;
+                              context.read<RouteDetailBloc>().add(
+                                  GetRouteByIDEvent(routeId: widget.routeId));
+                              //Navigator.pop(context, true);
+                            },
+                          );
+                        })
+                    : seq.stoppointType == 3 &&
+                            seq.status == 100 &&
+                            item.requestInfo!.sequenceList[0].stoppointType ==
+                                2 &&
+                            item.requestInfo!.sequenceList[0].status == 200
+                        ? state.routeByID.requestType == 1
+                            ? DefaultButton(
+                                padding: EdgeInsets.all(5),
+                                borderRadius: BorderRadius.circular(15.0),
+                                borderColor: ColorsUtils.infoItemContact,
+                                backgroundColor: Colors.white,
+                                text: 'Xác nhận giao hàng',
+                                textStyle: TextStylesUtils.style16Orange,
+                                press: () {
+                                  showLoading(context);
+                                  routeDetailBloc
+                                      .onUpdatetStatus(
+                                          seq.seqId!,
+                                          200,
+                                          SpUtil.getInt("driverId"),
+                                          "Giao hàng")
+                                      .then(
+                                    (value) {
+                                      hideLoading(context);
+                                      context.read<RouteDetailBloc>().add(
+                                          GetRouteByIDEvent(
+                                              routeId: widget.routeId));
+                                    },
+                                  );
+                                })
+                            : SizedBox()
+                        : seq.stoppointType == 3 && seq.status == 101
+                            ? Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(16),
+                                  border: Border.all(color: Colors.red),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.red.withOpacity(0.1),
+                                      blurRadius: 8,
+                                      offset: const Offset(0, 2),
+                                    ),
+                                  ],
+                                ),
+                                padding: EdgeInsets.all(7),
+                                child: Text(
+                                    textAlign: TextAlign.center,
+                                    "Giao không thành công",
+                                    style: TextStylesUtils.style16FnormalRed))
+                            : SizedBox();
+              },
+            ))),
+        state.routeByID.sourceType == 7
+            ? Expanded(
+                child: DefaultButton(
+                    padding: EdgeInsets.all(5),
+                    borderRadius: BorderRadius.circular(15.0),
+                    borderColor: ColorsUtils.btnHandover,
+                    backgroundColor: Colors.white,
+                    text: 'Cập nhật',
+                    textStyle: TextStylesUtils.style16FnormalRed,
+                    press: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ReceiveBillDetailsScreen(
+                              routeID: state.routeByID.routeId!,
+                              requestId: item.requestId!,
+                            ),
+                          ));
+                    }))
+            : SizedBox()
+      ],
     );
   }
 }
