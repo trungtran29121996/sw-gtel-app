@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:sw_app_gtel/common/pref/sp_util.dart';
 import 'package:sw_app_gtel/network/api/api_url.dart';
 import 'package:sw_app_gtel/network/api/dio_main.dart';
+import 'package:sw_app_gtel/network/responses/change_password.dart';
 import 'package:sw_app_gtel/network/responses/driver_me_reponse.dart';
 import 'package:sw_app_gtel/network/responses/login_response.dart';
 
@@ -66,6 +67,20 @@ class LoginRepository {
       }
     } catch (e) {
       throw Exception(e);
+    }
+  }
+
+  Future<ChangePassWordReponse?> getChangePassWord(
+      String oldPassword, String newPassword, String renewPassword) async {
+    try {
+      final response = await dioMain.patch("auth/change-password", data: {
+        "old_password": oldPassword,
+        "new_password": newPassword,
+        "renew_password": renewPassword
+      });
+      return ChangePassWordReponse.fromJson(response);
+    } catch (e) {
+      throw Exception('Error fetching data: $e');
     }
   }
 }

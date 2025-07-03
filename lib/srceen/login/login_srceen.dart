@@ -76,10 +76,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                       showLoading(context);
                                     } else if (state.loading.isLoadSuccess) {
                                       hideLoading(context);
-                                      // NotificationService notificationService =
-                                      //     NotificationService();
-                                      // notificationService
-                                      //     .connectSocket(context);
                                       Navigator.pushNamedAndRemoveUntil(
                                           context,
                                           AppRoutes.NAVIGATION_BAR,

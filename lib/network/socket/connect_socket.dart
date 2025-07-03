@@ -52,34 +52,4 @@ class NotificationService {
       ),
     );
   }
-
-  // void initNotification() async {
-  //   const AndroidInitializationSettings androidInitSettings =
-  //       AndroidInitializationSettings('@mipmap/ic_launcher');
-
-  //   final InitializationSettings initSettings =
-  //       InitializationSettings(android: androidInitSettings);
-
-  //   await flutterLocalNotificationsPlugin.initialize(initSettings);
-  // }
-
-  // void showNotification() {
-  //   const AndroidNotificationDetails androidDetails =
-  //       AndroidNotificationDetails(
-  //     'your_channel_id',
-  //     'your_channel_name',
-  //     importance: Importance.max,
-  //     priority: Priority.high,
-  //   );
-
-  //   const NotificationDetails notificationDetails =
-  //       NotificationDetails(android: androidDetails);
-
-  //   flutterLocalNotificationsPlugin.show(
-  //     0,
-  //     'Thông báo',
-  //     '📢 Đây là một thông báo từ hệ thống!',
-  //     notificationDetails,
-  //   );
-  // }
 }

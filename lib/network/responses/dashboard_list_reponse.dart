@@ -36,6 +36,7 @@ class Datum {
   double? rweight;
   int? cod;
   int? shippingFee;
+  String? completetime;
   RequestStatus? requestStatus;
 
   Datum({
@@ -45,6 +46,7 @@ class Datum {
     this.rweight,
     this.cod,
     this.shippingFee,
+    this.completetime,
     this.requestStatus,
   });
 
@@ -53,6 +55,7 @@ class Datum {
         packageName: json["package_name"],
         orderCodeOfClient: json["order_code_of_client"],
         rweight: json["rweight"]?.toDouble(),
+        completetime: json["complete_time"],
         cod: json["cod"],
         shippingFee: json["shipping_fee"],
         requestStatus: json["request_status"] == null
@@ -67,6 +70,7 @@ class Datum {
         "rweight": rweight,
         "cod": cod,
         "shipping_fee": shippingFee,
+        "complete_time": completetime,
         "request_status": requestStatus?.toJson(),
       };
 }

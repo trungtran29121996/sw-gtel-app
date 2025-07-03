@@ -305,8 +305,9 @@ class _ReportScreenState extends State<ReportScreen> {
                 ),
                 SizedBox(height: 4),
                 Text(
-                  '',
-                  style: TextStyle(color: Colors.grey, fontSize: 12),
+                  formatDay(DateTime.fromMillisecondsSinceEpoch(
+                      int.parse(item.completetime ?? ""))),
+                  style: TextStyle(color: Colors.grey, fontSize: 13),
                 ),
               ],
             ),
@@ -363,7 +364,7 @@ class _ReportScreenState extends State<ReportScreen> {
   Widget _buildicon(Datum item) {
     return item.packageName == "Bưu kiện"
         ? CircleAvatar(
-            backgroundColor: Color(0XFFC6DCE2),
+            backgroundColor: Color(0XFFDCF5FC),
             radius: 24,
             child: Image.asset(
               "assets/images/report_package.png",

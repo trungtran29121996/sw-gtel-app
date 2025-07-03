@@ -132,122 +132,13 @@ class _AccounutSrceenState extends State<AccounutSrceen> {
                   Padding(
                     padding: const EdgeInsets.only(bottom: 12.0),
                     child: Text(
-                      'GtelPost - Postman Application v1.0 (Build 1001)',
-                      style: TextStyle(fontSize: 12, color: Colors.white70),
+                      'GtelPost - Application v1.0',
+                      style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold),
                     ),
                   ),
-                  // Stack(
-                  //   children: [
-                  //     // Image.asset(
-                  //     //   IconUtils.headerLogin,
-                  //     //   width: double.infinity,
-                  //     //   fit: BoxFit.fitWidth,
-                  //     // ),
-                  //     SafeArea(
-                  //       child: Column(
-                  //         children: [
-                  //           SizedBox(
-                  //             height: 5,
-                  //           ),
-                  //           Container(
-                  //             margin: EdgeInsets.only(top: 10),
-                  //             child: CircleAvatar(
-                  //               radius: 60,
-                  //               backgroundColor: ColorsUtils.boderGray,
-                  //               child: Image.asset("assets/images/profile.png"),
-                  //             ),
-                  //           ),
-                  //           SizedBox(
-                  //             height: 10,
-                  //           ),
-                  //           Text(
-                  //             "Driver",
-                  //             style: TextStylesUtils.style12Gray,
-                  //           )
-                  //         ],
-                  //       ),
-                  //     ),
-                  //   ],
-                  // ),
-                  // Container(
-                  //   margin: EdgeInsets.symmetric(horizontal: 20),
-                  //   child: Column(
-                  //     children: [
-                  //       Text(
-                  //         user.name!,
-                  //         style: TextStylesUtils.style24BlackBold,
-                  //       ),
-                  //       Row(
-                  //         mainAxisAlignment: MainAxisAlignment.center,
-                  //         children: [
-                  //           for (int i = 0; i < 4; i++)
-                  //             const Icon(Icons.star,
-                  //                 color: Colors.amber, size: 16),
-                  //           const Icon(Icons.star_border,
-                  //               color: Colors.amber, size: 16),
-                  //           const SizedBox(width: 4),
-                  //           const Text(
-                  //             '4.75',
-                  //             style: TextStyle(
-                  //               fontSize: 14,
-                  //               fontWeight: FontWeight.bold,
-                  //             ),
-                  //           ),
-                  //         ],
-                  //       ),
-                  //       SizedBox(
-                  //         height: 20,
-                  //       ),
-                  //       Row(
-                  //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //         children: [
-                  //           buildItem("Total Trip", "0"),
-                  //           buildItem("Year", "0"),
-                  //           buildItem("Price", "0"),
-                  //         ],
-                  //       ),
-                  //       Divider(
-                  //         color: ColorsUtils.boderGray,
-                  //       ),
-                  //       SizedBox(
-                  //         height: 10,
-                  //       ),
-                  //       itemInfo("Só điện thoại", user.phone!),
-                  //       itemInfo("Email", user.email!),
-                  //       SizedBox(
-                  //         height: 10,
-                  //       ),
-                  //       Divider(
-                  //         color: ColorsUtils.boderGray,
-                  //       ),
-                  //       SizedBox(
-                  //         height: 10,
-                  //       ),
-                  //       DefaultButton(
-                  //         text: "Logout",
-                  //         textStyle: TextStylesUtils.style16WhiteBold,
-                  //         borderRadius: BorderRadius.circular(15.0),
-                  //         press: () {
-                  //     showAppDialog(
-                  //       context: context,
-                  //       // title: AppLocale.locale(context).logout,
-                  //       // message: AppLocale.locale(context).do_you_want_logout,
-                  //       // successText: AppLocale.locale(context).logout,
-                  //       title: "Đăng xuất",
-                  //       message: "Bạn có muốn đăng xuất",
-                  //       successText: "Đăng xuất",
-                  //       onSucessButtonPressed: () {
-                  //         accountBloc.add(LogoutEvent());
-                  //       },
-                  //     );
-                  //   },
-                  //   // suffixIcon: SizedBox(
-                  //   //   width: 10,
-                  //   // ),
-                  // )
-                  //     ],
-                  //   ),
-                  // )
                 ],
               ),
             ),

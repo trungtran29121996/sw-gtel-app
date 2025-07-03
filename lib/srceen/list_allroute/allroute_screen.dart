@@ -305,9 +305,7 @@ class _ListAllrouteScreenState extends State<ListAllrouteScreen> {
                                                   routeId: routeItem.routeId!,
                                                 ),
                                               ));
-                                          if (result == true) {
-                                            print("Trung");
-                                          }
+                                          if (result == true) {}
                                         }),
                                   ),
                                   routeItem.status == 100

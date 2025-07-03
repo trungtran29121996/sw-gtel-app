@@ -24,7 +24,7 @@ class _WidgetChartReportsState extends State<WidgetChartReports>
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 1500),
+      duration: Duration(milliseconds: 2500),
     );
     _animation =
         CurvedAnimation(parent: _controller, curve: Curves.easeInOutBack);
@@ -49,7 +49,7 @@ class _WidgetChartReportsState extends State<WidgetChartReports>
             builder: (context, state) {
               maxY = state.chartReponse.data.maxCash.toDouble();
               return AspectRatio(
-                aspectRatio: 1.2,
+                aspectRatio: 1.4,
                 child: Column(
                   children: [
                     Expanded(
@@ -65,7 +65,7 @@ class _WidgetChartReportsState extends State<WidgetChartReports>
                                 leftTitles: AxisTitles(
                                   sideTitles: SideTitles(
                                     showTitles: true,
-                                    reservedSize: 30,
+                                    reservedSize: 20,
                                     getTitlesWidget: (value, meta) {
                                       if (value % 10 == 0 &&
                                           value <=
