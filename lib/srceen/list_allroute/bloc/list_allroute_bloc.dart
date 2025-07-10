@@ -2,11 +2,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sw_app_gtel/common/core/base/bloc/base_bloc.dart';
 import 'package:sw_app_gtel/network/repository/cpn_route_respository.dart';
 import 'package:sw_app_gtel/network/responses/data_cpn_route_reponse.dart';
-import 'package:sw_app_gtel/srceen/home/bloc/home_event.dart';
-import 'package:sw_app_gtel/srceen/home/bloc/home_state.dart';
+import 'package:sw_app_gtel/srceen/list_allroute/bloc/list_allroute_event.dart';
+import 'package:sw_app_gtel/srceen/list_allroute/bloc/list_allroute_state.dart';
 
-class HomeBloc extends BaseBloc<HomeEvent, HomeState> {
-  HomeBloc() : super(state: HomeState.initial()) {
+class ListAklRouteBloc extends BaseBloc<ListAklRouteEvent, ListAklRouteState> {
+  ListAklRouteBloc() : super(state: ListAklRouteState.initial()) {
     on<GetAllRoute>(_onGetAllRoute);
   }
   Future _onGetAllRoute(GetAllRoute event, Emitter emit) async {

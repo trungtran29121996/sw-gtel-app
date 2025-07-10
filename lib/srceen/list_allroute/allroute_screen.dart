@@ -18,9 +18,9 @@ import 'package:sw_app_gtel/srceen/details_route/bloc/details_route_bloc.dart';
 import 'package:sw_app_gtel/srceen/details_route/bloc/details_route_event.dart';
 import 'package:sw_app_gtel/srceen/details_route/bloc/details_route_state.dart';
 import 'package:sw_app_gtel/srceen/details_route/details_route_srceen.dart';
-import 'package:sw_app_gtel/srceen/home/bloc/home_bloc.dart';
-import 'package:sw_app_gtel/srceen/home/bloc/home_event.dart';
-import 'package:sw_app_gtel/srceen/home/bloc/home_state.dart';
+import 'package:sw_app_gtel/srceen/list_allroute/bloc/list_allroute_bloc.dart';
+import 'package:sw_app_gtel/srceen/list_allroute/bloc/list_allroute_event.dart';
+import 'package:sw_app_gtel/srceen/list_allroute/bloc/list_allroute_state.dart';
 
 class ListAllrouteScreen extends StatefulWidget {
   SCREEN screen;
@@ -34,7 +34,7 @@ class ListAllrouteScreen extends StatefulWidget {
 class _ListAllrouteScreenState extends State<ListAllrouteScreen> {
   TextEditingController textController = TextEditingController();
   ScrollController controller = ScrollController();
-  HomeBloc homeBloc = HomeBloc();
+  ListAklRouteBloc homeBloc = ListAklRouteBloc();
 
   bool isShowInput = false;
   bool _dialogShow = false;
@@ -48,7 +48,7 @@ class _ListAllrouteScreenState extends State<ListAllrouteScreen> {
         BlocProvider<RouteDetailBloc>(
           create: (BuildContext context) => RouteDetailBloc(),
         ),
-        BlocProvider<HomeBloc>(
+        BlocProvider<ListAklRouteBloc>(
             create: (context) => homeBloc
               ..add(
                 GetAllRoute(
@@ -60,7 +60,7 @@ class _ListAllrouteScreenState extends State<ListAllrouteScreen> {
       ],
       child: MultiBlocListener(
         listeners: [
-          BlocListener<HomeBloc, HomeState>(
+          BlocListener<ListAklRouteBloc, ListAklRouteState>(
             listener: (context, state) {
               if (state.loading.isLoading) {
                 showLoading(context);
@@ -225,7 +225,7 @@ class _ListAllrouteScreenState extends State<ListAllrouteScreen> {
                                         if (result == true) {
                                           _dialogShow = false;
                                           Navigator.pop(context);
-                                          context.read<HomeBloc>().add(
+                                          context.read<ListAklRouteBloc>().add(
                                               GetAllRoute(
                                                   page: 1,
                                                   size: 30,
@@ -262,7 +262,7 @@ class _ListAllrouteScreenState extends State<ListAllrouteScreen> {
                                 }
                               },
                             ),
-                            BlocListener<HomeBloc, HomeState>(
+                            BlocListener<ListAklRouteBloc, ListAklRouteState>(
                               listener: (context, state) {
                                 if (state.listRoute.isNotEmpty) {
                                   setState(() {

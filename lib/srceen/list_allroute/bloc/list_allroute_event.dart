@@ -1,8 +1,8 @@
 import 'package:sw_app_gtel/common/core/base/event/base_event.dart';
 
-class HomeEvent extends BaseEvent {}
+class ListAklRouteEvent extends BaseEvent {}
 
-class GetAllRoute extends HomeEvent {
+class GetAllRoute extends ListAklRouteEvent {
   int page;
   int size;
   int driver_id;

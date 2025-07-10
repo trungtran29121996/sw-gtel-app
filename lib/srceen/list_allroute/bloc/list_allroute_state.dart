@@ -2,24 +2,25 @@ import 'package:sw_app_gtel/common/config/app_loading.dart';
 import 'package:sw_app_gtel/common/core/base/state/base_state.dart';
 import 'package:sw_app_gtel/network/responses/data_cpn_route_reponse.dart';
 
-class HomeState extends BaseState {
+class ListAklRouteState extends BaseState {
   Loading loading;
   List<DataCnpRouteReponse> listRoute;
   int totalStatus;
 
-  HomeState(
+  ListAklRouteState(
       {required this.loading,
       required this.listRoute,
       required this.totalStatus});
-  factory HomeState.initial() {
-    return HomeState(loading: Loading.initial(), listRoute: [], totalStatus: 0);
+  factory ListAklRouteState.initial() {
+    return ListAklRouteState(
+        loading: Loading.initial(), listRoute: [], totalStatus: 0);
   }
-  HomeState copyWith({
+  ListAklRouteState copyWith({
     Loading? loading,
     List<DataCnpRouteReponse>? listRoute,
     int? totalStatus,
   }) {
-    return HomeState(
+    return ListAklRouteState(
         loading: loading ?? this.loading,
         listRoute: listRoute ?? this.listRoute,
         totalStatus: totalStatus ?? this.totalStatus);

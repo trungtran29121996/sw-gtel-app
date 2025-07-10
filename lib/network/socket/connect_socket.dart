@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:sw_app_gtel/common/pref/sp_util.dart';
 import 'package:sw_app_gtel/common/style/color.dart';
@@ -10,8 +9,6 @@ class NotificationService {
   factory NotificationService() => _instance;
 
   NotificationService._internal();
-  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
 
   void connectSocket(GlobalKey<NavigatorState> navigatorKey) {
     MemberInfoLogin user =
