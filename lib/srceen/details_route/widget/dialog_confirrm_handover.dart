@@ -116,20 +116,6 @@ class _DialogConfirrmHandoverState extends State<DialogConfirrmHandover> {
     });
   }
 
-  // void handleSubmit() {
-  //   if (selectedValue == null) {
-
-  //     return;
-  //   }
-
-  //   Navigator.of(context).pop(); // đóng dialog
-
-  //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-  //     content: Text("Đã xác nhận bàn giao thành công!"),
-  //     backgroundColor: Colors.green,
-  //   ));
-  // }
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -308,8 +294,6 @@ class _DialogConfirrmHandoverState extends State<DialogConfirrmHandover> {
                           text: 'Xác nhận',
                           textStyle: TextStylesUtils.style16WhiteNormal,
                           press: () {
-                            //Navigator.pop(context, true);
-
                             if (selectedValue == null) {
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(SnackBar(
@@ -420,26 +404,31 @@ class _DialogConfirrmHandoverState extends State<DialogConfirrmHandover> {
   }
 
   Widget _infoHandoverLot(HandOverState state) {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            _buildStatItem(Icons.receipt_long, Colors.orange,
-                "${state.routeHandoverReponse.data?.countOfRoute}", 'Vận đơn'),
-            _buildStatItem(
-                Icons.inventory_2,
-                Colors.grey[700]!,
-                "${state.routeHandoverReponse.data?.packageItemSummary![0].quantity}",
-                "${state.routeHandoverReponse.data?.packageItemSummary![0].name}"),
-            _buildStatItem(
-                Icons.insert_drive_file,
-                Colors.grey[700]!,
-                "${state.routeHandoverReponse.data?.packageItemSummary![1].quantity}",
-                "${state.routeHandoverReponse.data?.packageItemSummary![1].name}"),
-          ],
-        ),
-      ],
-    );
+    return state.routeHandoverReponse.data!.packageItemSummary!.isNotEmpty
+        ? Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  _buildStatItem(
+                      Icons.receipt_long,
+                      Colors.orange,
+                      "${state.routeHandoverReponse.data?.countOfRoute}",
+                      'Vận đơn'),
+                  _buildStatItem(
+                      Icons.inventory_2,
+                      Colors.grey[700]!,
+                      "${state.routeHandoverReponse.data?.packageItemSummary?[0].quantity}",
+                      "${state.routeHandoverReponse.data?.packageItemSummary?[0].name}"),
+                  _buildStatItem(
+                      Icons.insert_drive_file,
+                      Colors.grey[700]!,
+                      "${state.routeHandoverReponse.data?.packageItemSummary?[1].quantity}",
+                      "${state.routeHandoverReponse.data?.packageItemSummary?[1].name}"),
+                ],
+              ),
+            ],
+          )
+        : SizedBox();
   }
 }
