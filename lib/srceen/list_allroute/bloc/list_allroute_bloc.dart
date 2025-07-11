@@ -54,11 +54,12 @@ class ListAklRouteBloc extends BaseBloc<ListAklRouteEvent, ListAklRouteState> {
           listRoute: lstFilter,
           totalStatus: totalStatus));
     } catch (e) {
-      print("LOI$e");
+      print("LOI1234$e");
       emit.call(state.copyWith(
           loading: state.loading.copyWith(
               isLoading: false, isLoadSuccess: false, loadError: true),
           listRoute: []));
+      throw Exception(e);
     }
   }
 }

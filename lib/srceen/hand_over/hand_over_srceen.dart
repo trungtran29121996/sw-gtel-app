@@ -6,6 +6,7 @@ import 'package:sw_app_gtel/common/config/show_loading.dart';
 import 'package:sw_app_gtel/common/style/color.dart';
 import 'package:sw_app_gtel/common/style/textstyles.dart';
 import 'package:sw_app_gtel/common/widget/default_button.dart';
+import 'package:sw_app_gtel/common/widget/widget_search.dart';
 import 'package:sw_app_gtel/common/widget/widget_status.dart';
 import 'package:sw_app_gtel/network/responses/data_hand_over_reponse.dart';
 import 'package:sw_app_gtel/network/responses/login_response.dart';
@@ -39,6 +40,29 @@ class _HandOverSrceenState extends State<HandOverSrceen> {
   TextEditingController noteController = TextEditingController();
   RouteDetailBloc routeDetailBloc = RouteDetailBloc();
 
+  List<HandOverReponse> listHandOver = [];
+  List<HandOverReponse> listFilterHandOver = [];
+
+  @override
+  void initState() {
+    super.initState();
+    listFilterHandOver = listHandOver;
+  }
+
+  void _onSearch(String keyword) {
+    setState(() {
+      if (keyword.isEmpty) {
+        listFilterHandOver = listHandOver; // Hiển thị lại toàn bộ
+      } else {
+        listFilterHandOver = listHandOver
+            .where(
+              (item) => item.orderCodeOfClient!.toLowerCase().contains(keyword),
+            )
+            .toList();
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -46,10 +70,10 @@ class _HandOverSrceenState extends State<HandOverSrceen> {
         BlocProvider<HandOverBloc>(
             create: (context) => HandOverBloc()
               ..add(GetAllHandOver(
-                  page: 1, size: 20, driver_id: SpUtil.getInt("driverId")))
+                  page: 1, size: 30, driver_id: SpUtil.getInt("driverId")))
               ..add(GetSubAccount(
                   page: 1,
-                  size: 10,
+                  size: 30,
                   service_provider_id: SpUtil.getInt("serviceProviderId"))))
       ],
       child: MultiBlocListener(
@@ -60,6 +84,8 @@ class _HandOverSrceenState extends State<HandOverSrceen> {
                   showLoading(context);
                 } else if (state.loading.isLoadSuccess &&
                     state.handOver == true) {
+                  listHandOver = state.listHandOver;
+                  listFilterHandOver = state.listHandOver;
                   hideLoading(context);
                 }
               },
@@ -81,30 +107,7 @@ class _HandOverSrceenState extends State<HandOverSrceen> {
                     color: Colors.white,
                     child: Column(
                       children: [
-                        TextField(
-                            decoration: InputDecoration(
-                                hintText:
-                                    'Mã vận đơn, Tên khách, Số điện thoại, ...',
-                                hintStyle: TextStyle(color: Colors.grey),
-                                filled: true,
-                                fillColor: Colors.grey.shade100,
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(6.0),
-                                  borderSide: BorderSide.none,
-                                ),
-                                contentPadding: EdgeInsets.symmetric(
-                                    horizontal: 12, vertical: 14),
-                                suffixIcon: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      IconButton(
-                                        icon: Icon(Icons.grid_view,
-                                            color: Colors.cyan),
-                                        onPressed: () {
-                                          // handle grid view
-                                        },
-                                      ),
-                                    ]))),
+                        WidgetSearchField(onSearch: _onSearch),
                         SizedBox(
                           height: 7,
                         ),
@@ -126,13 +129,13 @@ class _HandOverSrceenState extends State<HandOverSrceen> {
                         Expanded(
                           child: ListView.builder(
                             itemCount: selectedIndex == 0
-                                ? state.listHandOver.length
+                                ? listFilterHandOver.length
                                 : state.listHandOverComplete.length,
                             controller: controller,
                             itemBuilder: (context, index) {
                               HandOverReponse item;
                               if (selectedIndex == 0) {
-                                item = state.listHandOver[index];
+                                item = listFilterHandOver[index];
                               } else {
                                 item = state.listHandOverComplete[index];
                               }
@@ -245,65 +248,6 @@ class _HandOverSrceenState extends State<HandOverSrceen> {
               }),
             );
           })),
-    );
-  }
-
-  Widget _clickChosseHandOver(HandOverState state) {
-    return Container(
-      margin: EdgeInsets.all(3),
-      child: Row(
-        children: [
-          if (isSelectCheckbox)
-            Stack(
-              children: [
-                Image.asset("assets/images/checked.png"),
-                Padding(
-                  padding: EdgeInsets.only(top: 4, left: 4, bottom: 1),
-                  child: Image.asset("assets/images/square_checked.png"),
-                )
-              ],
-            ),
-          SizedBox(
-            width: 3,
-          ),
-          if (isSelectCheckbox)
-            Text("${state.listHandOver.length} đơn đã được chọn"),
-          Spacer(),
-          Row(
-            children: [
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    isSelectCheckbox = false;
-                  });
-                },
-                child: Text(
-                  "Bỏ chọn",
-                  style: TextStyle(
-                    color: isSelectCheckbox ? Colors.red : Colors.grey,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              const SizedBox(width: 12),
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    isSelectCheckbox = true;
-                  });
-                },
-                child: const Text(
-                  "Chọn vận đơn",
-                  style: TextStyle(
-                    color: Colors.red,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
     );
   }
 

@@ -347,10 +347,10 @@ class MemberInfo {
   String? portalCode;
   int? clientId;
   String? phone;
-  Email? email;
-  Name? name;
+  String? email;
+  String? name;
   String? title;
-  ContactName? contactName;
+  String? contactName;
   String? companyName;
   int? businessStatus;
   String? businessLicense;
@@ -359,7 +359,7 @@ class MemberInfo {
   int? wardId;
   String? countryPrefix;
   String? taxId;
-  BankAccount? bankAccount;
+  String? bankAccount;
   int? status;
   String? groupId;
   int? serviceProviderId;
@@ -376,7 +376,6 @@ class MemberInfo {
   bool? transportTypeChange;
   int? subMemberType;
   String? departmentTitle;
-  Images? images;
   String? uid;
 
   MemberInfo({
@@ -419,7 +418,6 @@ class MemberInfo {
     this.transportTypeChange,
     this.subMemberType,
     this.departmentTitle,
-    this.images,
     this.uid,
   });
 
@@ -434,10 +432,10 @@ class MemberInfo {
         portalCode: json["portal_code"],
         clientId: json["client_id"],
         phone: json["phone"],
-        email: emailValues.map[json["email"]]!,
-        name: nameValues.map[json["name"]]!,
+        email: json["email"],
+        name: json["name"],
         title: json["title"],
-        contactName: contactNameValues.map[json["contact_name"]]!,
+        contactName: json["contact_name"],
         companyName: json["company_name"],
         businessStatus: json["business_status"],
         businessLicense: json["business_license"],
@@ -446,7 +444,7 @@ class MemberInfo {
         wardId: json["ward_id"],
         countryPrefix: json["country_prefix"],
         taxId: json["tax_id"],
-        bankAccount: bankAccountValues.map[json["bank_account"]]!,
+        bankAccount: json["bank_account"],
         status: json["status"],
         groupId: json["group_id"],
         serviceProviderId: json["service_provider_id"],
@@ -463,7 +461,6 @@ class MemberInfo {
         transportTypeChange: json["transport_type_change"],
         subMemberType: json["sub_member_type"],
         departmentTitle: json["department_title"],
-        images: json["images"] == null ? null : Images.fromJson(json["images"]),
         uid: json["uid"],
       );
 
@@ -478,10 +475,10 @@ class MemberInfo {
         "portal_code": portalCode,
         "client_id": clientId,
         "phone": phone,
-        "email": emailValues.reverse[email],
-        "name": nameValues.reverse[name],
+        "email": email,
+        "name": name,
         "title": title,
-        "contact_name": contactNameValues.reverse[contactName],
+        "contact_name": contactName,
         "company_name": companyName,
         "business_status": businessStatus,
         "business_license": businessLicense,
@@ -490,7 +487,7 @@ class MemberInfo {
         "ward_id": wardId,
         "country_prefix": countryPrefix,
         "tax_id": taxId,
-        "bank_account": bankAccountValues.reverse[bankAccount],
+        "bank_account": bankAccount,
         "status": status,
         "group_id": groupId,
         "service_provider_id": serviceProviderId,
@@ -507,35 +504,9 @@ class MemberInfo {
         "transport_type_change": transportTypeChange,
         "sub_member_type": subMemberType,
         "department_title": departmentTitle,
-        "images": images?.toJson(),
         "uid": uid,
       };
 }
-
-enum BankAccount { NH_CHINHANH_CHUTK_STK }
-
-final bankAccountValues = EnumValues(
-    {"NH: \nCHINHANH: \nCHUTK: \nSTK: ": BankAccount.NH_CHINHANH_CHUTK_STK});
-
-enum ContactName { GTEL_Q1 }
-
-final contactNameValues = EnumValues({"Gtel Q1": ContactName.GTEL_Q1});
-
-enum Email { TAQUAN1_GMAIL_COM }
-
-final emailValues = EnumValues({"taquan1@gmail.com": Email.TAQUAN1_GMAIL_COM});
-
-class Images {
-  Images();
-
-  factory Images.fromJson(Map<String, dynamic> json) => Images();
-
-  Map<String, dynamic> toJson() => {};
-}
-
-enum Name { BU_T_Q1 }
-
-final nameValues = EnumValues({"Bưu tá Q1": Name.BU_T_Q1});
 
 class SequenceList {
   int? createdAt;

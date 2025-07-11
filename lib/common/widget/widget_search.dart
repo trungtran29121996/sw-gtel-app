@@ -46,6 +46,7 @@ class _WidgetSearchFieldState extends State<WidgetSearchField> {
   @override
   Widget build(BuildContext context) {
     return TextField(
+        controller: _controller,
         decoration: InputDecoration(
             hintText: 'Mã vận đơn, Tên khách, Số điện thoại, ...',
             hintStyle: TextStyle(color: Colors.grey),

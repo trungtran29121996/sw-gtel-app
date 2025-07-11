@@ -48,15 +48,13 @@ class _ListAllrouteScreenState extends State<ListAllrouteScreen> {
   }
 
   void _onSearch(String keyword) {
-    debugPrint('Search keyword: $keyword');
-
     setState(() {
       if (keyword.isEmpty) {
         lstDataFilterCnpRoute = lstDataCnpRoute; // Hiển thị lại toàn bộ
       } else {
         lstDataFilterCnpRoute = lstDataCnpRoute
             .where(
-              (item) => item.orderCodeOfClient!.contains(keyword),
+              (item) => item.orderCodeOfClient!.toLowerCase().contains(keyword),
             )
             .toList();
       }

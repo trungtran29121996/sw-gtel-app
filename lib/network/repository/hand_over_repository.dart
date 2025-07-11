@@ -16,7 +16,7 @@ class HandOverRepository {
       int page, int size, int driver_id) async {
     try {
       final response = await dioMain.get(
-          "api/v1/tms-service/routing/cpn/route?page=$page&size=$size&service_provider_id=$driver_id");
+          "api/v1/tms-service/routing/cpn/route?page=$page&size=$size&driver_id=$driver_id");
 
       if (response["success"] == true) {
         List<HandOverReponse> listRoute =

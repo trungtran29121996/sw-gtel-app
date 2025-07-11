@@ -45,5 +45,13 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+
+	<!-- QUYỀN CAMERA & THƯ VIỆN -->
+	<key>NSCameraUsageDescription</key>
+	<string>Ứng dụng cần truy cập camera để chụp ảnh</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Ứng dụng cần truy cập thư viện ảnh</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Ứng dụng cần sử dụng microphone</string>
 </dict>
 </plist>

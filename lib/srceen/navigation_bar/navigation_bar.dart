@@ -25,7 +25,7 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
     return Scaffold(
       body: _screen[_currentIndex],
       bottomNavigationBar: Container(
-        height: 75,
+        //height: 85,
         child: BottomNavigationBar(
             selectedFontSize: 10.0,
             unselectedFontSize: 10.0,
