@@ -420,7 +420,7 @@ class _DialogConfirrmHandoverState extends State<DialogConfirrmHandover> {
                       Icons.receipt_long,
                       Colors.orange,
                       "${state.routeHandoverReponse.data?.countOfRoute}",
-                      'Vận đơn'),
+                      'Chuyến'),
                   _buildStatItem(
                       Icons.inventory_2,
                       Colors.grey[700]!,

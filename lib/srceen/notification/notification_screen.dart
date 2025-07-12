@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sw_app_gtel/common/config/format.dart';
 import 'package:sw_app_gtel/common/config/show_loading.dart';
+import 'package:sw_app_gtel/common/helper/screen_type.dart';
 import 'package:sw_app_gtel/network/responses/data_notification_reponse.dart';
 import 'package:sw_app_gtel/srceen/details_route/details_route_srceen.dart';
 import 'package:sw_app_gtel/srceen/notification/bloc/notification_bloc.dart';
@@ -75,6 +76,7 @@ class _NoficationScreenState extends State<NoficationScreen> {
                                           builder: (context) =>
                                               DetailsRouteSrceen(
                                             routeId: item.screenParams!.id!,
+                                            screen: SCREEN.SCREEN_LIST_ALL,
                                           ),
                                         ));
                                   }

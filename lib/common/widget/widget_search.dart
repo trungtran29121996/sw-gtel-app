@@ -4,7 +4,7 @@ import 'package:sw_app_gtel/common/widget/widget_scan_barcode.dart';
 class WidgetSearchField extends StatefulWidget {
   final Function(String) onSearch;
 
-  const WidgetSearchField({super.key, required this.onSearch});
+  WidgetSearchField({super.key, required this.onSearch});
 
   @override
   State<WidgetSearchField> createState() => _WidgetSearchFieldState();
@@ -21,8 +21,10 @@ class _WidgetSearchFieldState extends State<WidgetSearchField> {
     final scanned = await Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => BarcodeScannerPage(),
-        ));
+            // builder: (context) => widget.screen != SCREEN.SCREEN_PICKUP_GOODS
+            //     ? BarcodeScannerPage()
+            //     : ScanListbarcodeScreen(),
+            builder: (context) => BarcodeScannerPage()));
 
     if (scanned != null && scanned is String) {
       _controller.text = scanned;
@@ -58,12 +60,17 @@ class _WidgetSearchFieldState extends State<WidgetSearchField> {
             ),
             contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 14),
             suffixIcon: Row(mainAxisSize: MainAxisSize.min, children: [
-              IconButton(
-                icon: Icon(Icons.grid_view, color: Colors.cyan),
-                onPressed: () {
-                  _scanBarcode();
-                },
-              ),
+              // IconButton(
+              //   icon: Icon(Icons.grid_view, color: Colors.cyan),
+              //   onPressed: () {
+              //     _scanBarcode();
+              //   },
+              // ),
+              InkWell(
+                  onTap: () {
+                    _scanBarcode();
+                  },
+                  child: Image.asset("assets/images/qrcode_search.png"))
             ])));
   }
 }

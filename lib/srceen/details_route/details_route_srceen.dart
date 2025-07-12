@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sw_app_gtel/common/config/app_dimensions.dart';
 import 'package:sw_app_gtel/common/config/format.dart';
 import 'package:sw_app_gtel/common/config/show_loading.dart';
-import 'package:sw_app_gtel/common/pref/sp_util.dart';
+import 'package:sw_app_gtel/common/helper/screen_type.dart';
 import 'package:sw_app_gtel/common/style/color.dart';
 import 'package:sw_app_gtel/common/style/textstyles.dart';
 import 'package:sw_app_gtel/common/widget/default_button.dart';
@@ -14,13 +14,15 @@ import 'package:sw_app_gtel/srceen/details_route/bloc/details_route_state.dart';
 import 'package:sw_app_gtel/srceen/details_route/details_item_router_screen.dart';
 import 'package:sw_app_gtel/srceen/details_route/widget/contact_info_header.dart';
 import 'package:sw_app_gtel/srceen/details_route/widget/dialog_confirm.dart';
+import 'package:sw_app_gtel/srceen/details_route/widget/scan_listbarcode_screen.dart';
 import 'package:sw_app_gtel/srceen/details_route/widget/section_title.dart';
 import 'package:sw_app_gtel/srceen/receive_bill/receive_bill_details_screen.dart';
 
 class DetailsRouteSrceen extends StatefulWidget {
+  SCREEN screen;
   int routeId;
 
-  DetailsRouteSrceen({required this.routeId});
+  DetailsRouteSrceen({required this.routeId, required this.screen});
 
   @override
   State<DetailsRouteSrceen> createState() => _DetailsRouteSrceenState();
@@ -55,9 +57,18 @@ class _DetailsRouteSrceenState extends State<DetailsRouteSrceen> {
               builder: (BuildContext context, state) {
             return SafeArea(
                 child: Scaffold(
-              //backgroundColor: Color(0xFFe6f4ff),
               appBar: AppBar(
                 backgroundColor: Color(0xFFb3e0ff),
+                //actions: [
+                //   Row(
+                //     children: [
+                //       Container(
+                //           margin: EdgeInsets.only(right: 10),
+                //           child:
+                //               Image.asset("assets/images/qrcode_search.png")),
+                //     ],
+                //   )
+                // ],
                 leading: InkWell(
                     onTap: () {
                       Navigator.pop(context, true);
@@ -72,38 +83,84 @@ class _DetailsRouteSrceenState extends State<DetailsRouteSrceen> {
                   Navigator.pop(context, true);
                   return true;
                 },
-                child: Container(
-                    padding: EdgeInsets.all(8),
-                    color: Colors.white,
-                    child: Container(
-                      child: ListView.builder(
-                          controller: controller,
-                          itemCount: state.routeRequestList.length,
-                          itemBuilder: (context, index) {
-                            RouteRequestList item =
-                                state.routeRequestList[index];
-                            //requestType 1 là giao - 2 là nhận
+                child: Column(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(8),
+                      color: Colors.white,
+                      child: TextField(
+                          decoration: InputDecoration(
+                              hintText:
+                                  'Mã vận đơn, Tên khách, Số điện thoại, ...',
+                              hintStyle: TextStyle(color: Colors.grey),
+                              filled: true,
+                              fillColor: Colors.grey.shade100,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(6.0),
+                                borderSide: BorderSide.none,
+                              ),
+                              contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 14),
+                              suffixIcon: widget.screen ==
+                                      SCREEN.SCREEN_PICKUP_GOODS
+                                  ? Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                          InkWell(
+                                              onTap: () async {
+                                                final scanned = await Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            ScanListbarcodeScreen()));
+                                                if (scanned == true) {
+                                                  context
+                                                      .read<RouteDetailBloc>()
+                                                      .add(GetRouteByIDEvent(
+                                                          routeId:
+                                                              widget.routeId));
+                                                }
+                                              },
+                                              child: Image.asset(
+                                                  "assets/images/qrcode_search.png"))
+                                        ])
+                                  : SizedBox())),
+                    ),
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.all(8),
+                        color: Colors.white,
+                        child: ListView.builder(
+                            controller: controller,
+                            itemCount: state.routeRequestList.length,
+                            itemBuilder: (context, index) {
+                              RouteRequestList item =
+                                  state.routeRequestList[index];
+                              //requestType 1 là giao - 2 là nhận
 
-                            return InkWell(
-                                onTap: () {
-                                  final result = Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            ListOrderDetialsScreen(
-                                          routeItem: item,
-                                          requestType: requestType,
-                                        ),
-                                      ));
-                                  if (result == true) {
-                                    context.read<RouteDetailBloc>().add(
-                                        GetRouteByIDEvent(
-                                            routeId: widget.routeId));
-                                  }
-                                },
-                                child: deliveryCard(item, state));
-                          }),
-                    )),
+                              return InkWell(
+                                  onTap: () {
+                                    final result = Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              ListOrderDetialsScreen(
+                                            routeItem: item,
+                                            requestType: requestType,
+                                          ),
+                                        ));
+                                    if (result == true) {
+                                      context.read<RouteDetailBloc>().add(
+                                          GetRouteByIDEvent(
+                                              routeId: widget.routeId));
+                                    }
+                                  },
+                                  child: deliveryCard(item, state));
+                            }),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ));
           }),

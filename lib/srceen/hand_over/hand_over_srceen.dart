@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sw_app_gtel/common/config/app_dimensions.dart';
 import 'package:sw_app_gtel/common/config/format.dart';
 import 'package:sw_app_gtel/common/config/show_loading.dart';
+import 'package:sw_app_gtel/common/helper/screen_type.dart';
 import 'package:sw_app_gtel/common/style/color.dart';
 import 'package:sw_app_gtel/common/style/textstyles.dart';
 import 'package:sw_app_gtel/common/widget/default_button.dart';
@@ -116,7 +117,9 @@ class _HandOverSrceenState extends State<HandOverSrceen> {
                     color: Colors.white,
                     child: Column(
                       children: [
-                        WidgetSearchField(onSearch: _onSearch),
+                        WidgetSearchField(
+                          onSearch: _onSearch,
+                        ),
                         SizedBox(
                           height: 7,
                         ),
@@ -282,6 +285,7 @@ class _HandOverSrceenState extends State<HandOverSrceen> {
                           MaterialPageRoute(
                             builder: (context) => DetailsRouteSrceen(
                               routeId: item.routeId!,
+                              screen: SCREEN.SCREEN_LIST_ALL,
                             ),
                           ));
                     }),

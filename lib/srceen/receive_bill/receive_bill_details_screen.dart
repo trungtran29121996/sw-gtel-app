@@ -86,7 +86,7 @@ class _ReceiveBillDetailsScreenState extends State<ReceiveBillDetailsScreen> {
                         Navigator.pop(context, true);
                       },
                       child: Icon(Icons.arrow_back, color: Colors.black)),
-                  title: Text('Cập nhật vận đơn theo lô',
+                  title: Text('Cập nhật chuyến theo lô',
                       style: TextStyle(color: Colors.black)),
                   centerTitle: true,
                 ),

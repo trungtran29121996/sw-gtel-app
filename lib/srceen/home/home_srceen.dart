@@ -62,7 +62,7 @@ class _HomeSrceenState extends State<HomeSrceen> {
                           BuildMainMenuButton(
                             //Status: Mới + Đang lấy hàng + Đang giao hàng
                             path: "assets/images/list_order_menu.png",
-                            text: "Danh sách vận đơn",
+                            text: "Danh sách chuyến",
                             onButtonPressed: () {
                               Navigator.push(
                                   context,

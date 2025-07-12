@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sw_app_gtel/common/config/show_loading.dart';
@@ -12,7 +11,6 @@ import 'package:sw_app_gtel/common/widget/default_button.dart';
 import 'package:sw_app_gtel/common/widget/default_input.dart';
 import 'package:sw_app_gtel/network/responses/data_cpn_route_byid_reponse.dart';
 import 'package:sw_app_gtel/srceen/details_route/bloc/details_route_bloc.dart';
-import 'package:sw_app_gtel/srceen/details_route/bloc/details_route_event.dart';
 import 'package:sw_app_gtel/srceen/hand_over/bloc/hand_over_bloc.dart';
 
 class DialogConfirm extends StatefulWidget {
