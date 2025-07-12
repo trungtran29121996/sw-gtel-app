@@ -136,7 +136,6 @@ class _ChangePasswordSrceenState extends State<ChangePasswordSrceen> {
     return InputTextField(
       label: label,
       fillColor: Colors.white,
-      //obscureText: oldObscureText,
       controller: controller,
       filled: true,
 

@@ -178,15 +178,15 @@ class _ReceiveBillDetailsScreenState extends State<ReceiveBillDetailsScreen> {
                                 style: TextStylesUtils.style14FnormalGrey),
                             Spacer(),
                             _buildSmallTextField(
-                                state.requsetCPN.rlength.toString(),
+                                "${state.requsetCPN.rlength ?? "0"}",
                                 lengthUnitController),
                             Text(" x "),
                             _buildSmallTextField(
-                                state.requsetCPN.rwidth.toString(),
+                                "${state.requsetCPN.rwidth ?? "0"}",
                                 widththUnitController),
                             Text(" x "),
                             _buildSmallTextField(
-                                state.requsetCPN.rheight.toString(),
+                                "${state.requsetCPN.rheight ?? "0"}",
                                 heighthUnitController),
                           ],
                         ),
@@ -200,7 +200,7 @@ class _ReceiveBillDetailsScreenState extends State<ReceiveBillDetailsScreen> {
                                 style: TextStylesUtils.style14FnormalGrey),
                             Spacer(),
                             _buildSmallTextField(
-                                state.requsetCPN.rweight.toString(),
+                                "${state.requsetCPN.rweight ?? "0"}",
                                 weighthUnitController),
                           ],
                         ),

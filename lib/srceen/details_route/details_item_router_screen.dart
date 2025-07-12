@@ -347,41 +347,6 @@ class _ListOrderDetialsScreenState extends State<ListOrderDetialsScreen> {
                                     ? ColorsUtils.normalText
                                     : ColorsUtils.brownGrey),
                               ),
-
-                              //   title: Text(
-                              //     trackingItem.fullAddress!,
-                              //     style: index == 0
-                              //         ? TextStylesUtils.style14FnormalBlack
-                              //         : TextStylesUtils
-                              //             .styleRegular14BrownGreyW400,
-                              //     maxLines: 5,
-                              //     overflow: TextOverflow.ellipsis,
-                              //   ),
-                              //   onExpansionChanged: (value) {
-                              //     setState(() {});
-                              //   },
-                              //   children: [
-                              //     // Container(
-                              //     //   height: 100,
-                              //     //   child: ListView.builder(
-                              //     //     scrollDirection: Axis.horizontal,
-                              //     //     shrinkWrap: true,
-                              //     //     physics: ScrollPhysics(),
-                              //     //     itemCount:
-                              //     //         trackingItem.evidenceImages!.length,
-                              //     //     itemBuilder: (context, index) {
-                              //     //       return Container(
-                              //     //         margin: EdgeInsets.symmetric(
-                              //     //             horizontal: 10),
-                              //     //         child: Image.network(
-                              //     //             trackingItem.evidenceImages![index],
-                              //     //             fit: BoxFit.cover),
-                              //     //       );
-                              //     //     },
-                              //     //   ),
-                              //     // ),
-                              //   ],
-                              // ),
                             ],
                           ),
                           beforeLineStyle: LineStyle(
@@ -475,16 +440,14 @@ class _ListOrderDetialsScreenState extends State<ListOrderDetialsScreen> {
                             .then(
                           (value) {
                             showLoading(context);
-                            routeDetailBloc
-                                .onUpdatetStatus(
-                                    value,
-                                    101,
-                                    SpUtil.getInt("driverId"),
-                                    "Giao/lấy không thành công")
-                                .then(
+                            routeDetailBloc.onUpdatetStatus(
+                                value,
+                                101,
+                                SpUtil.getInt("driverId"),
+                                reasonController.text, []).then(
                               (value) {
-                                hideLoading(context);
                                 Navigator.pop(context, true);
+                                hideLoadingBool(context);
                               },
                             );
                           },
@@ -510,7 +473,24 @@ class _ListOrderDetialsScreenState extends State<ListOrderDetialsScreen> {
         textStatus,
         style: TextStylesUtils.style14FnormalBlack,
       ),
-      trailing: Icon(Icons.arrow_forward_ios),
+      trailing: InkWell(
+          onTap: () {
+            routeDetailBloc
+                .getSeqStpoppoint(widget.routeItem.requestInfo!.sequenceList)
+                .then(
+              (value) {
+                showLoading(context);
+                routeDetailBloc.onUpdatetStatus(
+                    value, 101, SpUtil.getInt("driverId"), textStatus, []).then(
+                  (value) {
+                    Navigator.pop(context, true);
+                    hideLoadingBool(context);
+                  },
+                );
+              },
+            );
+          },
+          child: Icon(Icons.arrow_forward_ios)),
     );
   }
 }

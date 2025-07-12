@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sw_app_gtel/common/config/app_dimensions.dart';
 import 'package:sw_app_gtel/common/config/format.dart';
 import 'package:sw_app_gtel/common/config/show_loading.dart';
 import 'package:sw_app_gtel/common/pref/sp_util.dart';
@@ -12,6 +13,7 @@ import 'package:sw_app_gtel/srceen/details_route/bloc/details_route_event.dart';
 import 'package:sw_app_gtel/srceen/details_route/bloc/details_route_state.dart';
 import 'package:sw_app_gtel/srceen/details_route/details_item_router_screen.dart';
 import 'package:sw_app_gtel/srceen/details_route/widget/contact_info_header.dart';
+import 'package:sw_app_gtel/srceen/details_route/widget/dialog_confirm.dart';
 import 'package:sw_app_gtel/srceen/details_route/widget/section_title.dart';
 import 'package:sw_app_gtel/srceen/receive_bill/receive_bill_details_screen.dart';
 
@@ -84,7 +86,7 @@ class _DetailsRouteSrceenState extends State<DetailsRouteSrceen> {
 
                             return InkWell(
                                 onTap: () {
-                                  Navigator.push(
+                                  final result = Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) =>
@@ -93,6 +95,11 @@ class _DetailsRouteSrceenState extends State<DetailsRouteSrceen> {
                                           requestType: requestType,
                                         ),
                                       ));
+                                  if (result == true) {
+                                    context.read<RouteDetailBloc>().add(
+                                        GetRouteByIDEvent(
+                                            routeId: widget.routeId));
+                                  }
                                 },
                                 child: deliveryCard(item, state));
                           }),
@@ -275,17 +282,28 @@ class _DetailsRouteSrceenState extends State<DetailsRouteSrceen> {
                         text: 'Xác nhận lấy hàng',
                         textStyle: TextStylesUtils.style16FnormalBlue,
                         press: () {
-                          showLoading(context);
-                          routeDetailBloc
-                              .onUpdatetStatus(seq.seqId!, 200,
-                                  SpUtil.getInt("driverId"), "Lấy hàng")
-                              .then(
-                            (value) {
-                              hideLoading(context);
-                              context.read<RouteDetailBloc>().add(
-                                  GetRouteByIDEvent(routeId: widget.routeId));
-                            },
-                          );
+                          showDialog(
+                            barrierDismissible: false,
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10.0))),
+                              contentPadding: EdgeInsets.all(15.0),
+                              content: SizedBox(
+                                width: getDeviceWidth(context),
+                                height: 300,
+                                child: DialogConfirm(
+                                  label: 'Xác nhận lấy hàng',
+                                  seq: seq,
+                                ),
+                              ),
+                            ),
+                          ).then((valute) {
+                            context
+                                .read<RouteDetailBloc>()
+                                .add(GetRouteByIDEvent(routeId: seq.routeId!));
+                          });
                         })
                     : seq.stoppointType == 3 &&
                             seq.status == 100 &&
@@ -301,24 +319,32 @@ class _DetailsRouteSrceenState extends State<DetailsRouteSrceen> {
                                 text: 'Xác nhận giao hàng',
                                 textStyle: TextStylesUtils.style16Orange,
                                 press: () {
-                                  showLoading(context);
-                                  routeDetailBloc
-                                      .onUpdatetStatus(
-                                          seq.seqId!,
-                                          200,
-                                          SpUtil.getInt("driverId"),
-                                          "Giao hàng")
-                                      .then(
-                                    (value) {
-                                      hideLoading(context);
-                                      context.read<RouteDetailBloc>().add(
-                                          GetRouteByIDEvent(
-                                              routeId: widget.routeId));
-                                    },
-                                  );
+                                  showDialog(
+                                    barrierDismissible: false,
+                                    context: context,
+                                    builder: (context) => AlertDialog(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(10.0))),
+                                      contentPadding: EdgeInsets.all(15.0),
+                                      content: SizedBox(
+                                        width: getDeviceWidth(context),
+                                        height: 300,
+                                        child: DialogConfirm(
+                                          label: 'Xác nhận giao hàng',
+                                          seq: seq,
+                                        ),
+                                      ),
+                                    ),
+                                  ).then((valute) {
+                                    context.read<RouteDetailBloc>().add(
+                                        GetRouteByIDEvent(
+                                            routeId: seq.routeId!));
+                                  });
+                                  ;
                                 })
                             : SizedBox()
-                        : seq.stoppointType == 3 && seq.status == 101
+                        : seq.stoppointType == 2 && seq.status == 101
                             ? Container(
                                 decoration: BoxDecoration(
                                   color: Colors.white,
@@ -335,12 +361,34 @@ class _DetailsRouteSrceenState extends State<DetailsRouteSrceen> {
                                 padding: EdgeInsets.all(7),
                                 child: Text(
                                     textAlign: TextAlign.center,
-                                    "Giao không thành công",
+                                    "Lấy không thành công",
                                     style: TextStylesUtils.style16FnormalRed))
-                            : SizedBox();
+                            : seq.stoppointType == 3 && seq.status == 101
+                                ? Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(16),
+                                      border: Border.all(color: Colors.red),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.red.withOpacity(0.1),
+                                          blurRadius: 8,
+                                          offset: const Offset(0, 2),
+                                        ),
+                                      ],
+                                    ),
+                                    padding: EdgeInsets.all(7),
+                                    child: Text(
+                                        textAlign: TextAlign.center,
+                                        "Giao không thành công",
+                                        style:
+                                            TextStylesUtils.style16FnormalRed))
+                                : SizedBox();
               },
             ))),
-        state.routeByID.sourceType == 7
+        state.routeByID.sourceType == 7 &&
+                state.routeByID.status! > 100 &&
+                state.routeByID.status! < 330
             ? Expanded(
                 child: DefaultButton(
                     padding: EdgeInsets.all(5),

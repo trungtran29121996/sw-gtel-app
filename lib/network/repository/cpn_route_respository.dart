@@ -82,12 +82,16 @@ class CPNRouteRepository {
     }
   }
 
-  Future<bool> updateStatusSeq(
-      int seqID, int status, int driverId, String note) async {
+  Future<bool> updateStatusSeq(int seqID, int status, int driverId, String note,
+      List<String> evidenceImages) async {
     try {
       final response = await dioMain.patch(
           "api/v1/tms-service/routing/cpn/route/driver/${driverId}/sequence/${seqID}",
-          data: {"status": status, "evidence_images": [], "note": note});
+          data: {
+            "status": status,
+            "evidence_images": evidenceImages,
+            "note": note
+          });
       if (response["success"] == true) {
         return true;
       } else {

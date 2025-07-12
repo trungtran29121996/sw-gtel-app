@@ -93,10 +93,10 @@ class RouteDetailBloc extends BaseBloc<DetailsRouteEvent, DetailsRouteState> {
     return routingCpnStartReponse;
   }
 
-  Future<bool> onUpdatetStatus(
-      int seqID, int status, int driverID, String note) async {
-    bool result =
-        await cpnRouteRepository.updateStatusSeq(seqID, status, driverID, note);
+  Future<bool> onUpdatetStatus(int seqID, int status, int driverID, String note,
+      List<String> evidenceImages) async {
+    bool result = await cpnRouteRepository.updateStatusSeq(
+        seqID, status, driverID, note, evidenceImages);
     return result;
   }
 

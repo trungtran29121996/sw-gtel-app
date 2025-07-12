@@ -15,7 +15,7 @@ import 'package:sw_app_gtel/srceen/details_route/details_route_srceen.dart';
 import 'package:sw_app_gtel/srceen/hand_over/bloc/hand_over_bloc.dart';
 import 'package:sw_app_gtel/srceen/hand_over/bloc/hand_over_event.dart';
 import 'package:sw_app_gtel/srceen/hand_over/bloc/hand_over_state.dart';
-import 'package:sw_app_gtel/srceen/details_route/widget/dialog_confirrm_handover.dart';
+import 'package:sw_app_gtel/srceen/hand_over/widget/dialog_confirrm_handover.dart';
 
 import '../../common/pref/sp_util.dart';
 
@@ -42,6 +42,7 @@ class _HandOverSrceenState extends State<HandOverSrceen> {
 
   List<HandOverReponse> listHandOver = [];
   List<HandOverReponse> listFilterHandOver = [];
+  List<HandOverReponse> listFilterHandOverComple = [];
 
   @override
   void initState() {
@@ -85,7 +86,15 @@ class _HandOverSrceenState extends State<HandOverSrceen> {
                 } else if (state.loading.isLoadSuccess &&
                     state.handOver == true) {
                   listHandOver = state.listHandOver;
+                  listFilterHandOverComple = state.listHandOverComplete;
                   listFilterHandOver = state.listHandOver;
+
+                  listFilterHandOverComple.sort(
+                    (a, b) => b.modifiedAt!.compareTo(a.modifiedAt!),
+                  );
+                  listFilterHandOver.sort(
+                    (a, b) => b.modifiedAt!.compareTo(a.modifiedAt!),
+                  );
                   hideLoading(context);
                 }
               },
@@ -137,7 +146,7 @@ class _HandOverSrceenState extends State<HandOverSrceen> {
                               if (selectedIndex == 0) {
                                 item = listFilterHandOver[index];
                               } else {
-                                item = state.listHandOverComplete[index];
+                                item = listFilterHandOverComple[index];
                               }
 
                               return Container(

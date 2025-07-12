@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:sw_app_gtel/common/config/format.dart';
 import 'package:sw_app_gtel/common/config/show_loading.dart';
 import 'package:sw_app_gtel/common/pref/sp_util.dart';
 import 'package:sw_app_gtel/common/style/color.dart';
@@ -237,15 +238,6 @@ class _DialogConfirrmHandoverState extends State<DialogConfirrmHandover> {
                                     fit: BoxFit.cover,
                                     width: double.infinity,
                                   ),
-                                  // Positioned(
-                                  //   top: 0,
-                                  //   right: 0,
-                                  //   child: GestureDetector(
-                                  //     onTap: () => removeImage(index),
-                                  //     child:
-                                  //         Icon(Icons.cancel, color: Colors.red, size: 18),
-                                  //   ),
-                                  // ),
                                 ],
                               );
                             } else {
@@ -361,6 +353,22 @@ class _DialogConfirrmHandoverState extends State<DialogConfirrmHandover> {
     );
   }
 
+  Widget _buildStatItemMoney(Color iconColor, String value, String label) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            Text(value,
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+          ],
+        ),
+        Text(label,
+            style: const TextStyle(color: Colors.black54, fontSize: 14)),
+      ],
+    );
+  }
+
   Widget _infoHandover(HandOverState state) {
     return Column(
       children: [
@@ -387,15 +395,13 @@ class _DialogConfirrmHandoverState extends State<DialogConfirrmHandover> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            _buildStatItem(
-                Icons.attach_money,
+            _buildStatItemMoney(
                 Colors.black87,
-                "${state.routeHandoverReponse.data?.totalCod}",
+                "${formatVND(state.routeHandoverReponse.data?.totalCod)}đ",
                 'Cước vận chuyển'),
-            _buildStatItem(
-                Icons.money,
+            _buildStatItemMoney(
                 Colors.black87,
-                "${state.routeHandoverReponse.data?.shippingFee}",
+                "${formatVND(state.routeHandoverReponse.data?.shippingFee)}đ",
                 'Tiền thu hộ (COD)'),
           ],
         ),
