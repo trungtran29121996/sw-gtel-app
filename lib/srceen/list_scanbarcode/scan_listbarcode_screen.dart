@@ -3,15 +3,18 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:sw_app_gtel/common/style/color.dart';
 import 'package:sw_app_gtel/common/style/textstyles.dart';
 import 'package:sw_app_gtel/common/widget/default_button.dart';
+import 'package:sw_app_gtel/srceen/details_route/bloc/details_route_bloc.dart';
 
 class ScanListbarcodeScreen extends StatefulWidget {
-  const ScanListbarcodeScreen({super.key});
+  ScanListbarcodeScreen({super.key});
 
   @override
   State<ScanListbarcodeScreen> createState() => _ScanListbarcodeScreenState();
 }
 
 class _ScanListbarcodeScreenState extends State<ScanListbarcodeScreen> {
+  RouteDetailBloc routeDetailBloc = RouteDetailBloc();
+
   final List<String> scannedCodes = [];
 
   DateTime? lastScanTime;
@@ -112,39 +115,6 @@ class _ScanListbarcodeScreenState extends State<ScanListbarcodeScreen> {
                   SizedBox(
                     height: 10,
                   )
-                  // Padding(
-                  //   padding: const EdgeInsets.all(12.0),
-                  //   child: SizedBox(
-                  //     width: double.infinity,
-                  //     child: ElevatedButton(
-                  //       onPressed: () {
-                  //         // Xử lý logic khi nhấn hoàn thành tiếp nhận
-                  //         showDialog(
-                  //           context: context,
-                  //           builder: (_) => AlertDialog(
-                  //             title: const Text("Thông báo"),
-                  //             content: Text(
-                  //                 "Đã tiếp nhận ${scannedCodes.length} đơn hàng."),
-                  //             actions: [
-                  //               TextButton(
-                  //                 onPressed: () => Navigator.pop(context),
-                  //                 child: const Text("OK"),
-                  //               )
-                  //             ],
-                  //           ),
-                  //         );
-                  //       },
-                  //       style: ElevatedButton.styleFrom(
-                  //         padding: const EdgeInsets.symmetric(vertical: 16),
-                  //         shape: RoundedRectangleBorder(
-                  //             borderRadius: BorderRadius.circular(12)),
-                  //         backgroundColor: Colors.lightBlue,
-                  //       ),
-                  //       child: const Text("Hoàn thành tiếp nhận",
-                  //           style: TextStyle(fontSize: 16)),
-                  //     ),
-                  //   ),
-                  // ),
                 ],
               ),
             ),

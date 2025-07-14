@@ -324,7 +324,7 @@ class _HandOverSrceenState extends State<HandOverSrceen> {
                               setState(() {
                                 context.read<HandOverBloc>().add(GetAllHandOver(
                                     page: 1,
-                                    size: 20,
+                                    size: 30,
                                     driver_id: SpUtil.getInt("driverId")));
                               });
                             }

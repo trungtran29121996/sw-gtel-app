@@ -77,8 +77,8 @@ class _ListAllrouteScreenState extends State<ListAllrouteScreen> {
 
   void togglePin(DataCnpRouteReponse item) {
     setState(() {
-      if (pinnedItemIds.contains(item.orderCodeOfClient)) {
-        pinnedItemIds.remove(item.orderCodeOfClient);
+      if (pinnedItemIds.contains(item.routeId)) {
+        pinnedItemIds.remove(item.routeId);
       } else {
         pinnedItemIds.add(item.routeId!);
       }
@@ -430,20 +430,23 @@ class _ListAllrouteScreenState extends State<ListAllrouteScreen> {
                               ),
                             ),
                             Positioned(
-                              top: 2,
-                              right: 3,
-                              child: InkWell(
+                                top: 2,
+                                right: 3,
+                                child: InkWell(
                                   onTap: () {
                                     togglePin(routeItem);
                                   },
-                                  child: SvgPicture.asset(
-                                    ("assets/icon/pin.svg"),
-                                    width: 30,
-                                    color: isPinned(routeItem)
-                                        ? Colors.orange
-                                        : null,
-                                  )),
-                            ),
+                                  child: isPinned(routeItem)
+                                      ? SvgPicture.asset(
+                                          ("assets/icon/pinned-off.svg"),
+                                          width: 30,
+                                          color: Colors.orange,
+                                        )
+                                      : SvgPicture.asset(
+                                          ("assets/icon/pin.svg"),
+                                          width: 30,
+                                        ),
+                                )),
                           ],
                         );
                       }),

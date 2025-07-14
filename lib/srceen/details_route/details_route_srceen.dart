@@ -14,7 +14,7 @@ import 'package:sw_app_gtel/srceen/details_route/bloc/details_route_state.dart';
 import 'package:sw_app_gtel/srceen/details_route/details_item_router_screen.dart';
 import 'package:sw_app_gtel/srceen/details_route/widget/contact_info_header.dart';
 import 'package:sw_app_gtel/srceen/details_route/widget/dialog_confirm.dart';
-import 'package:sw_app_gtel/srceen/details_route/widget/scan_listbarcode_screen.dart';
+import 'package:sw_app_gtel/srceen/list_scanbarcode/scan_listbarcode_screen.dart';
 import 'package:sw_app_gtel/srceen/details_route/widget/section_title.dart';
 import 'package:sw_app_gtel/srceen/receive_bill/receive_bill_details_screen.dart';
 
@@ -59,16 +59,6 @@ class _DetailsRouteSrceenState extends State<DetailsRouteSrceen> {
                 child: Scaffold(
               appBar: AppBar(
                 backgroundColor: Color(0xFFb3e0ff),
-                //actions: [
-                //   Row(
-                //     children: [
-                //       Container(
-                //           margin: EdgeInsets.only(right: 10),
-                //           child:
-                //               Image.asset("assets/images/qrcode_search.png")),
-                //     ],
-                //   )
-                // ],
                 leading: InkWell(
                     onTap: () {
                       Navigator.pop(context, true);
@@ -101,30 +91,29 @@ class _DetailsRouteSrceenState extends State<DetailsRouteSrceen> {
                               ),
                               contentPadding: EdgeInsets.symmetric(
                                   horizontal: 12, vertical: 14),
-                              suffixIcon: widget.screen ==
-                                      SCREEN.SCREEN_PICKUP_GOODS
-                                  ? Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                          InkWell(
-                                              onTap: () async {
-                                                final scanned = await Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            ScanListbarcodeScreen()));
-                                                if (scanned == true) {
-                                                  context
-                                                      .read<RouteDetailBloc>()
-                                                      .add(GetRouteByIDEvent(
-                                                          routeId:
-                                                              widget.routeId));
-                                                }
-                                              },
-                                              child: Image.asset(
-                                                  "assets/images/qrcode_search.png"))
-                                        ])
-                                  : SizedBox())),
+                              suffixIcon: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    InkWell(
+                                        onTap: () async {
+                                          final scanned = await Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ScanListbarcodeScreen()));
+                                          if (scanned == true) {
+                                            context.read<RouteDetailBloc>().add(
+                                                GetRouteByIDEvent(
+                                                    routeId: widget.routeId));
+                                          }
+                                        },
+                                        child: Image.asset(
+                                            "assets/images/qrcode_search.png"))
+                                  ]))),
+                      // widget.screen ==
+                      //         SCREEN.SCREEN_PICKUP_GOODS
+                      //     ?
+                      //     : SizedBox())),
                     ),
                     Expanded(
                       child: Container(

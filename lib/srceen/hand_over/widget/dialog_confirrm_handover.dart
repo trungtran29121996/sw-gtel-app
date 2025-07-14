@@ -375,17 +375,20 @@ class _DialogConfirrmHandoverState extends State<DialogConfirrmHandover> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            _buildStatItem(Icons.receipt_long, Colors.orange,
-                "${state.routeHandoverReponse.data?.countOfRoute}", 'Vận đơn'),
+            _buildStatItem(
+                Icons.receipt_long,
+                Colors.orange,
+                "${state.routeHandoverReponse.data?.countOfRoute ?? 0}",
+                'Vận đơn'),
             _buildStatItem(
                 Icons.check_circle,
                 Colors.green,
-                "${state.routeHandoverReponse.data?.successfulRequests}",
+                "${state.routeHandoverReponse.data?.successfulRequests ?? 0}",
                 'Thành công'),
             _buildStatItem(
                 Icons.cancel,
                 Colors.red,
-                "${state.routeHandoverReponse.data?.failedRequests}",
+                "${state.routeHandoverReponse.data?.failedRequests ?? 0}",
                 'Thất bại'),
           ],
         ),

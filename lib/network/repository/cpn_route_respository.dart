@@ -149,4 +149,21 @@ class CPNRouteRepository {
       throw Exception('Error fetching data: $e');
     }
   }
+
+  Future<bool> createListBarCode(List<String> listBarCode, int route_id) async {
+    try {
+      final response = await dioMain.patch(
+          "api/v1/tms-service/routing/cpn/route/driver/route/${route_id}",
+          data: {
+            "list_request_id": listBarCode,
+          });
+      if (response["success"] == true) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      throw Exception('Error fetching data: $e');
+    }
+  }
 }
