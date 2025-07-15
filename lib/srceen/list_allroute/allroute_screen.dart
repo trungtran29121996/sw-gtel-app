@@ -56,7 +56,9 @@ class _ListAllrouteScreenState extends State<ListAllrouteScreen> {
       } else {
         lstDataFilterCnpRoute = lstDataCnpRoute
             .where(
-              (item) => item.orderCodeOfClient!.toLowerCase().contains(keyword),
+              (item) =>
+                  item.orderCodeOfClient!.toLowerCase().contains(keyword) ||
+                  item.toAddress!.toLowerCase().contains(keyword),
             )
             .toList();
       }

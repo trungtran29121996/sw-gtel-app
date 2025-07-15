@@ -101,7 +101,9 @@ class _DetailsRouteSrceenState extends State<DetailsRouteSrceen> {
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      ScanListbarcodeScreen()));
+                                                      ScanListbarcodeScreen(
+                                                        routeID: widget.routeId,
+                                                      )));
                                           if (scanned == true) {
                                             context.read<RouteDetailBloc>().add(
                                                 GetRouteByIDEvent(

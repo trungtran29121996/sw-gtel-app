@@ -91,7 +91,11 @@ class _ListOrderDetialsScreenState extends State<ListOrderDetialsScreen> {
                     text: 'Không thành công',
                     textStyle: TextStylesUtils.style14FnormalRed,
                     press: () {
-                      showBottomSheet();
+                      showBottomSheet().then(
+                        (value) {
+                          Navigator.pop(context, true);
+                        },
+                      );
                     }),
               );
             })));
@@ -439,7 +443,6 @@ class _ListOrderDetialsScreenState extends State<ListOrderDetialsScreen> {
                                 widget.routeItem.requestInfo!.sequenceList)
                             .then(
                           (value) {
-                            showLoading(context);
                             routeDetailBloc.onUpdatetStatus(
                                 value,
                                 101,
@@ -447,7 +450,6 @@ class _ListOrderDetialsScreenState extends State<ListOrderDetialsScreen> {
                                 reasonController.text, []).then(
                               (value) {
                                 Navigator.pop(context, true);
-                                hideLoadingBool(context);
                               },
                             );
                           },
@@ -479,12 +481,10 @@ class _ListOrderDetialsScreenState extends State<ListOrderDetialsScreen> {
                 .getSeqStpoppoint(widget.routeItem.requestInfo!.sequenceList)
                 .then(
               (value) {
-                showLoading(context);
                 routeDetailBloc.onUpdatetStatus(
                     value, 101, SpUtil.getInt("driverId"), textStatus, []).then(
                   (value) {
                     Navigator.pop(context, true);
-                    hideLoadingBool(context);
                   },
                 );
               },

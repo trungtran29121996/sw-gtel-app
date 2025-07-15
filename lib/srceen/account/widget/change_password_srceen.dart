@@ -56,11 +56,11 @@ class _ChangePasswordSrceenState extends State<ChangePasswordSrceen> {
               margin: EdgeInsets.all(5),
               child: Column(
                 children: [
-                  buildEditextField(oldController, "Mật khẩu hiện tại"),
+                  buildEditextField(oldController, "Nhập mật khẩu hiện tại"),
                   SizedBox(
                     height: 10,
                   ),
-                  buildEditextField(newController, "Mật khẩu mới"),
+                  buildEditextField(newController, "Nhập mật khẩu mới"),
                   SizedBox(
                     height: 10,
                   ),
