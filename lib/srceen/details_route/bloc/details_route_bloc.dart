@@ -24,6 +24,10 @@ class RouteDetailBloc extends BaseBloc<DetailsRouteEvent, DetailsRouteState> {
   Future _onGetRouteById(GetRouteByIDEvent event, Emitter emit) async {
     try {
       List<RouteRequestList> routeRequestList = [];
+      List<RouteRequestList> routeRequestListCurrent = [];
+      List<RouteRequestList> routeRequestListComplete = [];
+      // List<List<SequenceList>> sequenceList = [];
+
       emit.call(state.copyWith(
           loading:
               state.loading.copyWith(isLoading: true, isLoadSuccess: false)));
@@ -32,9 +36,17 @@ class RouteDetailBloc extends BaseBloc<DetailsRouteEvent, DetailsRouteState> {
       if (routeDetail != null) {
         routeRequestList.addAll(routeDetail.routeRequestList!);
 
-        for (int route = 0; route < routeRequestList.length; route++) {
+        // sequenceList = routeRequestList
+        //     .map((item) => routeDetail.sequenceList!
+        //         .where((seq) => seq.requestId == item.requestId)
+        //         .toList())
+        //     .toList();
+
+        for (int route = 0;
+            route < routeDetail.routeRequestList!.length;
+            route++) {
           for (int s = 0; s < routeDetail.sequenceList!.length; s++) {
-            if (routeRequestList[route].requestId ==
+            if (routeDetail.routeRequestList![route].requestId ==
                 routeDetail.sequenceList![s].requestId) {
               routeRequestList[route]
                   .requestInfo!
@@ -45,11 +57,25 @@ class RouteDetailBloc extends BaseBloc<DetailsRouteEvent, DetailsRouteState> {
         }
       }
 
-      emit.call(state.copyWith(
-          loading:
-              state.loading.copyWith(isLoading: false, isLoadSuccess: true),
-          routeByID: routeDetail,
-          routeRequestList: routeRequestList));
+      for (var item in routeRequestList) {
+        if (item.status == 201 || item.status == 301) {
+          routeRequestListComplete.add(item);
+        } else if (item.status == 300 ||
+            item.status == 100 ||
+            item.status == 200) {
+          routeRequestListCurrent.add(item);
+        }
+      }
+
+      emit.call(
+        state.copyWith(
+            loading:
+                state.loading.copyWith(isLoading: false, isLoadSuccess: true),
+            routeByID: routeDetail,
+            routeRequestList: routeRequestList,
+            routeRequestListComplete: routeRequestListComplete,
+            routeRequestListCurrent: routeRequestListCurrent),
+      );
     } catch (e) {
       print("LOI$e");
       emit.call(state.copyWith(

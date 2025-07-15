@@ -33,6 +33,7 @@ class _DetailsRouteSrceenState extends State<DetailsRouteSrceen> {
   ScrollController controller = ScrollController();
 
   int requestType = 0;
+  int selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -110,10 +111,21 @@ class _DetailsRouteSrceenState extends State<DetailsRouteSrceen> {
                                         child: Image.asset(
                                             "assets/images/qrcode_search.png"))
                                   ]))),
-                      // widget.screen ==
-                      //         SCREEN.SCREEN_PICKUP_GOODS
-                      //     ?
-                      //     : SizedBox())),
+                    ),
+                    Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          _buildTab('Hiện tại', 0,
+                              state.routeRequestListCurrent.length),
+                          const SizedBox(width: 50),
+                          _buildTab('Lịch sử', 1,
+                              state.routeRequestListComplete.length),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 5,
                     ),
                     Expanded(
                       child: Container(
@@ -121,10 +133,26 @@ class _DetailsRouteSrceenState extends State<DetailsRouteSrceen> {
                         color: Colors.white,
                         child: ListView.builder(
                             controller: controller,
-                            itemCount: state.routeRequestList.length,
+                            itemCount: state.routeByID.sequenceList != null
+                                ? selectedIndex == 0
+                                    ? state.routeRequestListCurrent.length
+                                    : state.routeRequestListComplete.length
+                                : state.routeRequestList.length,
                             itemBuilder: (context, index) {
-                              RouteRequestList item =
-                                  state.routeRequestList[index];
+                              RouteRequestList item;
+                              if (state.routeByID.sequenceList != null) {
+                                if (selectedIndex == 0) {
+                                  item = state.routeRequestListCurrent[index];
+                                } else {
+                                  item = state.routeRequestListComplete[index];
+                                }
+                              } else {
+                                if (selectedIndex == 0) {
+                                  item = state.routeRequestList[index];
+                                } else {
+                                  item = state.routeRequestList[index];
+                                }
+                              }
                               //requestType 1 là giao - 2 là nhận
 
                               return InkWell(
@@ -455,6 +483,40 @@ class _DetailsRouteSrceenState extends State<DetailsRouteSrceen> {
                     }))
             : SizedBox()
       ],
+    );
+  }
+
+  Widget _buildTab(String text, int index, int count) {
+    bool isSelected = selectedIndex == index;
+
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          selectedIndex = index;
+        });
+      },
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            "$text ($count)",
+            style: TextStyle(
+              color: isSelected ? Colors.cyan : Colors.grey,
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          const SizedBox(height: 4),
+          if (isSelected)
+            Container(
+              height: 3,
+              width: 100,
+              color: Colors.cyan,
+            )
+          else
+            const SizedBox(height: 3),
+        ],
+      ),
     );
   }
 }

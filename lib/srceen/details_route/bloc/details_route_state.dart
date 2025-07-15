@@ -15,7 +15,9 @@ class DetailsRouteState extends BaseState {
   TrackingLogReponse trackingLogReponse;
   List<Datum> listTrackingLogReponse;
   RequsetCPN requsetCPN;
-  final List<bool> isExpansion;
+  List<bool> isExpansion;
+  List<RouteRequestList> routeRequestListComplete;
+  List<RouteRequestList> routeRequestListCurrent;
 
   DetailsRouteState(
       {required this.loading,
@@ -26,7 +28,9 @@ class DetailsRouteState extends BaseState {
       required this.trackingLogReponse,
       required this.listTrackingLogReponse,
       required this.requsetCPN,
-      required this.isExpansion});
+      required this.isExpansion,
+      required this.routeRequestListComplete,
+      required this.routeRequestListCurrent});
   factory DetailsRouteState.initial() {
     return DetailsRouteState(
         loading: Loading.initial(),
@@ -37,7 +41,9 @@ class DetailsRouteState extends BaseState {
         trackingLogReponse: TrackingLogReponse(),
         listTrackingLogReponse: [],
         requsetCPN: RequsetCPN(requestPackageItems: [], urlPictures: []),
-        isExpansion: []);
+        isExpansion: [],
+        routeRequestListComplete: [],
+        routeRequestListCurrent: []);
   }
   DetailsRouteState copyWith(
       {Loading? loading,
@@ -49,7 +55,9 @@ class DetailsRouteState extends BaseState {
       TrackingLogReponse? trackingLogReponse,
       List<Datum>? listTrackingLogReponse,
       RequsetCPN? requsetCPN,
-      List<bool>? isExpansion}) {
+      List<bool>? isExpansion,
+      List<RouteRequestList>? routeRequestListComplete,
+      List<RouteRequestList>? routeRequestListCurrent}) {
     return DetailsRouteState(
         loading: loading ?? this.loading,
         routeByID: routeByID ?? this.routeByID,
@@ -60,7 +68,11 @@ class DetailsRouteState extends BaseState {
         listTrackingLogReponse:
             listTrackingLogReponse ?? this.listTrackingLogReponse,
         requsetCPN: requsetCPN ?? this.requsetCPN,
-        isExpansion: isExpansion ?? this.isExpansion);
+        isExpansion: isExpansion ?? this.isExpansion,
+        routeRequestListCurrent:
+            routeRequestListCurrent ?? this.routeRequestListCurrent,
+        routeRequestListComplete:
+            routeRequestListComplete ?? this.routeRequestListComplete);
   }
 
   @override
@@ -73,6 +85,8 @@ class DetailsRouteState extends BaseState {
         trackingLogReponse,
         listTrackingLogReponse,
         requsetCPN,
-        isExpansion
+        isExpansion,
+        routeRequestListComplete,
+        routeRequestListCurrent
       ];
 }

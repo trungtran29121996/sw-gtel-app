@@ -1,3 +1,5 @@
+import 'package:sw_app_gtel/network/responses/routing_cpn_start_reponse.dart';
+
 class DataCnpRouteByIdReponse {
   int? createdAt;
   int? modifiedAt;

@@ -131,7 +131,7 @@ class _ListAllrouteScreenState extends State<ListAllrouteScreen> {
           backgroundColor: Colors.white,
           appBar: DefaultAppBar(
             backgroundColor: Color(0xFFb3e0ff),
-            title: "Danh sách vận đơn",
+            title: "Danh sách chuyến",
           ),
           body: Container(
             padding: EdgeInsets.all(8),
@@ -150,216 +150,137 @@ class _ListAllrouteScreenState extends State<ListAllrouteScreen> {
                       itemBuilder: (context, index) {
                         DataCnpRouteReponse routeItem =
                             lstDataFilterCnpRoute[index];
-
                         return Stack(
                           children: [
-                            Container(
-                              margin: EdgeInsets.all(3),
-                              padding: EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(16),
-                                border: Border.all(color: ColorsUtils.bgHome),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.1),
-                                    blurRadius: 8,
-                                    offset: const Offset(0, 2),
-                                  ),
-                                ],
-                              ),
-                              child: Column(
-                                children: [
-                                  SizedBox(
-                                    height: 5,
-                                  ),
-                                  Row(
-                                    children: [
-                                      Container(
-                                          margin: EdgeInsets.only(top: 8),
-                                          child: Image.asset(
-                                              "assets/images/scan_qrcode.png")),
-                                      Text("${routeItem.orderCodeOfClient}",
-                                          style: TextStyle(
-                                            color: _color(routeItem),
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.bold,
-                                          )),
-                                      Spacer(),
-                                      WidgetStatus(status: routeItem.status!),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 7,
-                                  ),
-                                  _buildinfoLWH(routeItem),
-                                  SizedBox(
-                                    height: 5,
-                                  ),
-                                  Container(
-                                    child: ListView.builder(
-                                        shrinkWrap: true,
-                                        controller: controller,
-                                        itemCount:
-                                            routeItem.routeAddressList!.length,
-                                        itemBuilder: (context, index) {
-                                          String routeAddressList = routeItem
-                                              .routeAddressList![index];
-                                          if (index < 5) {
-                                            return Column(
-                                              children: [
-                                                Divider(
-                                                  color: ColorsUtils.boderGray,
-                                                ),
-                                                Row(children: [
-                                                  Icon(Icons.location_on,
-                                                      size: 14,
-                                                      color: _color(routeItem)),
-                                                  SizedBox(width: 4),
-                                                  Expanded(
-                                                      child: Text(
-                                                    routeAddressList,
-                                                    style:
-                                                        TextStyle(fontSize: 14),
-                                                  ))
-                                                ]),
-                                              ],
-                                            );
-                                          }
-                                          return null;
-                                        }),
-                                  ),
-                                  Divider(
-                                    color: ColorsUtils.boderGray,
-                                  ),
-                                  MultiBlocListener(
-                                    listeners: [
-                                      BlocListener<RouteDetailBloc,
-                                          DetailsRouteState>(
-                                        listener: (context, state) {
-                                          if (state.isRouteStart ==
-                                                  StatusType.COMPLETED &&
-                                              !_dialogShow) {
-                                            _dialogShow = true;
-                                            hideLoading(context);
-                                            showAppDialog(
-                                                context: context,
-                                                suffixIcon: Icon(
-                                                  Icons
-                                                      .check_circle_outline_outlined,
-                                                  color: ColorsUtils
-                                                      .statusNotification,
-                                                  size: 35,
-                                                ),
-                                                barrierDismissible: false,
-                                                isHiddenCancel: true,
-                                                title: "Thông báo",
-                                                message:
-                                                    "Chuyển trạng thái chuyến thành công!",
-                                                onSucessButtonPressed:
-                                                    () async {
-                                                  final result =
-                                                      await Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                DetailsRouteSrceen(
-                                                              routeId: routeItem
-                                                                  .routeId!,
-                                                              screen:
-                                                                  widget.screen,
-                                                            ),
-                                                          ));
-                                                  _dialogShow = false;
-                                                  if (result == true) {
-                                                    _dialogShow = false;
-                                                    Navigator.pop(context);
-                                                    context.read<ListAklRouteBloc>().add(
-                                                        GetAllRoute(
-                                                            page: 1,
-                                                            size: 30,
-                                                            driver_id:
-                                                                SpUtil.getInt(
-                                                                    "driverId"),
-                                                            request_type:
-                                                                requestType(widget
-                                                                    .screen)));
-                                                  }
-                                                }).then(
-                                              (_) {
-                                                _dialogShow = false;
-                                              },
-                                            );
-                                          } else if (state.isRouteStart ==
-                                                  StatusType.FAILED &&
-                                              !_dialogShow) {
-                                            hideLoading(context);
-                                            _dialogShow = true;
-                                            showAppDialog(
-                                                    barrierDismissible: false,
-                                                    isHiddenCancel: true,
-                                                    context: context,
-                                                    suffixIcon: Icon(
-                                                      Icons.cancel_outlined,
-                                                      color: Colors.red,
-                                                      size: 35,
-                                                    ),
-                                                    message: "${state.message}",
-                                                    title: 'Thông báo')
-                                                .then(
-                                              (_) {
-                                                _dialogShow = false;
-                                              },
-                                            );
-                                          }
-                                        },
+                            InkWell(
+                              onTap: () {
+                                final result = Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => DetailsRouteSrceen(
+                                        routeId: routeItem.routeId!,
+                                        screen: widget.screen,
                                       ),
-                                      BlocListener<ListAklRouteBloc,
-                                          ListAklRouteState>(
-                                        listener: (context, state) {
-                                          if (state.listRoute.isNotEmpty) {
-                                            setState(() {
-                                              lstDataCnpRoute = state.listRoute;
-                                              lstDataFilterCnpRoute =
-                                                  state.listRoute;
-                                              lstDataFilterCnpRoute.sort(
-                                                (a, b) => b.modifiedAt!
-                                                    .compareTo(a.modifiedAt!),
+                                    ));
+                                if (result == true) {
+                                  context.read<ListAklRouteBloc>().add(
+                                      GetAllRoute(
+                                          page: 1,
+                                          size: 30,
+                                          driver_id: SpUtil.getInt("driverId"),
+                                          request_type:
+                                              requestType(widget.screen)));
+                                }
+                              },
+                              child: Container(
+                                margin: EdgeInsets.all(3),
+                                padding: EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(16),
+                                  border: Border.all(color: ColorsUtils.bgHome),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.1),
+                                      blurRadius: 8,
+                                      offset: const Offset(0, 2),
+                                    ),
+                                  ],
+                                ),
+                                child: Column(
+                                  children: [
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Container(
+                                            margin: EdgeInsets.only(top: 8),
+                                            child: Image.asset(
+                                                "assets/images/scan_qrcode.png")),
+                                        Text("${routeItem.orderCodeOfClient}",
+                                            style: TextStyle(
+                                              color: _color(routeItem),
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold,
+                                            )),
+                                        Spacer(),
+                                        WidgetStatus(status: routeItem.status!),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 7,
+                                    ),
+                                    _buildinfoLWH(routeItem),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Container(
+                                      child: ListView.builder(
+                                          shrinkWrap: true,
+                                          controller: controller,
+                                          itemCount: routeItem
+                                              .routeAddressList!.length,
+                                          itemBuilder: (context, index) {
+                                            String routeAddressList = routeItem
+                                                .routeAddressList![index];
+                                            if (index < 5) {
+                                              return Column(
+                                                children: [
+                                                  Divider(
+                                                    color:
+                                                        ColorsUtils.boderGray,
+                                                  ),
+                                                  Row(children: [
+                                                    Icon(Icons.location_on,
+                                                        size: 14,
+                                                        color:
+                                                            _color(routeItem)),
+                                                    SizedBox(width: 4),
+                                                    Expanded(
+                                                        child: Text(
+                                                      routeAddressList,
+                                                      style: TextStyle(
+                                                          fontSize: 14),
+                                                    ))
+                                                  ]),
+                                                ],
                                               );
-                                            });
-                                          }
-                                        },
-                                      )
-                                    ],
-                                    child: BlocBuilder<RouteDetailBloc,
-                                        DetailsRouteState>(
-                                      builder: (BuildContext context, state) {
-                                        return Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
-                                          children: [
-                                            Expanded(
-                                              flex: 1,
-                                              child: DefaultButton(
-                                                  padding: EdgeInsets.only(
-                                                      top: 13,
-                                                      right: 10,
-                                                      left: 10),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          15.0),
-                                                  borderColor:
-                                                      ColorsUtils.disableButon,
-                                                  backgroundColor: Colors.white,
-                                                  textColor: Colors.white,
-                                                  text: 'Xem chi tiết',
-                                                  textStyle: TextStylesUtils
-                                                      .style16FnormalGrey,
-                                                  press: () {
+                                            }
+                                            return null;
+                                          }),
+                                    ),
+                                    Divider(
+                                      color: ColorsUtils.boderGray,
+                                    ),
+                                    MultiBlocListener(
+                                      listeners: [
+                                        BlocListener<RouteDetailBloc,
+                                            DetailsRouteState>(
+                                          listener: (context, state) {
+                                            if (state.isRouteStart ==
+                                                    StatusType.COMPLETED &&
+                                                !_dialogShow) {
+                                              _dialogShow = true;
+                                              hideLoading(context);
+                                              showAppDialog(
+                                                  context: context,
+                                                  suffixIcon: Icon(
+                                                    Icons
+                                                        .check_circle_outline_outlined,
+                                                    color: ColorsUtils
+                                                        .statusNotification,
+                                                    size: 35,
+                                                  ),
+                                                  barrierDismissible: false,
+                                                  isHiddenCancel: true,
+                                                  title: "Thông báo",
+                                                  message:
+                                                      "Chuyển trạng thái chuyến thành công!",
+                                                  onSucessButtonPressed:
+                                                      () async {
                                                     final result =
-                                                        Navigator.push(
+                                                        await Navigator.push(
                                                             context,
                                                             MaterialPageRoute(
                                                               builder: (context) =>
@@ -370,7 +291,10 @@ class _ListAllrouteScreenState extends State<ListAllrouteScreen> {
                                                                     .screen,
                                                               ),
                                                             ));
+                                                    _dialogShow = false;
                                                     if (result == true) {
+                                                      _dialogShow = false;
+                                                      Navigator.pop(context);
                                                       context
                                                           .read<
                                                               ListAklRouteBloc>()
@@ -384,49 +308,159 @@ class _ListAllrouteScreenState extends State<ListAllrouteScreen> {
                                                                   requestType(widget
                                                                       .screen)));
                                                     }
-                                                  }),
-                                            ),
-                                            routeItem.status == 100
-                                                ? Expanded(
-                                                    flex: 1,
-                                                    child: DefaultButton(
-                                                        padding:
-                                                            EdgeInsets.only(
-                                                                top: 13,
-                                                                right: 10,
-                                                                left: 10),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(15.0),
-                                                        borderColor: ColorsUtils
-                                                            .itemCodeOrder,
-                                                        backgroundColor:
-                                                            ColorsUtils
-                                                                .itemCodeOrder,
-                                                        text: 'Bắt đầu chạy',
-                                                        textStyle: TextStylesUtils
-                                                            .style16WhiteNormal,
-                                                        press: () {
-                                                          showLoading(context);
-                                                          context
-                                                              .read<
-                                                                  RouteDetailBloc>()
-                                                              .add(GetRoutingStartEvent(
+                                                  }).then(
+                                                (_) {
+                                                  _dialogShow = false;
+                                                },
+                                              );
+                                            } else if (state.isRouteStart ==
+                                                    StatusType.FAILED &&
+                                                !_dialogShow) {
+                                              hideLoading(context);
+                                              _dialogShow = true;
+                                              showAppDialog(
+                                                      barrierDismissible: false,
+                                                      isHiddenCancel: true,
+                                                      context: context,
+                                                      suffixIcon: Icon(
+                                                        Icons.cancel_outlined,
+                                                        color: Colors.red,
+                                                        size: 35,
+                                                      ),
+                                                      message:
+                                                          "${state.message}",
+                                                      title: 'Thông báo')
+                                                  .then(
+                                                (_) {
+                                                  _dialogShow = false;
+                                                },
+                                              );
+                                            }
+                                          },
+                                        ),
+                                        BlocListener<ListAklRouteBloc,
+                                            ListAklRouteState>(
+                                          listener: (context, state) {
+                                            if (state.listRoute.isNotEmpty) {
+                                              setState(() {
+                                                lstDataCnpRoute =
+                                                    state.listRoute;
+                                                lstDataFilterCnpRoute =
+                                                    state.listRoute;
+                                                lstDataFilterCnpRoute.sort(
+                                                  (a, b) => b.modifiedAt!
+                                                      .compareTo(a.modifiedAt!),
+                                                );
+                                              });
+                                            }
+                                          },
+                                        )
+                                      ],
+                                      child: BlocBuilder<RouteDetailBloc,
+                                          DetailsRouteState>(
+                                        builder: (BuildContext context, state) {
+                                          return Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.end,
+                                            children: [
+                                              Expanded(
+                                                flex: 1,
+                                                child: DefaultButton(
+                                                    padding: EdgeInsets.only(
+                                                        top: 13,
+                                                        right: 10,
+                                                        left: 10),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15.0),
+                                                    borderColor: ColorsUtils
+                                                        .disableButon,
+                                                    backgroundColor:
+                                                        Colors.white,
+                                                    textColor: Colors.white,
+                                                    text: 'Xem chi tiết',
+                                                    textStyle: TextStylesUtils
+                                                        .style16FnormalGrey,
+                                                    press: () {
+                                                      final result =
+                                                          Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        DetailsRouteSrceen(
                                                                   routeId: routeItem
-                                                                      .routeId!));
-                                                        }),
-                                                  )
-                                                : Expanded(
-                                                    flex: 1, child: SizedBox()),
-                                            SizedBox(
-                                              width: 7,
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    ),
-                                  )
-                                ],
+                                                                      .routeId!,
+                                                                  screen: widget
+                                                                      .screen,
+                                                                ),
+                                                              ));
+                                                      if (result == true) {
+                                                        context
+                                                            .read<
+                                                                ListAklRouteBloc>()
+                                                            .add(GetAllRoute(
+                                                                page: 1,
+                                                                size: 30,
+                                                                driver_id: SpUtil
+                                                                    .getInt(
+                                                                        "driverId"),
+                                                                request_type:
+                                                                    requestType(
+                                                                        widget
+                                                                            .screen)));
+                                                      }
+                                                    }),
+                                              ),
+                                              routeItem.status == 100
+                                                  ? Expanded(
+                                                      flex: 1,
+                                                      child: DefaultButton(
+                                                          padding: EdgeInsets
+                                                              .only(
+                                                                  top: 13,
+                                                                  right: 10,
+                                                                  left: 10),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      15.0),
+                                                          borderColor:
+                                                              ColorsUtils
+                                                                  .itemCodeOrder,
+                                                          backgroundColor:
+                                                              ColorsUtils
+                                                                  .itemCodeOrder,
+                                                          text: 'Bắt đầu chạy',
+                                                          textStyle: TextStylesUtils
+                                                              .style16WhiteNormal,
+                                                          press: () {
+                                                            showLoading(
+                                                                context);
+                                                            context
+                                                                .read<
+                                                                    RouteDetailBloc>()
+                                                                .add(GetRoutingStartEvent(
+                                                                    routeId:
+                                                                        routeItem
+                                                                            .routeId!));
+                                                          }),
+                                                    )
+                                                  : Expanded(
+                                                      flex: 1,
+                                                      child: SizedBox()),
+                                              SizedBox(
+                                                width: 7,
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      ),
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                             Positioned(
