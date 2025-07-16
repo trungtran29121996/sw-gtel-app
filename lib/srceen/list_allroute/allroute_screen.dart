@@ -267,7 +267,7 @@ class _ListAllrouteScreenState extends State<ListAllrouteScreen> {
                                               Future<void>
                                                   delayAndPrint() async {
                                                 await Future.delayed(
-                                                    Duration(seconds: 5));
+                                                    Duration(seconds: 3));
                                                 hideLoading(context);
                                                 final result =
                                                     await Navigator.push(
