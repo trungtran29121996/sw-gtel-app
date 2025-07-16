@@ -10,7 +10,6 @@ import 'package:sw_app_gtel/srceen/notification/bloc/notification_state.dart';
 class NotificationBloc extends BaseBloc<NotificationEvent, NotificationState> {
   NotificationBloc() : super(state: NotificationState.initial()) {
     on<GetNotificationEvent>(_onGetNotification);
-    // on<ReadNotificationEvent>(_onReadNotification);
     on<InitalNotificationEvent>(_onInitialState);
   }
   NotificationRepository notificationRepository = NotificationRepository();
@@ -18,6 +17,7 @@ class NotificationBloc extends BaseBloc<NotificationEvent, NotificationState> {
   Future _onGetNotification(GetNotificationEvent event, Emitter emit) async {
     try {
       List<Datum> dataNotifition = [];
+      List<Datum> dataListUnRead = [];
       emit.call(state.copyWith(
           loading:
               state.loading.copyWith(isLoading: true, isLoadSuccess: false)));
@@ -27,11 +27,18 @@ class NotificationBloc extends BaseBloc<NotificationEvent, NotificationState> {
       if (notificationReponse!.success == true) {
         dataNotifition.addAll(notificationReponse.data!);
 
+        for (var e in dataNotifition) {
+          if (e.readAt == "") {
+            dataListUnRead.add(e);
+          }
+        }
+
         emit.call(state.copyWith(
           loading:
               state.loading.copyWith(isLoading: false, isLoadSuccess: true),
           notificationReponse: notificationReponse,
           datum: dataNotifition,
+          lstNotiUnRead: dataListUnRead,
         ));
       } else {
         emit.call(state.copyWith(

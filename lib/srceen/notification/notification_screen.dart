@@ -70,7 +70,7 @@ class _NoficationScreenState extends State<NoficationScreen> {
                                 (value) {
                                   hideLoading(context);
                                   if (value!.success == true) {
-                                    Navigator.push(
+                                    final result = Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>
@@ -79,6 +79,11 @@ class _NoficationScreenState extends State<NoficationScreen> {
                                             screen: SCREEN.SCREEN_LIST_ALL,
                                           ),
                                         ));
+                                    if (result == true) {
+                                      context
+                                          .read<NotificationBloc>()
+                                          .add(GetNotificationEvent());
+                                    }
                                   }
                                 },
                               );
@@ -89,8 +94,8 @@ class _NoficationScreenState extends State<NoficationScreen> {
                             padding: EdgeInsets.all(8),
                             decoration: BoxDecoration(
                               color: item.readAt == ""
-                                  ? Colors.white
-                                  : Color(0xFFDCF5FC),
+                                  ? Color(0xFFDCF5FC)
+                                  : Colors.white,
                               borderRadius: BorderRadius.circular(16),
                               boxShadow: [
                                 BoxShadow(

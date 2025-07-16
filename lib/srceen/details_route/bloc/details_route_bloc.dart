@@ -7,6 +7,7 @@ import 'package:sw_app_gtel/network/responses/data_cpn_route_byid_reponse.dart';
 import 'package:sw_app_gtel/network/responses/request_cpn_reponse.dart';
 import 'package:sw_app_gtel/network/responses/routing_cpn_start_reponse.dart';
 import 'package:sw_app_gtel/network/responses/tracking_log_reponse.dart';
+import 'package:sw_app_gtel/network/responses/update_status_seq_reponse.dart';
 import 'package:sw_app_gtel/srceen/details_route/bloc/details_route_event.dart';
 import 'package:sw_app_gtel/srceen/details_route/bloc/details_route_state.dart';
 
@@ -104,6 +105,18 @@ class RouteDetailBloc extends BaseBloc<DetailsRouteEvent, DetailsRouteState> {
     }
   }
 
+  Future<UpdateStatusSeqReponse> onUpdatetStatus(int seqID, int status,
+      int driverID, String note, List<String> evidenceImages) async {
+    try {
+      UpdateStatusSeqReponse updateStatusSeqReponse = await cpnRouteRepository
+          .updateStatusSeq(seqID, status, driverID, note, evidenceImages);
+
+      return updateStatusSeqReponse;
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
   //Chuyến lô
   Future onCreateCPNLot(
       int requestId, CreateCpnLotRequest createCpnLotRequest) async {
@@ -117,13 +130,6 @@ class RouteDetailBloc extends BaseBloc<DetailsRouteEvent, DetailsRouteState> {
     UpdatRouteCPNReponse? routingCpnStartReponse = await cpnRouteRepository
         .getRoutingCPNcomplete(route, handover_note, assignee_id, lstimage);
     return routingCpnStartReponse;
-  }
-
-  Future<bool> onUpdatetStatus(int seqID, int status, int driverID, String note,
-      List<String> evidenceImages) async {
-    bool result = await cpnRouteRepository.updateStatusSeq(
-        seqID, status, driverID, note, evidenceImages);
-    return result;
   }
 
   Future _onInitialState(InitalEvent event, Emitter emit) async {

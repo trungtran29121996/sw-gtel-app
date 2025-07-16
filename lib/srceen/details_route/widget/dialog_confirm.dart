@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:sw_app_gtel/common/config/show_dialog.dart';
 import 'package:sw_app_gtel/common/config/show_loading.dart';
 import 'package:sw_app_gtel/common/pref/sp_util.dart';
 import 'package:sw_app_gtel/common/style/color.dart';
@@ -218,8 +219,28 @@ class _DialogConfirmState extends State<DialogConfirm> {
                             SpUtil.getInt("driverId"), "Lấy hàng", lstImage)
                         .then(
                       (value) {
-                        hideLoading(context);
-                        Navigator.pop(context);
+                        if (value.success == false) {
+                          showAppDialog(
+                                  barrierDismissible: false,
+                                  isHiddenCancel: true,
+                                  context: context,
+                                  suffixIcon: Icon(
+                                    Icons.cancel_outlined,
+                                    color: Colors.red,
+                                    size: 35,
+                                  ),
+                                  message: "${value.message}",
+                                  title: 'Thông báo')
+                              .then(
+                            (value) {
+                              Navigator.pop(context);
+                            },
+                          );
+                        } else {
+                          hideLoading(context);
+                          Navigator.pop(context);
+                        }
+
                         // context.read<RouteDetailBloc>().add(
                         //     GetRouteByIDEvent(routeId: widget.seq.routeId!));
                       },

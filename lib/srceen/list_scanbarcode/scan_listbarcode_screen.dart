@@ -52,6 +52,7 @@ class _ScanListbarcodeScreenState extends State<ScanListbarcodeScreen> {
           if (state.loading.isLoading) {
             showLoading(context);
           } else if (state.loading.isLoadSuccess) {
+            Navigator.pop(context, true);
             hideLoadingBool(context);
           }
         }, builder: (context, state) {
@@ -130,7 +131,7 @@ class _ScanListbarcodeScreenState extends State<ScanListbarcodeScreen> {
                                   text: 'Xác nhận lấy',
                                   textStyle: TextStylesUtils.style16FnormalBlue,
                                   press: () {
-                                    //Navigator.pop(context, true);
+                                    showLoading(context);
                                     scanListBarcodeBloc.add(GetListBarCodeEvent(
                                         listBarCode: scannedCodes,
                                         route_id: widget.routeID,
@@ -150,7 +151,6 @@ class _ScanListbarcodeScreenState extends State<ScanListbarcodeScreen> {
                                   textStyle: TextStylesUtils.style16Orange,
                                   press: () {
                                     showLoading(context);
-                                    //Navigator.pop(context, true);
                                     scanListBarcodeBloc.add(GetListBarCodeEvent(
                                         listBarCode: scannedCodes,
                                         route_id: widget.routeID,

@@ -6,7 +6,9 @@ import 'package:sw_app_gtel/network/responses/data_cpn_route_reponse.dart';
 import 'package:sw_app_gtel/network/responses/data_cpn_route_byid_reponse.dart';
 import 'package:sw_app_gtel/network/responses/request_cpn_reponse.dart';
 import 'package:sw_app_gtel/network/responses/routing_cpn_start_reponse.dart';
+import 'package:sw_app_gtel/network/responses/scanbarcode_reponse.dart';
 import 'package:sw_app_gtel/network/responses/tracking_log_reponse.dart';
+import 'package:sw_app_gtel/network/responses/update_status_seq_reponse.dart';
 
 class CPNRouteRepository {
   DioMain dioMain = DioMain();
@@ -62,6 +64,22 @@ class CPNRouteRepository {
     return null;
   }
 
+  Future<UpdateStatusSeqReponse> updateStatusSeq(int seqID, int status,
+      int driverId, String note, List<String> evidenceImages) async {
+    try {
+      final response = await dioMain.patch(
+          "api/v1/tms-service/routing/cpn/route/driver/${driverId}/sequence/${seqID}",
+          data: {
+            "status": status,
+            "evidence_images": evidenceImages,
+            "note": note
+          });
+      return UpdateStatusSeqReponse.fromJson(response);
+    } catch (e) {
+      throw Exception('Error fetching data: $e');
+    }
+  }
+
   Future<UpdatRouteCPNReponse?> getRoutingCPNcomplete(int routeId,
       String handover_note, String assignee_id, List<String> lstimage) async {
     try {
@@ -76,26 +94,6 @@ class CPNRouteRepository {
         return UpdatRouteCPNReponse.fromJson(response["data"]);
       } else {
         return null;
-      }
-    } catch (e) {
-      throw Exception('Error fetching data: $e');
-    }
-  }
-
-  Future<bool> updateStatusSeq(int seqID, int status, int driverId, String note,
-      List<String> evidenceImages) async {
-    try {
-      final response = await dioMain.patch(
-          "api/v1/tms-service/routing/cpn/route/driver/${driverId}/sequence/${seqID}",
-          data: {
-            "status": status,
-            "evidence_images": evidenceImages,
-            "note": note
-          });
-      if (response["success"] == true) {
-        return true;
-      } else {
-        return false;
       }
     } catch (e) {
       throw Exception('Error fetching data: $e');

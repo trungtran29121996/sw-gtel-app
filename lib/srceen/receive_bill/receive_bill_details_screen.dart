@@ -122,11 +122,11 @@ class _ReceiveBillDetailsScreenState extends State<ReceiveBillDetailsScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                        "${state.requsetCPN.requestProviderInfo?.memberInfo?.name} | ${state.requsetCPN.requestProviderInfo?.memberInfo?.phone}",
+                                        "${state.requsetCPN.requestProviderInfo?.memberInfo?.name ?? ""} | ${state.requsetCPN.requestProviderInfo?.memberInfo?.phone ?? ""}",
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold)),
                                     Text(
-                                      "${state.requsetCPN.requestProviderInfo?.memberInfo?.address}",
+                                      "${state.requsetCPN.requestProviderInfo?.memberInfo?.address ?? ""}",
                                       style: TextStyle(fontSize: 12),
                                     ),
                                   ],

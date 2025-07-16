@@ -259,62 +259,95 @@ class _ListAllrouteScreenState extends State<ListAllrouteScreen> {
                                       listeners: [
                                         BlocListener<RouteDetailBloc,
                                             DetailsRouteState>(
-                                          listener: (context, state) {
+                                          listener: (context, state) async {
                                             if (state.isRouteStart ==
                                                     StatusType.COMPLETED &&
                                                 !_dialogShow) {
                                               _dialogShow = true;
-                                              hideLoading(context);
-                                              showAppDialog(
-                                                  context: context,
-                                                  suffixIcon: Icon(
-                                                    Icons
-                                                        .check_circle_outline_outlined,
-                                                    color: ColorsUtils
-                                                        .statusNotification,
-                                                    size: 35,
-                                                  ),
-                                                  barrierDismissible: false,
-                                                  isHiddenCancel: true,
-                                                  title: "Thông báo",
-                                                  message:
-                                                      "Chuyển trạng thái chuyến thành công!",
-                                                  onSucessButtonPressed:
-                                                      () async {
-                                                    final result =
-                                                        await Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  DetailsRouteSrceen(
-                                                                routeId: routeItem
-                                                                    .routeId!,
-                                                                screen: widget
-                                                                    .screen,
-                                                              ),
-                                                            ));
-                                                    _dialogShow = false;
-                                                    if (result == true) {
-                                                      _dialogShow = false;
-                                                      Navigator.pop(context);
-                                                      context
-                                                          .read<
-                                                              ListAklRouteBloc>()
-                                                          .add(GetAllRoute(
-                                                              page: 1,
-                                                              size: 30,
-                                                              driver_id:
-                                                                  SpUtil.getInt(
-                                                                      "driverId"),
-                                                              request_type:
-                                                                  requestType(widget
-                                                                      .screen)));
-                                                    }
-                                                  }).then(
-                                                (_) {
+                                              Future<void>
+                                                  delayAndPrint() async {
+                                                await Future.delayed(
+                                                    Duration(seconds: 5));
+                                                hideLoading(context);
+                                                final result =
+                                                    await Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              DetailsRouteSrceen(
+                                                            routeId: routeItem
+                                                                .routeId!,
+                                                            screen:
+                                                                widget.screen,
+                                                          ),
+                                                        ));
+                                                _dialogShow = false;
+                                                if (result == true) {
                                                   _dialogShow = false;
-                                                },
-                                              );
+                                                  context
+                                                      .read<ListAklRouteBloc>()
+                                                      .add(GetAllRoute(
+                                                          page: 1,
+                                                          size: 30,
+                                                          driver_id:
+                                                              SpUtil.getInt(
+                                                                  "driverId"),
+                                                          request_type:
+                                                              requestType(widget
+                                                                  .screen)));
+                                                }
+                                              }
+
+                                              // showAppDialog(
+                                              //     context: context,
+                                              //     suffixIcon: Icon(
+                                              //       Icons
+                                              //           .check_circle_outline_outlined,
+                                              //       color: ColorsUtils
+                                              //           .statusNotification,
+                                              //       size: 35,
+                                              //     ),
+                                              //     barrierDismissible: false,
+                                              //     isHiddenCancel: true,
+                                              //     title: "Thông báo",
+                                              //     message:
+                                              //         "Chuyển trạng thái chuyến thành công!",
+                                              //     onSucessButtonPressed:
+                                              //         () async {
+                                              //       final result =
+                                              //           await Navigator.push(
+                                              //               context,
+                                              //               MaterialPageRoute(
+                                              //                 builder: (context) =>
+                                              //                     DetailsRouteSrceen(
+                                              //                   routeId: routeItem
+                                              //                       .routeId!,
+                                              //                   screen: widget
+                                              //                       .screen,
+                                              //                 ),
+                                              //               ));
+                                              //       _dialogShow = false;
+                                              //       if (result == true) {
+                                              //         _dialogShow = false;
+                                              //         Navigator.pop(context);
+                                              //         context
+                                              //             .read<
+                                              //                 ListAklRouteBloc>()
+                                              //             .add(GetAllRoute(
+                                              //                 page: 1,
+                                              //                 size: 30,
+                                              //                 driver_id:
+                                              //                     SpUtil.getInt(
+                                              //                         "driverId"),
+                                              //                 request_type:
+                                              //                     requestType(widget
+                                              //                         .screen)));
+                                              //       }
+                                              //     }).then(
+                                              //   (_) {
+                                              //     _dialogShow = false;
+                                              //   },
+                                              // );
                                             } else if (state.isRouteStart ==
                                                     StatusType.FAILED &&
                                                 !_dialogShow) {

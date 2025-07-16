@@ -21,7 +21,6 @@ class _SplashScreenState extends State<SplashScreen> {
       create: (context) => SplashBloc()..add(SplashEvent()),
       child: BlocConsumer<SplashBloc, SplashState>(
         listener: (context, state) {
-          //NotificationService().showNotification();
           NotificationService().connectSocket(widget.navigatorKey);
           if (state.isExDate) {
             Navigator.pushNamedAndRemoveUntil(
@@ -39,7 +38,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 Container(
                   child: Center(
                     child: Image.asset(
-                      "assets/icon/icon_logo.webp",
+                      "assets/icon/logo_gtelpost.png",
                       width: 100,
                     ),
                   ),
