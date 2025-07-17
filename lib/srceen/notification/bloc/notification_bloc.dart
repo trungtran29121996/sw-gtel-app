@@ -22,8 +22,8 @@ class NotificationBloc extends BaseBloc<NotificationEvent, NotificationState> {
           loading:
               state.loading.copyWith(isLoading: true, isLoadSuccess: false)));
 
-      NotificationReponse? notificationReponse =
-          await notificationRepository.getDataNotification();
+      NotificationReponse? notificationReponse = await notificationRepository
+          .getDataNotification(event.size, event.page);
       if (notificationReponse!.success == true) {
         dataNotifition.addAll(notificationReponse.data!);
 
@@ -54,21 +54,11 @@ class NotificationBloc extends BaseBloc<NotificationEvent, NotificationState> {
     }
   }
 
-  // Future _onReadNotification(ReadNotificationEvent event, Emitter emit) async {
-  //   try {
-  //     ReadNotificationReponse? routingCpnStartReponse =
-  //         await notificationRepository.readNotification(event.notification_id);
-
-  //     if (routingCpnStartReponse!.success == true) {
-  //       emit.call(state.copyWith(isNotification: StatusType.COMPLETED));
-  //     } else {
-  //       emit.call(state.copyWith(isNotification: StatusType.FAILED));
-  //     }
-  //     add(InitalNotificationEvent());
-  //   } catch (e) {
-  //     throw Exception(e);
-  //   }
-  // }
+  Future<NotificationReponse?> onReadAllNotification(int page, int size) async {
+    NotificationReponse? readAllNotification =
+        await notificationRepository.readAllNotification(size, page);
+    return readAllNotification;
+  }
 
   Future<ReadNotificationReponse?> onReadNotification(
       int notification_id) async {

@@ -44,4 +44,5 @@ class ColorsUtils {
   static const columChart = Color(0xFF00B5E2);
   static const bgSnackBarNoti = Color(0xFFDCF5FC);
   static const textNoti = Color(0xFF4E99C7);
+  static const bgPinned = Color.fromARGB(255, 247, 252, 255);
 }

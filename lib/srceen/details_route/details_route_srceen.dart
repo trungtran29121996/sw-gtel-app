@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sw_app_gtel/common/config/app_dimensions.dart';
 import 'package:sw_app_gtel/common/config/format.dart';
@@ -32,7 +33,7 @@ class _DetailsRouteSrceenState extends State<DetailsRouteSrceen> {
   RouteDetailBloc routeDetailBloc = RouteDetailBloc();
   ScrollController controller = ScrollController();
 
-  int requestType = 0;
+  // int requestType = 0;
   int selectedIndex = 0;
 
   @override
@@ -56,8 +57,7 @@ class _DetailsRouteSrceenState extends State<DetailsRouteSrceen> {
           ],
           child: BlocBuilder<RouteDetailBloc, DetailsRouteState>(
               builder: (BuildContext context, state) {
-            return SafeArea(
-                child: Scaffold(
+            return Scaffold(
               appBar: AppBar(
                 backgroundColor: Color(0xFFb3e0ff),
                 leading: InkWell(
@@ -67,7 +67,6 @@ class _DetailsRouteSrceenState extends State<DetailsRouteSrceen> {
                     child: Icon(Icons.arrow_back, color: Colors.black)),
                 title: Text('Chi tiết chuyến',
                     style: TextStyle(color: Colors.black)),
-                centerTitle: true,
               ),
               body: WillPopScope(
                 onWillPop: () async {
@@ -118,10 +117,10 @@ class _DetailsRouteSrceenState extends State<DetailsRouteSrceen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          _buildTab('Hiện tại', 0,
+                          _buildTab('Chưa xác nhận', 0,
                               state.routeRequestListCurrent.length),
                           const SizedBox(width: 50),
-                          _buildTab('Lịch sử', 1,
+                          _buildTab('Đã xác nhận', 1,
                               state.routeRequestListComplete.length),
                         ],
                       ),
@@ -156,7 +155,6 @@ class _DetailsRouteSrceenState extends State<DetailsRouteSrceen> {
                                 }
                               }
                               //requestType 1 là giao - 2 là nhận
-
                               return InkWell(
                                   onTap: () {
                                     final result = Navigator.push(
@@ -165,7 +163,8 @@ class _DetailsRouteSrceenState extends State<DetailsRouteSrceen> {
                                           builder: (context) =>
                                               ListOrderDetialsScreen(
                                             routeItem: item,
-                                            requestType: requestType,
+                                            requestType:
+                                                state.routeByID.requestType!,
                                           ),
                                         ));
                                     if (result == true) {
@@ -181,7 +180,7 @@ class _DetailsRouteSrceenState extends State<DetailsRouteSrceen> {
                   ],
                 ),
               ),
-            ));
+            );
           }),
         ));
   }
@@ -222,21 +221,41 @@ class _DetailsRouteSrceenState extends State<DetailsRouteSrceen> {
               children: [
                 Icon(
                   Icons.qr_code_scanner_sharp,
-                  color: requestType == 1
-                      ? ColorsUtils.infoItemContact
-                      : Colors.blue,
+                  // color: state.routeByID.requestType! == 1
+                  //     ? ColorsUtils.infoItemContact
+                  //     : Colors.blue,
+                  color: Colors.blue,
                 ),
                 SizedBox(
                   width: 5,
                 ),
-                Text("${item.requestInfo!.orderCodeOfClient!}",
+                Text("${item.requestInfo!.requestId!}",
                     style: TextStyle(
-                      color: requestType == 1
-                          ? ColorsUtils.infoItemContact
-                          : Colors.blue,
+                      color: Colors.blue,
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     )),
+                InkWell(
+                  onTap: () {
+                    Clipboard.setData(ClipboardData(
+                            text: "${item.requestInfo!.requestId!}"))
+                        .then(
+                      (value) {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text(
+                              "Copy mã: ${item.requestInfo!.requestId!}",
+                              style: TextStyle(color: ColorsUtils.textNoti)),
+                          backgroundColor: ColorsUtils.bgSnackBarNoti,
+                        ));
+                      },
+                    );
+                  },
+                  child: Icon(
+                    Icons.copy_all,
+                    color: Colors.black,
+                    size: 18,
+                  ),
+                ),
                 SizedBox(
                   width: 1,
                 ),
@@ -254,7 +273,7 @@ class _DetailsRouteSrceenState extends State<DetailsRouteSrceen> {
                 SizedBox(
                   width: 10,
                 ),
-                requestType == 1
+                state.routeByID.requestType! == 1
                     ? Image.asset("assets/images/upload.png")
                     : Image.asset("assets/images/download.png")
               ],
@@ -267,10 +286,10 @@ class _DetailsRouteSrceenState extends State<DetailsRouteSrceen> {
               children: [
                 SectionTitle(
                   icon: Icons.send,
-                  title: requestType == 1
+                  title: state.routeByID.requestType! == 1
                       ? 'Thông tin người giao'
                       : 'Thông tin người nhận',
-                  isBlue: requestType == 1 ? true : false,
+                  isBlue: false,
                 ),
                 Spacer(),
                 item.requestInfo!.pickupFailedCount! <= 0
@@ -283,14 +302,14 @@ class _DetailsRouteSrceenState extends State<DetailsRouteSrceen> {
             SizedBox(
               height: 7,
             ),
-            requestType == 1
+            state.routeByID.requestType! == 1
                 ? ContactInfo(
                     name: item.requestInfo!.senderName!,
                     phone: item.requestInfo!.senderPhone!,
                     address: item.requestInfo!.pickupAddress!,
                     date: formatDay(DateTime.fromMillisecondsSinceEpoch(
                         item.requestInfo!.pickupTime!)),
-                    isRed: true,
+                    isRed: false,
                   )
                 : ContactInfo(
                     name: item.requestInfo!.receiverName!,

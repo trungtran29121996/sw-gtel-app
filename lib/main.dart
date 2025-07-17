@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
               navigatorKey: navigatorKey,
             ),
             navigatorKey: navigatorKey,
-            debugShowCheckedModeBanner: false,
+            debugShowCheckedModeBanner: true,
             theme: ColorsUtils.driverTheme,
             initialRoute: AppRoutes.INITIAL_ROOT,
             onGenerateRoute: AppRoutes.generateRoute,

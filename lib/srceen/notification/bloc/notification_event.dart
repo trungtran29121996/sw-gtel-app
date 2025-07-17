@@ -3,7 +3,9 @@ import 'package:sw_app_gtel/common/core/base/event/base_event.dart';
 class NotificationEvent extends BaseEvent {}
 
 class GetNotificationEvent extends NotificationEvent {
-  GetNotificationEvent();
+  int page;
+  int size;
+  GetNotificationEvent({required this.page, required this.size});
 }
 
 class ReadNotificationEvent extends NotificationEvent {
@@ -12,3 +14,9 @@ class ReadNotificationEvent extends NotificationEvent {
 }
 
 class InitalNotificationEvent extends NotificationEvent {}
+
+class ReadAllNotificationEvent extends NotificationEvent {
+  int page;
+  int size;
+  ReadAllNotificationEvent({required this.page, required this.size});
+}

@@ -4,6 +4,7 @@ import 'package:sw_app_gtel/common/config/format.dart';
 import 'package:sw_app_gtel/common/config/show_loading.dart';
 import 'package:sw_app_gtel/common/helper/screen_type.dart';
 import 'package:sw_app_gtel/common/style/color.dart';
+import 'package:sw_app_gtel/common/style/textstyles.dart';
 import 'package:sw_app_gtel/network/responses/data_notification_reponse.dart';
 import 'package:sw_app_gtel/srceen/details_route/details_route_srceen.dart';
 import 'package:sw_app_gtel/srceen/notification/bloc/notification_bloc.dart';
@@ -27,7 +28,8 @@ class _NoficationScreenState extends State<NoficationScreen> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-            create: (context) => notificationBloc..add(GetNotificationEvent())),
+            create: (context) =>
+                notificationBloc..add(GetNotificationEvent(page: 1, size: 20))),
       ],
       child: MultiBlocListener(
         listeners: [
@@ -49,104 +51,134 @@ class _NoficationScreenState extends State<NoficationScreen> {
                 title: Text('Thông báo', style: TextStyle(color: Colors.black)),
                 centerTitle: true,
               ),
-              body: Container(
-                  padding: EdgeInsets.all(8),
-                  child: ListView.builder(
-                      shrinkWrap: true,
-                      controller: controller,
-                      itemCount: state.datum.length,
-                      itemBuilder: (context, index) {
-                        Datum item = state.datum[index];
-                        String dateTime = startTime(formatDataTime(
-                            DateTime.fromMillisecondsSinceEpoch(
-                                item.createdAt!)));
-
-                        return InkWell(
-                          onTap: () {
-                            if (item.screenName == "list_route_details") {
-                              showLoading(context);
-                              notificationBloc
-                                  .onReadNotification(item.id!)
-                                  .then(
-                                (value) {
-                                  hideLoading(context);
-                                  if (value!.success == true) {
-                                    final result = Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              DetailsRouteSrceen(
-                                            routeId: item.screenParams!.id!,
-                                            screen: SCREEN.SCREEN_LIST_ALL,
-                                          ),
-                                        ));
-                                    if (result == true) {
-                                      context
-                                          .read<NotificationBloc>()
-                                          .add(GetNotificationEvent());
-                                    }
-                                  }
-                                },
-                              );
+              body: Column(
+                children: [
+                  Container(
+                    alignment: Alignment.topRight,
+                    padding: EdgeInsets.all(8),
+                    child: InkWell(
+                      onTap: () {
+                        showLoading(context);
+                        notificationBloc.onReadAllNotification(1, 20).then(
+                          (value) {
+                            if (value!.success == true) {
+                              hideLoading(context);
+                              context
+                                  .read<NotificationBloc>()
+                                  .add(GetNotificationEvent(page: 1, size: 20));
                             }
                           },
-                          child: Container(
-                            margin: EdgeInsets.all(5),
-                            padding: EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: item.readAt == ""
-                                  ? ColorsUtils.bgHomeMenu
-                                  : Colors.white,
-                              borderRadius: BorderRadius.circular(16),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.1),
-                                  blurRadius: 8,
-                                  offset: Offset(0, 2),
-                                ),
-                              ],
-                            ),
-                            child: Row(
-                              children: [
-                                iconPackage(item),
-                                SizedBox(width: 12),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        item.title!,
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 14,
-                                        ),
-                                      ),
-                                      SizedBox(height: 4),
-                                      Text(
-                                        item.message!,
-                                        style: TextStyle(
-                                          color: Colors.green,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 14,
-                                        ),
-                                      ),
-                                      SizedBox(height: 4),
-                                      Text(
-                                        dateTime,
-                                        style: TextStyle(
-                                          color: Colors.grey[600],
-                                          fontSize: 12,
-                                        ),
+                        );
+                      },
+                      child: Text("Đọc tất cả ✓",
+                          style: TextStylesUtils.style14FnormalBlack),
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                        padding: EdgeInsets.all(8),
+                        child: ListView.builder(
+                            shrinkWrap: true,
+                            controller: controller,
+                            itemCount: state.datum.length,
+                            itemBuilder: (context, index) {
+                              Datum item = state.datum[index];
+                              String dateTime = startTime(formatDataTime(
+                                  DateTime.fromMillisecondsSinceEpoch(
+                                      item.createdAt!)));
+
+                              return InkWell(
+                                onTap: () {
+                                  if (item.screenName == "list_route_details") {
+                                    showLoading(context);
+                                    notificationBloc
+                                        .onReadNotification(item.id!)
+                                        .then(
+                                      (value) {
+                                        hideLoading(context);
+                                        if (value!.success == true) {
+                                          final result = Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    DetailsRouteSrceen(
+                                                  routeId:
+                                                      item.screenParams!.id!,
+                                                  screen:
+                                                      SCREEN.SCREEN_LIST_ALL,
+                                                ),
+                                              ));
+                                          if (result == true) {
+                                            context
+                                                .read<NotificationBloc>()
+                                                .add(GetNotificationEvent(
+                                                    page: 1, size: 20));
+                                          }
+                                        }
+                                      },
+                                    );
+                                  }
+                                },
+                                child: Container(
+                                  margin: EdgeInsets.all(5),
+                                  padding: EdgeInsets.all(8),
+                                  decoration: BoxDecoration(
+                                    color: item.readAt == ""
+                                        ? ColorsUtils.bgHomeMenu
+                                        : Colors.white,
+                                    borderRadius: BorderRadius.circular(16),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.1),
+                                        blurRadius: 8,
+                                        offset: Offset(0, 2),
                                       ),
                                     ],
                                   ),
-                                )
-                              ],
-                            ),
-                          ),
-                        );
-                      })));
+                                  child: Row(
+                                    children: [
+                                      iconPackage(item),
+                                      SizedBox(width: 12),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              item.title!,
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 14,
+                                              ),
+                                            ),
+                                            SizedBox(height: 4),
+                                            Text(
+                                              item.message!,
+                                              style: TextStyle(
+                                                color: Colors.green,
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 14,
+                                              ),
+                                            ),
+                                            SizedBox(height: 4),
+                                            Text(
+                                              dateTime,
+                                              style: TextStyle(
+                                                color: Colors.grey[600],
+                                                fontSize: 12,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              );
+                            })),
+                  ),
+                ],
+              ));
         }),
       ),
     );

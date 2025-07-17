@@ -53,6 +53,7 @@ dependencies:
   fl_chart: ^0.66.0
   socket_io_client: ^2.0.3+1
   mobile_scanner: ^7.0.1
+  implicitly_animated_reorderable_list_2: ^0.6.0
   
 dev_dependencies:
   flutter_test:

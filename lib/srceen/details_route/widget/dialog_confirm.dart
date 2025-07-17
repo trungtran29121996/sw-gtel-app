@@ -200,7 +200,7 @@ class _DialogConfirmState extends State<DialogConfirm> {
                   text: 'Quay về',
                   textStyle: TextStylesUtils.style16FnormalGrey,
                   press: () {
-                    Navigator.pop(context);
+                    Navigator.pop(context, false);
                   }),
             ),
             Expanded(
@@ -240,9 +240,6 @@ class _DialogConfirmState extends State<DialogConfirm> {
                           hideLoading(context);
                           Navigator.pop(context);
                         }
-
-                        // context.read<RouteDetailBloc>().add(
-                        //     GetRouteByIDEvent(routeId: widget.seq.routeId!));
                       },
                     );
                   }),

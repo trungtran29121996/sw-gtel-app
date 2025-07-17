@@ -6,7 +6,6 @@ import 'package:sw_app_gtel/network/responses/data_cpn_route_reponse.dart';
 import 'package:sw_app_gtel/network/responses/data_cpn_route_byid_reponse.dart';
 import 'package:sw_app_gtel/network/responses/request_cpn_reponse.dart';
 import 'package:sw_app_gtel/network/responses/routing_cpn_start_reponse.dart';
-import 'package:sw_app_gtel/network/responses/scanbarcode_reponse.dart';
 import 'package:sw_app_gtel/network/responses/tracking_log_reponse.dart';
 import 'package:sw_app_gtel/network/responses/update_status_seq_reponse.dart';
 

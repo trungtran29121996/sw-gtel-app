@@ -103,6 +103,16 @@ class DataCnpRouteReponse {
     this.routeAddressList,
   });
 
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is DataCnpRouteReponse &&
+          runtimeType == other.runtimeType &&
+          orderCodeOfClient == other.orderCodeOfClient;
+
+  @override
+  int get hashCode => orderCodeOfClient.hashCode;
+
   factory DataCnpRouteReponse.fromJson(Map<String, dynamic> json) =>
       DataCnpRouteReponse(
         createdAt: json["created_at"],

@@ -179,8 +179,7 @@ class _DialogConfirrmHandoverState extends State<DialogConfirrmHandover> {
                         ),
                         items: widget.subAccountReponse.data!.map((item) {
                           return DropdownMenuItem<String>(
-                            value: item.memberId
-                                .toString(), // 👈 dùng id để làm giá trị
+                            value: item.memberId.toString(),
                             child: Text(
                               item.name!,
                               overflow: TextOverflow.ellipsis,
@@ -294,6 +293,7 @@ class _DialogConfirrmHandoverState extends State<DialogConfirrmHandover> {
                                 backgroundColor: Colors.red,
                               ));
                             } else {
+                              showLoading(context);
                               routeDetailBloc
                                   .onRoutingComplete(
                                       widget.routeID,
@@ -302,6 +302,7 @@ class _DialogConfirrmHandoverState extends State<DialogConfirrmHandover> {
                                       lstImage)
                                   .then(
                                 (value) {
+                                  hideLoading(context);
                                   Navigator.pop(context, true);
                                 },
                               );
