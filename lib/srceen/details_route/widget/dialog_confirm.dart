@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:sw_app_gtel/common/config/show_dialog.dart';
 import 'package:sw_app_gtel/common/config/show_loading.dart';
 import 'package:sw_app_gtel/common/pref/sp_util.dart';
 import 'package:sw_app_gtel/common/style/color.dart';
@@ -139,22 +138,21 @@ class _DialogConfirmState extends State<DialogConfirm> {
                 ),
                 itemBuilder: (context, index) {
                   if (index < images.length) {
-                    return Stack(
-                      children: [
-                        Image.file(
-                          File(images[index].path),
-                          fit: BoxFit.cover,
-                          width: double.infinity,
-                        ),
-                      ],
+                    return Image.file(
+                      File(images[index].path),
+                      fit: BoxFit.cover,
+                      width: double.infinity,
                     );
                   } else {
                     return GestureDetector(
                       onTap: pickImage,
                       child: Container(
-                        color: Colors.grey[200],
+                        decoration: BoxDecoration(
+                          color: Colors.grey[200],
+                          borderRadius: BorderRadius.circular(15),
+                        ),
                         child: Icon(
-                          Icons.add_a_photo,
+                          Icons.add_a_photo_sharp,
                           color: Colors.grey,
                         ),
                       ),
@@ -219,23 +217,9 @@ class _DialogConfirmState extends State<DialogConfirm> {
                             SpUtil.getInt("driverId"), "Lấy hàng", lstImage)
                         .then(
                       (value) {
-                        if (value.success == false) {
-                          showAppDialog(
-                                  barrierDismissible: false,
-                                  isHiddenCancel: true,
-                                  context: context,
-                                  suffixIcon: Icon(
-                                    Icons.cancel_outlined,
-                                    color: Colors.red,
-                                    size: 35,
-                                  ),
-                                  message: "${value.message}",
-                                  title: 'Thông báo')
-                              .then(
-                            (value) {
-                              Navigator.pop(context);
-                            },
-                          );
+                        if (value.success == true) {
+                          hideLoading(context);
+                          Navigator.pop(context, true);
                         } else {
                           hideLoading(context);
                           Navigator.pop(context);

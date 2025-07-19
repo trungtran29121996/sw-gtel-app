@@ -4,7 +4,6 @@ import 'package:sw_app_gtel/common/config/show_loading.dart';
 import 'package:sw_app_gtel/common/style/color.dart';
 import 'package:sw_app_gtel/common/style/textstyles.dart';
 import 'package:sw_app_gtel/common/widget/default_button.dart';
-import 'package:sw_app_gtel/common/widget/input_textfield.dart';
 import 'package:sw_app_gtel/common/widget/keyboard_dismiss.dart';
 import 'package:sw_app_gtel/network/responses/login_response.dart';
 import 'package:sw_app_gtel/srceen/account/bloc/account_bloc.dart';
@@ -20,14 +19,47 @@ class ChangePasswordSrceen extends StatefulWidget {
 }
 
 class _ChangePasswordSrceenState extends State<ChangePasswordSrceen> {
-  TextEditingController oldController = TextEditingController();
-  TextEditingController newController = TextEditingController();
-  TextEditingController renewController = TextEditingController();
-  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
 
-  bool oldObscureText = true;
-  bool newObscureText = true;
-  bool renewObscureText = true;
+  final _oldPasswordController = TextEditingController();
+  final _newPasswordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
+
+  bool _obscureOld = true;
+  bool _obscureNew = true;
+  bool _obscureConfirm = true;
+
+  void _toggleObscure(String field) {
+    setState(() {
+      switch (field) {
+        case 'old':
+          _obscureOld = !_obscureOld;
+          break;
+        case 'new':
+          _obscureNew = !_obscureNew;
+          break;
+        case 'confirm':
+          _obscureConfirm = !_obscureConfirm;
+          break;
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _oldPasswordController.dispose();
+    _newPasswordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
+  }
+
+  void _handleChangePassword() {
+    if (_formKey.currentState!.validate()) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Đổi mật khẩu thành công')),
+      );
+    }
+  }
 
   AccountBloc accountBloc = AccountBloc();
 
@@ -51,22 +83,45 @@ class _ChangePasswordSrceenState extends State<ChangePasswordSrceen> {
             borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
           ),
           child: Form(
-            key: formKey,
+            key: _formKey,
             child: Container(
               margin: EdgeInsets.all(5),
               child: Column(
                 children: [
-                  buildEditextField(oldController, "Nhập mật khẩu hiện tại"),
-                  SizedBox(
-                    height: 10,
+                  _buildPasswordField(
+                    label: "Mật khẩu cũ",
+                    controller: _oldPasswordController,
+                    obscure: _obscureOld,
+                    toggle: () => _toggleObscure('old'),
                   ),
-                  buildEditextField(newController, "Nhập mật khẩu mới"),
-                  SizedBox(
-                    height: 10,
+                  const SizedBox(height: 16),
+                  _buildPasswordField(
+                    label: "Mật khẩu mới",
+                    controller: _newPasswordController,
+                    obscure: _obscureNew,
+                    toggle: () => _toggleObscure('new'),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Vui lòng nhập mật khẩu mới";
+                      }
+                      if (value.length < 6) {
+                        return "Mật khẩu phải có ít nhất 6 ký tự";
+                      }
+                      return null;
+                    },
                   ),
-                  buildEditextField(renewController, "Nhập lại mật khẩu mới"),
-                  SizedBox(
-                    height: 10,
+                  const SizedBox(height: 16),
+                  _buildPasswordField(
+                    label: "Nhập lại mật khẩu mới",
+                    controller: _confirmPasswordController,
+                    obscure: _obscureConfirm,
+                    toggle: () => _toggleObscure('confirm'),
+                    validator: (value) {
+                      if (value != _newPasswordController.text) {
+                        return "Mật khẩu nhập lại không khớp";
+                      }
+                      return null;
+                    },
                   ),
                   Spacer(),
                   BlocProvider(
@@ -116,10 +171,30 @@ class _ChangePasswordSrceenState extends State<ChangePasswordSrceen> {
                             text: 'Cập nhật',
                             textStyle: TextStylesUtils.style14Fnormalwhite,
                             press: () {
+                              if (_oldPasswordController.text == "" ||
+                                  _newPasswordController.text == "" ||
+                                  _confirmPasswordController.text == "") {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                        "Vui lòng nhập đầy đủ thông tin!",
+                                        style: TextStyle(color: Colors.white)),
+                                    backgroundColor: Colors.red,
+                                    duration: Duration(seconds: 4),
+                                    behavior: SnackBarBehavior.floating,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    margin: EdgeInsets.all(3),
+                                  ),
+                                );
+                                return;
+                              }
                               accountBloc.add(ChangePassWordEvent(
-                                  oldPassword: oldController.text,
-                                  newPassword: newController.text,
-                                  renewPassword: renewController.text));
+                                  oldPassword: _oldPasswordController.text,
+                                  newPassword: _newPasswordController.text,
+                                  renewPassword:
+                                      _confirmPasswordController.text));
                             });
                       })),
                 ],
@@ -131,29 +206,40 @@ class _ChangePasswordSrceenState extends State<ChangePasswordSrceen> {
     );
   }
 
-  Widget buildEditextField(TextEditingController controller, String label) {
-    if (controller == oldController) {}
-    return InputTextField(
-      label: label,
-      fillColor: Colors.white,
+  Widget _buildPasswordField({
+    required String label,
+    required TextEditingController controller,
+    required bool obscure,
+    required VoidCallback toggle,
+    FormFieldValidator<String>? validator,
+  }) {
+    return TextFormField(
       controller: controller,
-      filled: true,
-
-      // suffixIcon: InkWell(
-      //   child: oldObscureText
-      //       ? const Icon(Icons.remove_red_eye)
-      //       : const Icon(Icons.visibility_off),
-      //   onTap: () {
-      //     setState(() {
-      //       oldObscureText = !oldObscureText;
-      //     });
-      //   },
-      // ),
-      onChanged: (value) {},
-      // ignore: body_might_complete_normally_nullable
-      validator: (value) {
-        // return Validator.minLenght(context, value);
-      },
+      obscureText: obscure,
+      decoration: InputDecoration(
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(4),
+          borderSide: BorderSide(
+            color: ColorsUtils.brownGrey,
+            width: 1,
+          ),
+        ),
+        labelText: label,
+        border: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.black),
+            borderRadius: BorderRadius.circular(4)),
+        suffixIcon: IconButton(
+          icon: Icon(obscure ? Icons.visibility_off : Icons.visibility),
+          onPressed: toggle,
+        ),
+      ),
+      validator: validator ??
+          (value) {
+            if (value == null || value.isEmpty) {
+              return "Không được để trống";
+            }
+            return null;
+          },
     );
   }
 }

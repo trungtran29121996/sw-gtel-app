@@ -17,7 +17,7 @@ class NotificationBloc extends BaseBloc<NotificationEvent, NotificationState> {
   Future _onGetNotification(GetNotificationEvent event, Emitter emit) async {
     try {
       List<Datum> dataNotifition = [];
-      List<Datum> dataListUnRead = [];
+      List<Datum> dataListRead = [];
       emit.call(state.copyWith(
           loading:
               state.loading.copyWith(isLoading: true, isLoadSuccess: false)));
@@ -29,7 +29,7 @@ class NotificationBloc extends BaseBloc<NotificationEvent, NotificationState> {
 
         for (var e in dataNotifition) {
           if (e.readAt == "") {
-            dataListUnRead.add(e);
+            dataListRead.add(e);
           }
         }
 
@@ -38,7 +38,7 @@ class NotificationBloc extends BaseBloc<NotificationEvent, NotificationState> {
               state.loading.copyWith(isLoading: false, isLoadSuccess: true),
           notificationReponse: notificationReponse,
           datum: dataNotifition,
-          lstNotiUnRead: dataListUnRead,
+          lstNotiRead: dataListRead,
         ));
       } else {
         emit.call(state.copyWith(

@@ -20,6 +20,7 @@ class _ReportScreenState extends State<ReportScreen> {
 
   DateTime now = DateTime.now();
   ReportsBloc reportsBloc = ReportsBloc();
+  List<bool> showItem = [];
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +49,17 @@ class _ReportScreenState extends State<ReportScreen> {
                 showLoading(context);
               } else if (state.loading.isLoadSuccess &&
                   state.dialogLoading == true) {
+                showItem.addAll(
+                    List.filled(state.dashboardListReponse.data.length, false));
+
+                for (int i = 0;
+                    i < state.dashboardListReponse.data.length;
+                    i++) {
+                  Future.delayed(Duration(milliseconds: i * 300));
+                  setState(() {
+                    showItem[i] = true;
+                  });
+                }
                 hideLoading(context);
               }
             })
@@ -107,6 +119,17 @@ class _ReportScreenState extends State<ReportScreen> {
                                       Datum item = state
                                           .dashboardListReponse.data[index];
                                       return _itemInfo(item);
+                                      // AnimatedOpacity(
+                                      //     duration: Duration(milliseconds: 600),
+                                      //     opacity: showItem[index] ? 1.0 : 0.0,
+                                      //     child: AnimatedSlide(
+                                      //         duration:
+                                      //             Duration(milliseconds: 600),
+                                      //         offset: showItem[index]
+                                      //             ? Offset(0, 0)
+                                      //             : Offset(0, -0.2),
+                                      //         child: _itemInfo(item)));
+                                      //_itemInfo(item);
                                     },
                                   ),
                                 ],

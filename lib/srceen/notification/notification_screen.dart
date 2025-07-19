@@ -70,8 +70,9 @@ class _NoficationScreenState extends State<NoficationScreen> {
                           },
                         );
                       },
-                      child: Text("Đọc tất cả ✓",
-                          style: TextStylesUtils.style14FnormalBlack),
+                      child:
+                          Text("Đọc tất cả (${state.lstNotiRead.length})", //✓
+                              style: TextStylesUtils.style14FnormalBlack),
                     ),
                   ),
                   Expanded(

@@ -44,11 +44,21 @@ class _HandOverSrceenState extends State<HandOverSrceen> {
   List<HandOverReponse> listHandOver = [];
   List<HandOverReponse> listFilterHandOver = [];
   List<HandOverReponse> listFilterHandOverComple = [];
+  final List<bool> showItem = [];
 
   @override
   void initState() {
     super.initState();
     listFilterHandOver = listHandOver;
+  }
+
+  void _startAnimation() async {
+    for (int i = 0; i < listFilterHandOver.length; i++) {
+      await Future.delayed(Duration(milliseconds: i * 300));
+      setState(() {
+        showItem[i] = true;
+      });
+    }
   }
 
   void _onSearch(String keyword) {
@@ -96,6 +106,10 @@ class _HandOverSrceenState extends State<HandOverSrceen> {
                   listFilterHandOver.sort(
                     (a, b) => b.modifiedAt!.compareTo(a.modifiedAt!),
                   );
+
+                  showItem
+                      .addAll(List.filled(listFilterHandOver.length, false));
+                  _startAnimation();
                   hideLoading(context);
                 }
               },
@@ -152,106 +166,17 @@ class _HandOverSrceenState extends State<HandOverSrceen> {
                                 item = listFilterHandOverComple[index];
                               }
 
-                              return Container(
-                                  margin: EdgeInsets.all(3),
-                                  padding: EdgeInsets.all(8),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(16),
-                                    border:
-                                        Border.all(color: ColorsUtils.bgHome),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.1),
-                                        blurRadius: 8,
-                                        offset: const Offset(0, 2),
-                                      ),
-                                    ],
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                        children: [
-                                          if (isSelectCheckbox)
-                                            Image.asset(
-                                                "assets/images/checkbox.png"),
-                                          SizedBox(
-                                            width: 5,
-                                          ),
-                                          Icon(
-                                            Icons.qr_code_scanner_sharp,
-                                            color: ColorsUtils.bgWareHouse,
-                                          ),
-                                          SizedBox(
-                                            width: 5,
-                                          ),
-                                          Text(item.orderCodeOfClient!,
-                                              style: TextStyle(
-                                                color: ColorsUtils.bgWareHouse,
-                                                fontWeight: FontWeight.bold,
-                                              )),
-                                          Spacer(),
-                                          WidgetStatus(status: item.status!),
-                                        ],
-                                      ),
-                                      Divider(
-                                        color: ColorsUtils.boderGray,
-                                      ),
-                                      Row(children: [
-                                        Icon(Icons.calendar_today,
-                                            size: 14,
-                                            color: ColorsUtils.bgWareHouse),
-                                        SizedBox(width: 4),
-                                        Text(formatDay(
-                                            DateTime.fromMillisecondsSinceEpoch(
-                                                item.startTime!))),
-                                      ]),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      Container(
-                                        child: ListView.builder(
-                                            shrinkWrap: true,
-                                            controller: controller,
-                                            itemCount:
-                                                item.routeAddressList!.length,
-                                            itemBuilder: (context, index) {
-                                              String routeAddressList =
-                                                  item.routeAddressList![index];
-                                              if (index < 5) {
-                                                return Column(
-                                                  children: [
-                                                    Divider(
-                                                      color:
-                                                          ColorsUtils.boderGray,
-                                                    ),
-                                                    Row(children: [
-                                                      Icon(Icons.location_on,
-                                                          size: 14,
-                                                          color: ColorsUtils
-                                                              .bgWareHouse),
-                                                      SizedBox(width: 4),
-                                                      Expanded(
-                                                          child: Text(
-                                                        routeAddressList,
-                                                        style: TextStyle(
-                                                            fontSize: 14),
-                                                      ))
-                                                    ]),
-                                                  ],
-                                                );
-                                              }
-                                              return null;
-                                            }),
-                                      ),
-                                      Divider(
-                                        color: ColorsUtils.boderGray,
-                                      ),
-                                      selectedIndex == 0
-                                          ? _buildbutton(item, state, context)
-                                          : SizedBox()
-                                    ],
-                                  ));
+                              return _buildItem(item, state);
+                              // AnimatedOpacity(
+                              //   duration: Duration(milliseconds: 600),
+                              //   opacity: showItem[index] ? 1.0 : 0.0,
+                              //   child: AnimatedSlide(
+                              //       duration: Duration(milliseconds: 600),
+                              //       offset: showItem[index]
+                              //           ? Offset(0, 0)
+                              //           : Offset(0, -0.2),
+                              //       child: _buildItem(item, state)),
+                              //);
                             },
                           ),
                         )
@@ -261,6 +186,96 @@ class _HandOverSrceenState extends State<HandOverSrceen> {
             );
           })),
     );
+  }
+
+  Widget _buildItem(HandOverReponse item, HandOverState state) {
+    return Container(
+        margin: EdgeInsets.all(3),
+        padding: EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: ColorsUtils.bgHome),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.1),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                if (isSelectCheckbox) Image.asset("assets/images/checkbox.png"),
+                SizedBox(
+                  width: 5,
+                ),
+                Icon(
+                  Icons.qr_code_scanner_sharp,
+                  color: ColorsUtils.bgWareHouse,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Text(item.orderCodeOfClient!,
+                    style: TextStyle(
+                      color: ColorsUtils.bgWareHouse,
+                      fontWeight: FontWeight.bold,
+                    )),
+                Spacer(),
+                WidgetStatus(status: item.status!),
+              ],
+            ),
+            Divider(
+              color: ColorsUtils.boderGray,
+            ),
+            Row(children: [
+              Icon(Icons.calendar_today,
+                  size: 14, color: ColorsUtils.bgWareHouse),
+              SizedBox(width: 4),
+              Text(formatDay(
+                  DateTime.fromMillisecondsSinceEpoch(item.startTime!))),
+            ]),
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+              child: ListView.builder(
+                  shrinkWrap: true,
+                  controller: controller,
+                  itemCount: item.routeAddressList!.length,
+                  itemBuilder: (context, index) {
+                    String routeAddressList = item.routeAddressList![index];
+                    if (index < 5) {
+                      return Column(
+                        children: [
+                          Divider(
+                            color: ColorsUtils.boderGray,
+                          ),
+                          Row(children: [
+                            Icon(Icons.location_on,
+                                size: 14, color: ColorsUtils.bgWareHouse),
+                            SizedBox(width: 4),
+                            Expanded(
+                                child: Text(
+                              routeAddressList,
+                              style: TextStyle(fontSize: 14),
+                            ))
+                          ]),
+                        ],
+                      );
+                    }
+                    return null;
+                  }),
+            ),
+            Divider(
+              color: ColorsUtils.boderGray,
+            ),
+            selectedIndex == 0 ? _buildbutton(item, state, context) : SizedBox()
+          ],
+        ));
   }
 
   Widget _buildbutton(

@@ -157,21 +157,24 @@ class _DetailsRouteSrceenState extends State<DetailsRouteSrceen> {
                               //requestType 1 là giao - 2 là nhận
                               return InkWell(
                                   onTap: () {
-                                    final result = Navigator.push(
+                                    Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                              ListOrderDetialsScreen(
+                                              OrderDetialsScreen(
                                             routeItem: item,
                                             requestType:
                                                 state.routeByID.requestType!,
                                           ),
-                                        ));
-                                    if (result == true) {
-                                      context.read<RouteDetailBloc>().add(
-                                          GetRouteByIDEvent(
-                                              routeId: widget.routeId));
-                                    }
+                                        )).then(
+                                      (value) {
+                                        if (value == true) {
+                                          context.read<RouteDetailBloc>().add(
+                                              GetRouteByIDEvent(
+                                                  routeId: widget.routeId));
+                                        }
+                                      },
+                                    );
                                   },
                                   child: deliveryCard(item, state));
                             }),
@@ -394,10 +397,15 @@ class _DetailsRouteSrceenState extends State<DetailsRouteSrceen> {
                                 ),
                               ),
                             ),
-                          ).then((valute) {
-                            context
-                                .read<RouteDetailBloc>()
-                                .add(GetRouteByIDEvent(routeId: seq.routeId!));
+                          ).then((value) {
+                            if (value == true) {
+                              context.read<RouteDetailBloc>().add(
+                                  GetRouteByIDEvent(routeId: seq.routeId!));
+                              if (item.requestInfo!.sequenceList.length == 1) {
+                                Navigator.pop(context);
+                                Navigator.pop(context, true);
+                              }
+                            }
                           });
                         })
                     : seq.stoppointType == 3 &&
@@ -431,10 +439,15 @@ class _DetailsRouteSrceenState extends State<DetailsRouteSrceen> {
                                         ),
                                       ),
                                     ),
-                                  ).then((valute) {
+                                  ).then((value) {
                                     context.read<RouteDetailBloc>().add(
                                         GetRouteByIDEvent(
                                             routeId: seq.routeId!));
+                                    if (item.requestInfo!.sequenceList.length ==
+                                        1) {
+                                      Navigator.pop(context);
+                                      Navigator.pop(context, true);
+                                    }
                                   });
                                   ;
                                 })

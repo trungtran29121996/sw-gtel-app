@@ -123,9 +123,9 @@ class _ReceiveBillScreenWidgetState extends State<ReceiveBillScreen> {
                         color: ColorsUtils.boderGray,
                       ),
                       ContactInfo(
-                        name: "Trần Phú Trung",
-                        address: "353 Đ. Tân Sơn Nhì, P.Tân Sơn Nhì, Q.Tân Phú",
-                        date: "29/12/1996 08:00 AM",
+                        name: "",
+                        address: "",
+                        date: "",
                         isRed: false,
                       ),
                       Divider(

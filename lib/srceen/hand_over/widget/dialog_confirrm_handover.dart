@@ -230,22 +230,26 @@ class _DialogConfirrmHandoverState extends State<DialogConfirrmHandover> {
                           ),
                           itemBuilder: (context, index) {
                             if (index < images.length) {
-                              return Stack(
-                                children: [
-                                  Image.file(
-                                    File(images[index].path),
-                                    fit: BoxFit.cover,
-                                    width: double.infinity,
-                                  ),
-                                ],
+                              return Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                child: Image.file(
+                                  File(images[index].path),
+                                  fit: BoxFit.cover,
+                                  width: double.infinity,
+                                ),
                               );
                             } else {
                               return GestureDetector(
                                 onTap: pickImage,
                                 child: Container(
-                                  color: Colors.grey[200],
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[200],
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
                                   child: Icon(
-                                    Icons.add_a_photo,
+                                    Icons.add_a_photo_sharp,
                                     color: Colors.grey,
                                   ),
                                 ),

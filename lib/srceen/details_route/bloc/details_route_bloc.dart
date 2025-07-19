@@ -59,7 +59,11 @@ class RouteDetailBloc extends BaseBloc<DetailsRouteEvent, DetailsRouteState> {
       }
 
       for (var item in routeRequestList) {
-        if (item.status == 201 || item.status == 301 || item.status == 202) {
+        if (item.status == 201 ||
+            item.status == 301 ||
+            item.status == 202 ||
+            item.status == 102 ||
+            item.status == 302) {
           routeRequestListComplete.add(item);
         } else if (item.status == 300 ||
             item.status == 100 ||

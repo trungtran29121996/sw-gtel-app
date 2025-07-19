@@ -17,17 +17,17 @@ import 'package:sw_app_gtel/srceen/details_route/widget/contact_info_header.dart
 import 'package:sw_app_gtel/srceen/details_route/widget/section_title.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 
-class ListOrderDetialsScreen extends StatefulWidget {
+class OrderDetialsScreen extends StatefulWidget {
   RouteRequestList routeItem;
   int requestType;
 
-  ListOrderDetialsScreen({required this.routeItem, required this.requestType});
+  OrderDetialsScreen({required this.routeItem, required this.requestType});
 
   @override
-  State<ListOrderDetialsScreen> createState() => _ListOrderDetialsScreenState();
+  State<OrderDetialsScreen> createState() => _OrderDetialsScreenState();
 }
 
-class _ListOrderDetialsScreenState extends State<ListOrderDetialsScreen> {
+class _OrderDetialsScreenState extends State<OrderDetialsScreen> {
   RouteDetailBloc routeDetailBloc = RouteDetailBloc();
   TextEditingController reasonController = TextEditingController();
   bool _isVisible = false;

@@ -203,13 +203,12 @@ class _ListAllrouteScreenState extends State<ListAllrouteScreen> {
                             return SizeFadeTransition(
                               animation: CurvedAnimation(
                                 parent: itemAnimation,
-                                curve: Curves.easeInOut, // 👈 Mượt hơn bounceIn
+                                curve: Curves.easeInOut,
                               ),
                               child: Material(
-                                color: color,
-                                child: _buildListItem(item,
-                                    lstDataFilterCnpRoute), // 👈 đúng tham số!
-                              ),
+                                  color: color,
+                                  child: _buildListItem(
+                                      item, lstDataFilterCnpRoute)),
                             );
                           },
                         );
@@ -231,21 +230,24 @@ class _ListAllrouteScreenState extends State<ListAllrouteScreen> {
       children: [
         InkWell(
           onTap: () {
-            final result = Navigator.push(
+            Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => DetailsRouteSrceen(
                     routeId: item.routeId!,
                     screen: widget.screen,
                   ),
-                ));
-            if (result == true) {
-              context.read<ListAklRouteBloc>().add(GetAllRoute(
-                  page: 1,
-                  size: 30,
-                  driver_id: SpUtil.getInt("driverId"),
-                  request_type: requestType(widget.screen)));
-            }
+                )).then(
+              (value) {
+                if (value == true) {
+                  context.read<ListAklRouteBloc>().add(GetAllRoute(
+                      page: 1,
+                      size: 30,
+                      driver_id: SpUtil.getInt("driverId"),
+                      request_type: requestType(widget.screen)));
+                }
+              },
+            );
           },
           child: Container(
             margin: EdgeInsets.all(3),
@@ -393,7 +395,7 @@ class _ListAllrouteScreenState extends State<ListAllrouteScreen> {
                                 text: 'Xem chi tiết',
                                 textStyle: TextStylesUtils.style16FnormalGrey,
                                 press: () {
-                                  final result = Navigator.push(
+                                  Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) =>
@@ -401,17 +403,20 @@ class _ListAllrouteScreenState extends State<ListAllrouteScreen> {
                                           routeId: item.routeId!,
                                           screen: widget.screen,
                                         ),
-                                      ));
-                                  if (result == true) {
-                                    context.read<ListAklRouteBloc>().add(
-                                        GetAllRoute(
-                                            page: 1,
-                                            size: 30,
-                                            driver_id:
-                                                SpUtil.getInt("driverId"),
-                                            request_type:
-                                                requestType(widget.screen)));
-                                  }
+                                      )).then(
+                                    (value) {
+                                      if (value == true) {
+                                        context.read<ListAklRouteBloc>().add(
+                                            GetAllRoute(
+                                                page: 1,
+                                                size: 30,
+                                                driver_id:
+                                                    SpUtil.getInt("driverId"),
+                                                request_type: requestType(
+                                                    widget.screen)));
+                                      }
+                                    },
+                                  );
                                 }),
                           ),
                           item.status == 100
