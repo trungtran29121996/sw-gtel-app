@@ -141,15 +141,5 @@ class _HomeSrceenState extends State<HomeSrceen> {
             )
           ],
         ));
-    // BlocProvider(
-    //     create: (context) => homeBloc
-    //       ..add(GetAllRoute(
-    //           page: 1,
-    //           size: 20,
-    //           driver_id: SpUtil.getInt("driverId"),
-    //           request_type: [1, 2])),
-    //     child: BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
-    //       return );
-    //     }));
   }
 }

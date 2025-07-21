@@ -33,7 +33,6 @@ class _DetailsRouteSrceenState extends State<DetailsRouteSrceen> {
   RouteDetailBloc routeDetailBloc = RouteDetailBloc();
   ScrollController controller = ScrollController();
 
-  // int requestType = 0;
   int selectedIndex = 0;
 
   @override

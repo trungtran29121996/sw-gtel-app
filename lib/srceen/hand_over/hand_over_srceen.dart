@@ -166,7 +166,230 @@ class _HandOverSrceenState extends State<HandOverSrceen> {
                                 item = listFilterHandOverComple[index];
                               }
 
-                              return _buildItem(item, state);
+                              return Container(
+                                  margin: EdgeInsets.all(3),
+                                  padding: EdgeInsets.all(8),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(16),
+                                    border:
+                                        Border.all(color: ColorsUtils.bgHome),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.1),
+                                        blurRadius: 8,
+                                        offset: const Offset(0, 2),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          if (isSelectCheckbox)
+                                            Image.asset(
+                                                "assets/images/checkbox.png"),
+                                          SizedBox(
+                                            width: 5,
+                                          ),
+                                          Icon(
+                                            Icons.qr_code_scanner_sharp,
+                                            color: ColorsUtils.bgWareHouse,
+                                          ),
+                                          SizedBox(
+                                            width: 5,
+                                          ),
+                                          Text(item.orderCodeOfClient!,
+                                              style: TextStyle(
+                                                color: ColorsUtils.bgWareHouse,
+                                                fontWeight: FontWeight.bold,
+                                              )),
+                                          Spacer(),
+                                          WidgetStatus(status: item.status!),
+                                        ],
+                                      ),
+                                      Divider(
+                                        color: ColorsUtils.boderGray,
+                                      ),
+                                      Row(children: [
+                                        Icon(Icons.calendar_today,
+                                            size: 14,
+                                            color: ColorsUtils.bgWareHouse),
+                                        SizedBox(width: 4),
+                                        Text(formatDay(
+                                            DateTime.fromMillisecondsSinceEpoch(
+                                                item.startTime!))),
+                                      ]),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Container(
+                                        child: ListView.builder(
+                                            shrinkWrap: true,
+                                            controller: controller,
+                                            itemCount:
+                                                item.routeAddressList!.length,
+                                            itemBuilder: (context, index) {
+                                              String routeAddressList =
+                                                  item.routeAddressList![index];
+                                              if (index < 5) {
+                                                return Column(
+                                                  children: [
+                                                    Divider(
+                                                      color:
+                                                          ColorsUtils.boderGray,
+                                                    ),
+                                                    Row(children: [
+                                                      Icon(Icons.location_on,
+                                                          size: 14,
+                                                          color: ColorsUtils
+                                                              .bgWareHouse),
+                                                      SizedBox(width: 4),
+                                                      Expanded(
+                                                          child: Text(
+                                                        routeAddressList,
+                                                        style: TextStyle(
+                                                            fontSize: 14),
+                                                      ))
+                                                    ]),
+                                                  ],
+                                                );
+                                              }
+                                              return null;
+                                            }),
+                                      ),
+                                      Divider(
+                                        color: ColorsUtils.boderGray,
+                                      ),
+                                      selectedIndex == 0
+                                          ? item.status! != 430
+                                              ? Row(
+                                                  children: [
+                                                    Expanded(
+                                                      flex: 1,
+                                                      child: DefaultButton(
+                                                          disable: item
+                                                                      .status! <
+                                                                  330
+                                                              ? false
+                                                              : true,
+                                                          padding: EdgeInsets
+                                                              .only(
+                                                                  top: 13,
+                                                                  right: 10,
+                                                                  left: 10),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      10.0),
+                                                          borderColor:
+                                                              ColorsUtils
+                                                                  .disableButon,
+                                                          backgroundColor:
+                                                              Colors.white,
+                                                          textColor:
+                                                              Colors.white,
+                                                          text: 'Xem chi tiết',
+                                                          textStyle: TextStylesUtils
+                                                              .style16FnormalGrey,
+                                                          press: () {
+                                                            Navigator.push(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                  builder:
+                                                                      (context) =>
+                                                                          DetailsRouteSrceen(
+                                                                    routeId: item
+                                                                        .routeId!,
+                                                                    screen: SCREEN
+                                                                        .SCREEN_LIST_ALL,
+                                                                  ),
+                                                                ));
+                                                          }),
+                                                    ),
+                                                    Expanded(
+                                                        flex: 1,
+                                                        child: DefaultButton(
+                                                            disable: item
+                                                                        .status! >=
+                                                                    330
+                                                                ? false
+                                                                : true,
+                                                            padding:
+                                                                EdgeInsets.only(
+                                                                    top: 13,
+                                                                    right: 10,
+                                                                    left: 10),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10.0),
+                                                            borderColor:
+                                                                ColorsUtils
+                                                                    .handover,
+                                                            backgroundColor:
+                                                                ColorsUtils
+                                                                    .handover,
+                                                            text: 'Bàn giao',
+                                                            textStyle:
+                                                                TextStylesUtils
+                                                                    .style16WhiteNormal,
+                                                            press: () {
+                                                              showDialog(
+                                                                barrierDismissible:
+                                                                    false,
+                                                                context:
+                                                                    context,
+                                                                builder:
+                                                                    (context) =>
+                                                                        AlertDialog(
+                                                                  shape: RoundedRectangleBorder(
+                                                                      borderRadius:
+                                                                          BorderRadius.all(
+                                                                              Radius.circular(10.0))),
+                                                                  contentPadding:
+                                                                      EdgeInsets
+                                                                          .all(
+                                                                              15.0),
+                                                                  content:
+                                                                      SizedBox(
+                                                                    width: getDeviceWidth(
+                                                                        context),
+                                                                    height: 510,
+                                                                    child:
+                                                                        DialogConfirrmHandover(
+                                                                      routeID: item
+                                                                          .routeId!,
+                                                                      subAccountReponse:
+                                                                          state
+                                                                              .subAccountReponse,
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ).then(
+                                                                (value) {
+                                                                  if (value ==
+                                                                      true) {
+                                                                    setState(
+                                                                        () {
+                                                                      context.read<HandOverBloc>().add(GetAllHandOver(
+                                                                          page:
+                                                                              1,
+                                                                          size:
+                                                                              30,
+                                                                          driver_id:
+                                                                              SpUtil.getInt("driverId")));
+                                                                    });
+                                                                  }
+                                                                },
+                                                              );
+                                                            }))
+                                                  ],
+                                                )
+                                              : SizedBox()
+                                          : SizedBox()
+                                    ],
+                                  ));
                               // AnimatedOpacity(
                               //   duration: Duration(milliseconds: 600),
                               //   opacity: showItem[index] ? 1.0 : 0.0,
@@ -186,169 +409,6 @@ class _HandOverSrceenState extends State<HandOverSrceen> {
             );
           })),
     );
-  }
-
-  Widget _buildItem(HandOverReponse item, HandOverState state) {
-    return Container(
-        margin: EdgeInsets.all(3),
-        padding: EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: ColorsUtils.bgHome),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.1),
-              blurRadius: 8,
-              offset: const Offset(0, 2),
-            ),
-          ],
-        ),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                if (isSelectCheckbox) Image.asset("assets/images/checkbox.png"),
-                SizedBox(
-                  width: 5,
-                ),
-                Icon(
-                  Icons.qr_code_scanner_sharp,
-                  color: ColorsUtils.bgWareHouse,
-                ),
-                SizedBox(
-                  width: 5,
-                ),
-                Text(item.orderCodeOfClient!,
-                    style: TextStyle(
-                      color: ColorsUtils.bgWareHouse,
-                      fontWeight: FontWeight.bold,
-                    )),
-                Spacer(),
-                WidgetStatus(status: item.status!),
-              ],
-            ),
-            Divider(
-              color: ColorsUtils.boderGray,
-            ),
-            Row(children: [
-              Icon(Icons.calendar_today,
-                  size: 14, color: ColorsUtils.bgWareHouse),
-              SizedBox(width: 4),
-              Text(formatDay(
-                  DateTime.fromMillisecondsSinceEpoch(item.startTime!))),
-            ]),
-            SizedBox(
-              height: 10,
-            ),
-            Container(
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  controller: controller,
-                  itemCount: item.routeAddressList!.length,
-                  itemBuilder: (context, index) {
-                    String routeAddressList = item.routeAddressList![index];
-                    if (index < 5) {
-                      return Column(
-                        children: [
-                          Divider(
-                            color: ColorsUtils.boderGray,
-                          ),
-                          Row(children: [
-                            Icon(Icons.location_on,
-                                size: 14, color: ColorsUtils.bgWareHouse),
-                            SizedBox(width: 4),
-                            Expanded(
-                                child: Text(
-                              routeAddressList,
-                              style: TextStyle(fontSize: 14),
-                            ))
-                          ]),
-                        ],
-                      );
-                    }
-                    return null;
-                  }),
-            ),
-            Divider(
-              color: ColorsUtils.boderGray,
-            ),
-            selectedIndex == 0 ? _buildbutton(item, state, context) : SizedBox()
-          ],
-        ));
-  }
-
-  Widget _buildbutton(
-      HandOverReponse item, HandOverState state, BuildContext context) {
-    return item.status! != 430
-        ? Row(
-            children: [
-              Expanded(
-                flex: 1,
-                child: DefaultButton(
-                    disable: item.status! < 330 ? false : true,
-                    padding: EdgeInsets.only(top: 13, right: 10, left: 10),
-                    borderRadius: BorderRadius.circular(10.0),
-                    borderColor: ColorsUtils.disableButon,
-                    backgroundColor: Colors.white,
-                    textColor: Colors.white,
-                    text: 'Xem chi tiết',
-                    textStyle: TextStylesUtils.style16FnormalGrey,
-                    press: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => DetailsRouteSrceen(
-                              routeId: item.routeId!,
-                              screen: SCREEN.SCREEN_LIST_ALL,
-                            ),
-                          ));
-                    }),
-              ),
-              Expanded(
-                  flex: 1,
-                  child: DefaultButton(
-                      disable: item.status! >= 330 ? false : true,
-                      padding: EdgeInsets.only(top: 13, right: 10, left: 10),
-                      borderRadius: BorderRadius.circular(10.0),
-                      borderColor: ColorsUtils.handover,
-                      backgroundColor: ColorsUtils.handover,
-                      text: 'Bàn giao',
-                      textStyle: TextStylesUtils.style16WhiteNormal,
-                      press: () {
-                        showDialog(
-                          barrierDismissible: false,
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10.0))),
-                            contentPadding: EdgeInsets.all(15.0),
-                            content: SizedBox(
-                              width: getDeviceWidth(context),
-                              height: 510,
-                              child: DialogConfirrmHandover(
-                                routeID: item.routeId!,
-                                subAccountReponse: state.subAccountReponse,
-                              ),
-                            ),
-                          ),
-                        ).then(
-                          (value) {
-                            if (value == true) {
-                              setState(() {
-                                context.read<HandOverBloc>().add(GetAllHandOver(
-                                    page: 1,
-                                    size: 30,
-                                    driver_id: SpUtil.getInt("driverId")));
-                              });
-                            }
-                          },
-                        );
-                      }))
-            ],
-          )
-        : SizedBox();
   }
 
   Widget _buildTab(String text, int index, int count) {

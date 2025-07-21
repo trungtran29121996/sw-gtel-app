@@ -82,13 +82,16 @@ class CPNRouteRepository {
   Future<UpdatRouteCPNReponse?> getRoutingCPNcomplete(int routeId,
       String handover_note, String assignee_id, List<String> lstimage) async {
     try {
+      Map<String, dynamic> params = {
+        "handover_note": handover_note,
+        "assignee_id": assignee_id,
+        "handover_images": lstimage
+      };
+
       final response = await dioMain.patch(
           "api/v1/tms-service/routing/cpn/route/${routeId}/complete",
-          data: {
-            "handover_note": handover_note,
-            "assignee_id": assignee_id,
-            "handover_images": lstimage
-          });
+          data: {params});
+
       if (response["success"] == true) {
         return UpdatRouteCPNReponse.fromJson(response["data"]);
       } else {

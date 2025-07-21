@@ -40,6 +40,7 @@ class _ListAllrouteScreenState extends State<ListAllrouteScreen> {
 
   bool isShowInput = false;
   bool _dialogShow = false;
+  int routeID = 0;
 
   List<DataCnpRouteReponse> lstDataCnpRoute = [];
   List<DataCnpRouteReponse> lstDataFilterCnpRoute = [];
@@ -327,10 +328,11 @@ class _ListAllrouteScreenState extends State<ListAllrouteScreen> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => DetailsRouteSrceen(
-                                  routeId: item.routeId!,
+                                  routeId: routeID,
                                   screen: widget.screen,
                                 ),
                               ));
+
                           _dialogShow = false;
                           if (result == true) {
                             _dialogShow = false;
@@ -437,6 +439,7 @@ class _ListAllrouteScreenState extends State<ListAllrouteScreen> {
                                         context.read<RouteDetailBloc>().add(
                                             GetRoutingStartEvent(
                                                 routeId: item.routeId!));
+                                        routeID = item.routeId!;
                                       }),
                                 )
                               : Expanded(flex: 1, child: SizedBox()),
