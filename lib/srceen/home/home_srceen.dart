@@ -45,13 +45,14 @@ class _HomeSrceenState extends State<HomeSrceen> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 60),
+            padding: EdgeInsets.symmetric(
+                horizontal: 24, vertical: Platform.isIOS ? 60 : 35),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Icon người dùng
                 Padding(
-                  padding: const EdgeInsets.only(right: 8.0),
+                  padding: const EdgeInsets.only(right: 8.0, top: 2),
                   child: Image.asset('assets/images/icon_user_home.png'),
                 ),
 
