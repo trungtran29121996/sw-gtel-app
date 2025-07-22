@@ -98,7 +98,7 @@ class _NoficationScreenState extends State<NoficationScreen> {
                                       (value) {
                                         hideLoading(context);
                                         if (value!.success == true) {
-                                          final result = Navigator.push(
+                                          Navigator.push(
                                               context,
                                               MaterialPageRoute(
                                                 builder: (context) =>
@@ -108,13 +108,14 @@ class _NoficationScreenState extends State<NoficationScreen> {
                                                   screen:
                                                       SCREEN.SCREEN_LIST_ALL,
                                                 ),
-                                              ));
-                                          if (result == true) {
-                                            context
-                                                .read<NotificationBloc>()
-                                                .add(GetNotificationEvent(
-                                                    page: 1, size: 20));
-                                          }
+                                              )).then(
+                                            (value) {
+                                              context
+                                                  .read<NotificationBloc>()
+                                                  .add(GetNotificationEvent(
+                                                      page: 1, size: 20));
+                                            },
+                                          );
                                         }
                                       },
                                     );

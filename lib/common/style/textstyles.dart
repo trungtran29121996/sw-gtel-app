@@ -93,6 +93,19 @@ class TextStylesUtils {
     fontStyle: FontStyle.normal,
   );
 
+  static const style14FnormalBlack = TextStyle(
+    color: Colors.black,
+    fontSize: 14,
+    fontStyle: FontStyle.normal,
+  );
+
+  static const style14FnormalBold = TextStyle(
+    color: Colors.black,
+    fontSize: 14,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w500,
+  );
+
   static final style12Gray = TextStyle(
     color: ColorsUtils.brownGrey,
     fontSize: 12,
@@ -134,12 +147,6 @@ class TextStylesUtils {
   static const style16Orange = TextStyle(
     color: ColorsUtils.infoItemContact,
     fontSize: 16,
-    fontStyle: FontStyle.normal,
-  );
-
-  static const style14FnormalBlack = TextStyle(
-    color: Colors.black,
-    fontSize: 14,
     fontStyle: FontStyle.normal,
   );
 

@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:sw_app_gtel/common/config/app_dimensions.dart';
 import 'package:sw_app_gtel/common/helper/screen_type.dart';
 import 'package:sw_app_gtel/common/pref/sp_util.dart';
-import 'package:sw_app_gtel/common/style/color.dart';
+import 'package:sw_app_gtel/common/style/textstyles.dart';
 import 'package:sw_app_gtel/network/responses/login_response.dart';
 import 'package:sw_app_gtel/srceen/account/account_srceen.dart';
 import 'package:sw_app_gtel/srceen/hand_over/hand_over_srceen.dart';
@@ -17,129 +21,172 @@ class HomeSrceen extends StatefulWidget {
 }
 
 class _HomeSrceenState extends State<HomeSrceen> {
-  //HomeBloc homeBloc = HomeBloc();
-
   MemberInfoLogin user =
       MemberInfoLogin.fromJson(SpUtil.getObject("member_info"));
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: ColorsUtils.bgHome,
         resizeToAvoidBottomInset: true,
-        //appBar: AppBar(),
-        body: Column(
-          children: [
-            Stack(
+        body: Stack(children: [
+          SvgPicture.asset(
+            "assets/icon/bg_color_home.svg",
+            width: getDeviceWidth(context),
+            fit: BoxFit.cover,
+          ),
+          Align(
+            alignment: Alignment.topCenter,
+            child: Transform.translate(
+              offset: const Offset(0, 50),
+              child: SvgPicture.asset(
+                "assets/icon/icon_home.svg",
+                fit: BoxFit.contain,
+                width: getDeviceWidth(context) * 0.9,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 60),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  alignment: Alignment.center,
-                  margin: EdgeInsets.only(top: 15),
-                  child: Image.asset(
-                    "assets/images/bg_home.png",
-                    fit: BoxFit.cover,
+                // Icon người dùng
+                Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: Image.asset('assets/images/icon_user_home.png'),
+                ),
+
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Xin chào,',
+                        style: TextStyle(fontSize: 14, color: Colors.black87),
+                      ),
+                      Text(
+                        user.name!,
+                        style: TextStylesUtils.style14FnormalBold,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
                   ),
                 ),
-                SafeArea(
-                  child: Padding(
-                    padding: EdgeInsets.all(8),
-                    child: Container(
-                      margin: EdgeInsets.only(top: 130),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                          color: ColorsUtils.bgHomeMenu),
-                      child: GridView(
-                        padding: EdgeInsets.all(8),
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                mainAxisSpacing: 5,
-                                crossAxisSpacing: 5,
-                                childAspectRatio: 1.1),
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        children: [
-                          BuildMainMenuButton(
-                            //Status: Mới + Đang lấy hàng + Đang giao hàng
-                            path: "assets/images/list_order_menu.png",
-                            text: "Danh sách chuyến",
-                            onButtonPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ListAllrouteScreen(
-                                      screen: SCREEN.SCREEN_LIST_ALL,
-                                    ),
-                                  ));
-                            },
-                          ),
-                          BuildMainMenuButton(
-                            path: "assets/images/receive_orders_menu.png",
-                            text: "Thao tác lấy hàng",
-                            onButtonPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ListAllrouteScreen(
-                                      screen: SCREEN.SCREEN_PICKUP_GOODS,
-                                    ),
-                                  ));
-                            },
-                          ),
-                          BuildMainMenuButton(
-                            path: "assets/images/order_handover_menu.png",
-                            text: "Bàn giao nội bộ",
-                            onButtonPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => HandOverSrceen(),
-                                  ));
-                            },
-                          ),
-                          BuildMainMenuButton(
-                            path: "assets/images/delivery_menu.png",
-                            text: "Thao thác giao hàng",
-                            onButtonPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ListAllrouteScreen(
-                                      screen: SCREEN.SCREEN_DELIVERY,
-                                    ),
-                                  ));
-                            },
-                          ),
-                          BuildMainMenuButton(
-                            path: "assets/images/baocao_thongke_menu.png",
-                            text: "Báo cáo & thống kê",
-                            onButtonPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ReportScreen(),
-                                  ));
-                            },
-                          ),
-                          BuildMainMenuButton(
-                            path: "assets/images/account_menu.png",
-                            text: "Tài khoản",
-                            onButtonPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => AccounutSrceen(),
-                                  ));
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                )
+                Container(
+                    child: Image.asset(
+                  'assets/images/logo_bghome.png',
+                  width: 115,
+                ))
+                // SvgPicture.asset(
+                //   "assets/icon/icon_route_home.svg",
+                // ),
               ],
-            )
-          ],
-        ));
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(
+                top: Platform.isIOS
+                    ? getDeviceHeight(context) * 0.27
+                    : getDeviceHeight(context) * 0.3,
+                right: 16,
+                left: 16),
+            child: Container(
+              child: GridView.count(
+                crossAxisCount: 2,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                crossAxisSpacing: 25,
+                mainAxisSpacing: 20,
+                childAspectRatio: 1.2,
+                children: [
+                  BuildMainMenuButton(
+                    iconPath: 'assets/icon/icon_route_home.svg',
+                    title: "Danh sách chuyến",
+                    width: 30,
+                    heigth: 30,
+                    onButtonPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ListAllrouteScreen(
+                              screen: SCREEN.SCREEN_LIST_ALL,
+                            ),
+                          ));
+                    },
+                  ),
+                  BuildMainMenuButton(
+                    iconPath: 'assets/icon/icon_pickorder_home.svg',
+                    title: "Thao tác lấy hàng",
+                    width: 35,
+                    heigth: 35,
+                    onButtonPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ListAllrouteScreen(
+                              screen: SCREEN.SCREEN_PICKUP_GOODS,
+                            ),
+                          ));
+                    },
+                  ),
+                  BuildMainMenuButton(
+                    iconPath: 'assets/icon/icon_handover_home.svg',
+                    title: "Bàn giao nội bộ",
+                    width: 35,
+                    heigth: 35,
+                    onButtonPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => HandOverSrceen(),
+                          ));
+                    },
+                  ),
+                  BuildMainMenuButton(
+                    iconPath: 'assets/icon/icon_drop_home.svg',
+                    title: "Thao tác giao hàng",
+                    width: 35,
+                    heigth: 35,
+                    onButtonPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ListAllrouteScreen(
+                              screen: SCREEN.SCREEN_DELIVERY,
+                            ),
+                          ));
+                    },
+                  ),
+                  BuildMainMenuButton(
+                    iconPath: 'assets/icon/icon_report_home.svg',
+                    title: "Báo cáo & thống kê",
+                    width: 40,
+                    heigth: 40,
+                    onButtonPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ReportScreen(),
+                          ));
+                    },
+                  ),
+                  BuildMainMenuButton(
+                    iconPath: 'assets/icon/icon_account_home.svg',
+                    title: "Tài khoản",
+                    width: 30,
+                    heigth: 30,
+                    onButtonPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AccounutSrceen(),
+                          ));
+                    },
+                  ),
+                ],
+              ),
+            ),
+          )
+        ]));
   }
 }
