@@ -33,15 +33,12 @@ class _HomeSrceenState extends State<HomeSrceen> {
             width: getDeviceWidth(context),
             fit: BoxFit.cover,
           ),
-          Align(
-            alignment: Alignment.topCenter,
-            child: Transform.translate(
-              offset: const Offset(0, 50),
-              child: SvgPicture.asset(
-                "assets/icon/icon_home.svg",
-                fit: BoxFit.contain,
-                width: getDeviceWidth(context) * 0.9,
-              ),
+          Positioned(
+            top: 15,
+            left: 16,
+            child: SafeArea(
+              child:
+                  Container(child: Image.asset("assets/images/icon_home.png")),
             ),
           ),
           Padding(
