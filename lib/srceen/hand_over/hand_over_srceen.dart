@@ -52,14 +52,14 @@ class _HandOverSrceenState extends State<HandOverSrceen> {
     listFilterHandOver = listHandOver;
   }
 
-  void _startAnimation() async {
-    for (int i = 0; i < listFilterHandOver.length; i++) {
-      await Future.delayed(Duration(milliseconds: i * 300));
-      setState(() {
-        showItem[i] = true;
-      });
-    }
-  }
+  // void _startAnimation() async {
+  //   for (int i = 0; i < listFilterHandOver.length; i++) {
+  //     await Future.delayed(Duration(milliseconds: i * 300));
+  //     setState(() {
+  //       showItem[i] = true;
+  //     });
+  //   }
+  // }
 
   void _onSearch(String keyword) {
     setState(() {
@@ -107,9 +107,9 @@ class _HandOverSrceenState extends State<HandOverSrceen> {
                     (a, b) => b.modifiedAt!.compareTo(a.modifiedAt!),
                   );
 
-                  showItem
-                      .addAll(List.filled(listFilterHandOver.length, false));
-                  _startAnimation();
+                  // showItem
+                  //     .addAll(List.filled(listFilterHandOver.length, false));
+                  // _startAnimation();
                   hideLoading(context);
                 }
               },

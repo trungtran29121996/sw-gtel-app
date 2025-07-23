@@ -23,8 +23,7 @@ class _ScanListbarcodeScreenState extends State<ScanListbarcodeScreen> {
   final List<String> scannedCodes = [];
 
   DateTime? lastScanTime;
-  final Duration scanCooldown =
-      Duration(seconds: 2); // Khoảng thời gian chờ giữa 2 lần quét
+  final Duration scanCooldown = Duration(seconds: 2);
 
   void _onDetect(BarcodeCapture barcode) {
     final now = DateTime.now();

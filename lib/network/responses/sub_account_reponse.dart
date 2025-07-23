@@ -60,7 +60,6 @@ class Datum {
   String? phone;
   String? email;
   String? name;
-  Title? title;
   String? contactName;
   String? companyName;
   int? businessStatus;
@@ -77,7 +76,6 @@ class Datum {
   String? invoiceAddress;
   int? bankId;
   int? bankBranchId;
-  BankAccountHolder? bankAccountHolder;
   String? bankAccountNumber;
   String? bankAccount;
   int? status;
@@ -96,7 +94,6 @@ class Datum {
   bool? transportTypeChange;
   int? subMemberType;
   String? departmentTitle;
-  Images? images;
   String? uid;
 
   Datum({
@@ -112,7 +109,6 @@ class Datum {
     this.phone,
     this.email,
     this.name,
-    this.title,
     this.contactName,
     this.companyName,
     this.businessStatus,
@@ -129,7 +125,6 @@ class Datum {
     this.invoiceAddress,
     this.bankId,
     this.bankBranchId,
-    this.bankAccountHolder,
     this.bankAccountNumber,
     this.bankAccount,
     this.status,
@@ -148,7 +143,6 @@ class Datum {
     this.transportTypeChange,
     this.subMemberType,
     this.departmentTitle,
-    this.images,
     this.uid,
   });
 
@@ -165,7 +159,6 @@ class Datum {
         phone: json["phone"],
         email: json["email"],
         name: json["name"],
-        title: titleValues.map[json["title"]]!,
         contactName: json["contact_name"],
         companyName: json["company_name"],
         businessStatus: json["business_status"],
@@ -182,8 +175,6 @@ class Datum {
         invoiceAddress: json["invoice_address"],
         bankId: json["bank_id"],
         bankBranchId: json["bank_branch_id"],
-        bankAccountHolder:
-            bankAccountHolderValues.map[json["bank_account_holder"]]!,
         bankAccountNumber: json["bank_account_number"],
         bankAccount: json["bank_account"],
         status: json["status"],
@@ -202,7 +193,6 @@ class Datum {
         transportTypeChange: json["transport_type_change"],
         subMemberType: json["sub_member_type"],
         departmentTitle: json["department_title"],
-        images: json["images"] == null ? null : Images.fromJson(json["images"]),
         uid: json["uid"],
       );
 
@@ -219,7 +209,6 @@ class Datum {
         "phone": phone,
         "email": email,
         "name": name,
-        "title": titleValues.reverse[title],
         "contact_name": contactName,
         "company_name": companyName,
         "business_status": businessStatus,
@@ -236,8 +225,6 @@ class Datum {
         "invoice_address": invoiceAddress,
         "bank_id": bankId,
         "bank_branch_id": bankBranchId,
-        "bank_account_holder":
-            bankAccountHolderValues.reverse[bankAccountHolder],
         "bank_account_number": bankAccountNumber,
         "bank_account": bankAccount,
         "status": status,
@@ -256,30 +243,9 @@ class Datum {
         "transport_type_change": transportTypeChange,
         "sub_member_type": subMemberType,
         "department_title": departmentTitle,
-        "images": images?.toJson(),
         "uid": uid,
       };
 }
-
-enum BankAccountHolder { BC_HN, EMPTY, NETCO }
-
-final bankAccountHolderValues = EnumValues({
-  "BC HN": BankAccountHolder.BC_HN,
-  "": BankAccountHolder.EMPTY,
-  "Netco": BankAccountHolder.NETCO
-});
-
-class Images {
-  Images();
-
-  factory Images.fromJson(Map<String, dynamic> json) => Images();
-
-  Map<String, dynamic> toJson() => {};
-}
-
-enum Title { EMPTY, GIM_ST }
-
-final titleValues = EnumValues({"": Title.EMPTY, "Giám Sát": Title.GIM_ST});
 
 class Meta {
   int? totalItems;

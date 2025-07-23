@@ -34,8 +34,8 @@ class _HomeSrceenState extends State<HomeSrceen> {
             fit: BoxFit.cover,
           ),
           Positioned(
-            top: 15,
-            left: 16,
+            right: 10,
+            left: 3,
             child: SafeArea(
               child:
                   Container(child: Image.asset("assets/images/icon_home.png")),
@@ -43,7 +43,7 @@ class _HomeSrceenState extends State<HomeSrceen> {
           ),
           Padding(
             padding: EdgeInsets.symmetric(
-                horizontal: 24, vertical: Platform.isIOS ? 60 : 35),
+                horizontal: 24, vertical: Platform.isIOS ? 60 : 40),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -85,7 +85,7 @@ class _HomeSrceenState extends State<HomeSrceen> {
             padding: EdgeInsets.only(
                 top: Platform.isIOS
                     ? getDeviceHeight(context) * 0.27
-                    : getDeviceHeight(context) * 0.3,
+                    : getDeviceHeight(context) * 0.29,
                 right: 16,
                 left: 16),
             child: Container(
@@ -100,8 +100,8 @@ class _HomeSrceenState extends State<HomeSrceen> {
                   BuildMainMenuButton(
                     iconPath: 'assets/icon/icon_route_home.svg',
                     title: "Danh sách chuyến",
-                    width: 30,
-                    heigth: 30,
+                    width: 28,
+                    heigth: 28,
                     onButtonPressed: () {
                       Navigator.push(
                           context,
